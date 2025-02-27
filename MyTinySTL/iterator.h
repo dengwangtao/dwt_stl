@@ -31,22 +31,66 @@ struct iterator
 
 // iterator traits
 
+/*
 template <class T>
-struct has_iterator_cat // 萃取是否有某种迭代器类型
+struct has_iterator_cat
 {
 private:
   struct two { char a; char b; };
+  // 模板函数, 通用
   template <class U> static two test(...);
+  // 模板函数, 特化: 判断U是否有iterator_category类型成员
   template <class U> static char test(typename U::iterator_category* = 0);
 public:
   static const bool value = sizeof(test<T>(0)) == sizeof(char);
 };
+*/
 
-template <class Iterator, bool>
+
+/*
+// 换一种写法:
+template <class T>
+struct has_iterator_cat // 萃取是否有某种迭代器类型
+{
+private:
+  template<class U, class Enable = void>
+  struct has_iterator_category_helper {
+    static const bool value = false;
+  };
+  template<class U>
+  struct has_iterator_category_helper<U, std::void_t<typename U::iterator_category>> {
+    static const bool value = true;
+  };
+public:
+  static const bool value = has_iterator_category_helper<T>::value;
+};
+*/
+
+// 再换一种写法:
+template <class T, class = void>
+struct has_iterator_cat : std::false_type {};
+
+template <class T>
+struct has_iterator_cat<T, std::void_t<typename T::iterator_category>> : std::true_type {};
+
+
+template <class Iterator, class = void>
 struct iterator_traits_impl {};
 
+// 判断一个迭代器是否可以隐式转换到 input_iterator_tag 或 output_iterator_tag
+template<class T, class = void>
+struct is_convertible_iterator : std::false_type {};
+
+template<class T>
+struct is_convertible_iterator<T,
+  std::enable_if_t<std::is_convertible_v<typename T::iterator_category, input_iterator_tag> || std::is_convertible_v<typename T::iterator_category, output_iterator_tag>, void> >
+    : std::true_type
+{};
+
+// 偏特化版本: 针对 可以隐式转换到 input_iterator_tag 和 output_iterator_tag 的偏特化版本, 5种迭代器都可以转换到这两种迭代器
 template <class Iterator>
-struct iterator_traits_impl<Iterator, true>
+struct iterator_traits_impl<Iterator, 
+    std::enable_if_t<is_convertible_iterator<Iterator>::value, void> >
 {
   typedef typename Iterator::iterator_category iterator_category;
   typedef typename Iterator::value_type        value_type;
@@ -55,21 +99,11 @@ struct iterator_traits_impl<Iterator, true>
   typedef typename Iterator::difference_type   difference_type;
 };
 
-template <class Iterator, bool>
-struct iterator_traits_helper {};
-
-template <class Iterator>
-struct iterator_traits_helper<Iterator, true>
-  : public iterator_traits_impl<Iterator,
-  std::is_convertible<typename Iterator::iterator_category, input_iterator_tag>::value ||
-  std::is_convertible<typename Iterator::iterator_category, output_iterator_tag>::value>
-{
-};
 
 // 萃取迭代器的特性
 template <class Iterator>
-struct iterator_traits 
-  : public iterator_traits_helper<Iterator, has_iterator_cat<Iterator>::value> {};
+struct iterator_traits : public iterator_traits_impl<Iterator> {};
+
 
 // 针对原生指针的偏特化版本
 template <class T>
