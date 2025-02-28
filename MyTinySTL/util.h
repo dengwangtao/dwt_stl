@@ -10,6 +10,7 @@
 namespace dwt_stl
 {
 
+// -----------------------------------
 // remove_reference 用于移除 T 的引用属性
 template <class T>
 struct remove_reference
@@ -33,6 +34,60 @@ struct remove_reference<T&&>
 };
 
 DECL__T(remove_reference);
+
+// -----------------------------------
+// remove_const
+template <class T>
+struct remove_const
+{
+  using type = T;
+};
+
+template <class T>
+struct remove_const<const T>
+{
+  using type = T;
+};
+
+DECL__T(remove_const);
+
+// -----------------------------------
+// remove_cv
+template <class T>
+struct remove_cv
+{
+  using type = T;
+};
+
+template <class T>
+struct remove_cv<const T>
+{
+  using type = T;
+};
+
+template <class T>
+struct remove_cv<volatile T>
+{
+  using type = T;
+};
+
+template <class T>
+struct remove_cv<const volatile T>
+{
+  using type = T;
+};
+
+DECL__T(remove_cv);
+
+// -----------------------------------
+// is_same
+template <class T1, class T2>
+struct is_same : false_type {};
+
+template <class T>
+struct is_same<T, T> : true_type {};
+
+DECL__V2(is_same);
 
 // -----------------------------------
 

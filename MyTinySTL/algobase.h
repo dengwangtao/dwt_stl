@@ -71,8 +71,7 @@ void iter_swap(FIter1 lhs, FIter2 rhs)
 /*****************************************************************************************/
 // input_iterator_tag 版本
 template <class InputIter, class OutputIter>
-OutputIter 
-unchecked_copy_cat(InputIter first, InputIter last, OutputIter result, 
+OutputIter unchecked_copy_impl(InputIter first, InputIter last, OutputIter result, 
                    dwt_stl::input_iterator_tag)
 {
   for (; first != last; ++first, ++result)
@@ -84,8 +83,7 @@ unchecked_copy_cat(InputIter first, InputIter last, OutputIter result,
 
 // ramdom_access_iterator_tag 版本
 template <class RandomIter, class OutputIter>
-OutputIter 
-unchecked_copy_cat(RandomIter first, RandomIter last, OutputIter result,
+OutputIter unchecked_copy_impl(RandomIter first, RandomIter last, OutputIter result,
                    dwt_stl::random_access_iterator_tag)
 {
   for (auto n = last - first; n > 0; --n, ++first, ++result)
@@ -96,18 +94,14 @@ unchecked_copy_cat(RandomIter first, RandomIter last, OutputIter result,
 }
 
 template <class InputIter, class OutputIter>
-OutputIter 
-unchecked_copy(InputIter first, InputIter last, OutputIter result)
+OutputIter unchecked_copy(InputIter first, InputIter last, OutputIter result)
 {
-  return unchecked_copy_cat(first, last, result, iterator_category(first));
+  return unchecked_copy_impl(first, last, result, iterator_category(first));
 }
 
 // 为 trivially_copy_assignable 类型提供特化版本
 template <class Tp, class Up>
-typename std::enable_if<
-  std::is_same<typename std::remove_const<Tp>::type, Up>::value &&
-  std::is_trivially_copy_assignable<Up>::value,
-  Up*>::type
+typename std::enable_if_t<is_same_v<typename remove_const_t<Tp>, Up> && std::is_trivially_copy_assignable_v<Up>, Up*>
 unchecked_copy(Tp* first, Tp* last, Up* result)
 {
   const auto n = static_cast<size_t>(last - first);
