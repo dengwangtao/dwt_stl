@@ -7,7 +7,7 @@
 // notes:
 //
 // 异常保证：
-// mystl::vecotr<T> 满足基本异常保证，部分函数无异常保证，并对以下函数做强异常安全保证：
+// dwt_stl::vecotr<T> 满足基本异常保证，部分函数无异常保证，并对以下函数做强异常安全保证：
 //   * emplace
 //   * emplace_back
 //   * push_back
@@ -24,7 +24,7 @@
 #include "exceptdef.h"
 #include "algo.h"
 
-namespace mystl
+namespace dwt_stl
 {
 
 #ifdef max
@@ -44,11 +44,11 @@ class vector
 {
 
   // 不支持vector<bool>类型
-  static_assert(!std::is_same<bool, T>::value, "vector<bool> is abandoned in mystl");
+  static_assert(!std::is_same<bool, T>::value, "vector<bool> is abandoned in dwt_stl");
 public:
   // vector 的嵌套型别定义
-  typedef mystl::allocator<T>                      allocator_type;
-  typedef mystl::allocator<T>                      data_allocator;
+  typedef dwt_stl::allocator<T>                      allocator_type;
+  typedef dwt_stl::allocator<T>                      data_allocator;
 
   typedef typename allocator_type::value_type      value_type;
   typedef typename allocator_type::pointer         pointer;
@@ -60,8 +60,8 @@ public:
 
   typedef value_type*                              iterator;
   typedef const value_type*                        const_iterator;
-  typedef mystl::reverse_iterator<iterator>        reverse_iterator;
-  typedef mystl::reverse_iterator<const_iterator>  const_reverse_iterator;
+  typedef dwt_stl::reverse_iterator<iterator>        reverse_iterator;
+  typedef dwt_stl::reverse_iterator<const_iterator>  const_reverse_iterator;
 
   allocator_type get_allocator() { return data_allocator(); }
 
@@ -82,10 +82,10 @@ public:
   { fill_init(n, value); }
 
   template <class Iter, typename std::enable_if<
-    mystl::is_input_iterator<Iter>::value, int>::type = 0>
+    dwt_stl::is_input_iterator<Iter>::value, int>::type = 0>
   vector(Iter first, Iter last)
   {
-    MYSTL_DEBUG(!(last < first));
+    dwt_stl_DEBUG(!(last < first));
     range_init(first, last);
   }
 
@@ -170,12 +170,12 @@ public:
   // 访问元素相关操作
   reference operator[](size_type n)
   {
-    MYSTL_DEBUG(n < size());
+    dwt_stl_DEBUG(n < size());
     return *(begin_ + n);
   }
   const_reference operator[](size_type n) const
   {
-    MYSTL_DEBUG(n < size());
+    dwt_stl_DEBUG(n < size());
     return *(begin_ + n);
   }
   reference at(size_type n)
@@ -191,22 +191,22 @@ public:
 
   reference front()
   {
-    MYSTL_DEBUG(!empty());
+    dwt_stl_DEBUG(!empty());
     return *begin_;
   }
   const_reference front() const
   {
-    MYSTL_DEBUG(!empty());
+    dwt_stl_DEBUG(!empty());
     return *begin_;
   }
   reference back()
   {
-    MYSTL_DEBUG(!empty());
+    dwt_stl_DEBUG(!empty());
     return *(end_ - 1);
   }
   const_reference back() const
   {
-    MYSTL_DEBUG(!empty());
+    dwt_stl_DEBUG(!empty());
     return *(end_ - 1);
   }
 
@@ -221,15 +221,15 @@ public:
   { fill_assign(n, value); }
 
   template <class Iter, typename std::enable_if<
-    mystl::is_input_iterator<Iter>::value, int>::type = 0>
+    dwt_stl::is_input_iterator<Iter>::value, int>::type = 0>
   void assign(Iter first, Iter last)
   {
-    MYSTL_DEBUG(!(last < first));
+    dwt_stl_DEBUG(!(last < first));
     copy_assign(first, last, iterator_category(first));
   }
 
   void assign(std::initializer_list<value_type> il)
-  { copy_assign(il.begin(), il.end(), mystl::forward_iterator_tag{}); }
+  { copy_assign(il.begin(), il.end(), dwt_stl::forward_iterator_tag{}); }
 
   // emplace / emplace_back
 
@@ -243,7 +243,7 @@ public:
 
   void push_back(const value_type& value);
   void push_back(value_type&& value)
-  { emplace_back(mystl::move(value)); }
+  { emplace_back(dwt_stl::move(value)); }
 
   void pop_back();
 
@@ -251,19 +251,19 @@ public:
 
   iterator insert(const_iterator pos, const value_type& value);
   iterator insert(const_iterator pos, value_type&& value)
-  { return emplace(pos, mystl::move(value)); }
+  { return emplace(pos, dwt_stl::move(value)); }
 
   iterator insert(const_iterator pos, size_type n, const value_type& value)
   {
-    MYSTL_DEBUG(pos >= begin() && pos <= end());
+    dwt_stl_DEBUG(pos >= begin() && pos <= end());
     return fill_insert(const_cast<iterator>(pos), n, value);
   }
 
   template <class Iter, typename std::enable_if<
-    mystl::is_input_iterator<Iter>::value, int>::type = 0>
+    dwt_stl::is_input_iterator<Iter>::value, int>::type = 0>
   void     insert(const_iterator pos, Iter first, Iter last)
   {
-    MYSTL_DEBUG(pos >= begin() && pos <= end() && !(last < first));
+    dwt_stl_DEBUG(pos >= begin() && pos <= end() && !(last < first));
     copy_insert(const_cast<iterator>(pos), first, last);
   }
 
@@ -276,7 +276,7 @@ public:
   void     resize(size_type new_size) { return resize(new_size, value_type()); }
   void     resize(size_type new_size, const value_type& value);
 
-  void     reverse() { mystl::reverse(begin(), end()); }
+  void     reverse() { dwt_stl::reverse(begin(), end()); }
 
   // swap
   void     swap(vector& rhs) noexcept;
@@ -341,14 +341,14 @@ vector<T>& vector<T>::operator=(const vector& rhs)
     }
     else if (size() >= len)
     {
-      auto i = mystl::copy(rhs.begin(), rhs.end(), begin());
+      auto i = dwt_stl::copy(rhs.begin(), rhs.end(), begin());
       data_allocator::destroy(i, end_);
       end_ = begin_ + len;
     }
     else
     { 
-      mystl::copy(rhs.begin(), rhs.begin() + size(), begin_);
-      mystl::uninitialized_copy(rhs.begin() + size(), rhs.end(), end_);
+      dwt_stl::copy(rhs.begin(), rhs.begin() + size(), begin_);
+      dwt_stl::uninitialized_copy(rhs.begin() + size(), rhs.end(), end_);
       cap_ = end_ = begin_ + len;
     }
   }
@@ -379,7 +379,7 @@ void vector<T>::reserve(size_type n)
                           "n can not larger than max_size() in vector<T>::reserve(n)");
     const auto old_size = size();
     auto tmp = data_allocator::allocate(n);
-    mystl::uninitialized_move(begin_, end_, tmp);
+    dwt_stl::uninitialized_move(begin_, end_, tmp);
     data_allocator::deallocate(begin_, cap_ - begin_);
     begin_ = tmp;
     end_ = tmp + old_size;
@@ -403,26 +403,26 @@ template <class ...Args>
 typename vector<T>::iterator
 vector<T>::emplace(const_iterator pos, Args&& ...args)
 {
-  MYSTL_DEBUG(pos >= begin() && pos <= end());
+  dwt_stl_DEBUG(pos >= begin() && pos <= end());
   iterator xpos = const_cast<iterator>(pos);
   const size_type n = xpos - begin_;
   if (end_ != cap_ && xpos == end_)
   {
-    data_allocator::construct(mystl::address_of(*end_), mystl::forward<Args>(args)...);
+    data_allocator::construct(dwt_stl::address_of(*end_), dwt_stl::forward<Args>(args)...);
     ++end_;
   }
   else if (end_ != cap_)
   {
     auto new_end = end_;
-    data_allocator::construct(mystl::address_of(*end_), *(end_ - 1));
+    data_allocator::construct(dwt_stl::address_of(*end_), *(end_ - 1));
     ++new_end;
-    mystl::copy_backward(xpos, end_ - 1, end_);
-    *xpos = value_type(mystl::forward<Args>(args)...);
+    dwt_stl::copy_backward(xpos, end_ - 1, end_);
+    *xpos = value_type(dwt_stl::forward<Args>(args)...);
     end_ = new_end;
   }
   else
   {
-    reallocate_emplace(xpos, mystl::forward<Args>(args)...);
+    reallocate_emplace(xpos, dwt_stl::forward<Args>(args)...);
   }
   return begin() + n;
 }
@@ -434,12 +434,12 @@ void vector<T>::emplace_back(Args&& ...args)
 {
   if (end_ < cap_)
   {
-    data_allocator::construct(mystl::address_of(*end_), mystl::forward<Args>(args)...);
+    data_allocator::construct(dwt_stl::address_of(*end_), dwt_stl::forward<Args>(args)...);
     ++end_;
   }
   else
   {
-    reallocate_emplace(end_, mystl::forward<Args>(args)...);
+    reallocate_emplace(end_, dwt_stl::forward<Args>(args)...);
   }
 }
 
@@ -449,7 +449,7 @@ void vector<T>::push_back(const value_type& value)
 {
   if (end_ != cap_)
   {
-    data_allocator::construct(mystl::address_of(*end_), value);
+    data_allocator::construct(dwt_stl::address_of(*end_), value);
     ++end_;
   }
   else
@@ -462,7 +462,7 @@ void vector<T>::push_back(const value_type& value)
 template <class T>
 void vector<T>::pop_back()
 {
-  MYSTL_DEBUG(!empty());
+  dwt_stl_DEBUG(!empty());
   data_allocator::destroy(end_ - 1);
   --end_;
 }
@@ -472,22 +472,22 @@ template <class T>
 typename vector<T>::iterator
 vector<T>::insert(const_iterator pos, const value_type& value)
 {
-  MYSTL_DEBUG(pos >= begin() && pos <= end());
+  dwt_stl_DEBUG(pos >= begin() && pos <= end());
   iterator xpos = const_cast<iterator>(pos);
   const size_type n = pos - begin_;
   if (end_ != cap_ && xpos == end_)
   {
-    data_allocator::construct(mystl::address_of(*end_), value);
+    data_allocator::construct(dwt_stl::address_of(*end_), value);
     ++end_;
   }
   else if (end_ != cap_)
   {
     auto new_end = end_;
-    data_allocator::construct(mystl::address_of(*end_), *(end_ - 1));
+    data_allocator::construct(dwt_stl::address_of(*end_), *(end_ - 1));
     ++new_end;
     auto value_copy = value;  // 避免元素因以下复制操作而被改变
-    mystl::copy_backward(xpos, end_ - 1, end_);
-    *xpos = mystl::move(value_copy);
+    dwt_stl::copy_backward(xpos, end_ - 1, end_);
+    *xpos = dwt_stl::move(value_copy);
     end_ = new_end;
   }
   else
@@ -502,9 +502,9 @@ template <class T>
 typename vector<T>::iterator
 vector<T>::erase(const_iterator pos)
 {
-  MYSTL_DEBUG(pos >= begin() && pos < end());
+  dwt_stl_DEBUG(pos >= begin() && pos < end());
   iterator xpos = begin_ + (pos - begin());
-  mystl::move(xpos + 1, end_, xpos);
+  dwt_stl::move(xpos + 1, end_, xpos);
   data_allocator::destroy(end_ - 1);
   --end_;
   return xpos;
@@ -515,10 +515,10 @@ template <class T>
 typename vector<T>::iterator
 vector<T>::erase(const_iterator first, const_iterator last)
 {
-  MYSTL_DEBUG(first >= begin() && last <= end() && !(last < first));
+  dwt_stl_DEBUG(first >= begin() && last <= end() && !(last < first));
   const auto n = first - begin();
   iterator r = begin_ + (first - begin());
-  data_allocator::destroy(mystl::move(r + (last - first), end_, r), end_);
+  data_allocator::destroy(dwt_stl::move(r + (last - first), end_, r), end_);
   end_ = end_ - (last - first);
   return begin_ + n;
 }
@@ -543,9 +543,9 @@ void vector<T>::swap(vector<T>& rhs) noexcept
 {
   if (this != &rhs)
   {
-    mystl::swap(begin_, rhs.begin_);
-    mystl::swap(end_, rhs.end_);
-    mystl::swap(cap_, rhs.cap_);
+    dwt_stl::swap(begin_, rhs.begin_);
+    dwt_stl::swap(end_, rhs.end_);
+    dwt_stl::swap(cap_, rhs.cap_);
   }
 }
 
@@ -594,9 +594,9 @@ template <class T>
 void vector<T>::
 fill_init(size_type n, const value_type& value)
 {
-  const size_type init_size = mystl::max(static_cast<size_type>(16), n);
+  const size_type init_size = dwt_stl::max(static_cast<size_type>(16), n);
   init_space(n, init_size);
-  mystl::uninitialized_fill_n(begin_, n, value);
+  dwt_stl::uninitialized_fill_n(begin_, n, value);
 }
 
 // range_init 函数
@@ -605,10 +605,10 @@ template <class Iter>
 void vector<T>::
 range_init(Iter first, Iter last)
 {
-  const size_type len = mystl::distance(first, last);
-  const size_type init_size = mystl::max(len, static_cast<size_type>(16));
+  const size_type len = dwt_stl::distance(first, last);
+  const size_type init_size = dwt_stl::max(len, static_cast<size_type>(16));
   init_space(len, init_size);
-  mystl::uninitialized_copy(first, last, begin_);
+  dwt_stl::uninitialized_copy(first, last, begin_);
 }
 
 // destroy_and_recover 函数
@@ -635,8 +635,8 @@ get_new_cap(size_type add_size)
       ? old_size + add_size : old_size + add_size + 16;
   }
   const size_type new_size = old_size == 0
-    ? mystl::max(add_size, static_cast<size_type>(16))
-    : mystl::max(old_size + old_size / 2, old_size + add_size);
+    ? dwt_stl::max(add_size, static_cast<size_type>(16))
+    : dwt_stl::max(old_size + old_size / 2, old_size + add_size);
   return new_size;
 }
 
@@ -652,12 +652,12 @@ fill_assign(size_type n, const value_type& value)
   }
   else if (n > size())
   {
-    mystl::fill(begin(), end(), value);
-    end_ = mystl::uninitialized_fill_n(end_, n - size(), value);
+    dwt_stl::fill(begin(), end(), value);
+    end_ = dwt_stl::uninitialized_fill_n(end_, n - size(), value);
   }
   else
   {
-    erase(mystl::fill_n(begin_, n, value), end_);
+    erase(dwt_stl::fill_n(begin_, n, value), end_);
   }
 }
 
@@ -688,7 +688,7 @@ template <class FIter>
 void vector<T>::
 copy_assign(FIter first, FIter last, forward_iterator_tag)
 {
-  const size_type len = mystl::distance(first, last);
+  const size_type len = dwt_stl::distance(first, last);
   if (len > capacity())
   {
     vector tmp(first, last);
@@ -696,16 +696,16 @@ copy_assign(FIter first, FIter last, forward_iterator_tag)
   }
   else if (size() >= len)
   {
-    auto new_end = mystl::copy(first, last, begin_);
+    auto new_end = dwt_stl::copy(first, last, begin_);
     data_allocator::destroy(new_end, end_);
     end_ = new_end;
   }
   else
   {
     auto mid = first;
-    mystl::advance(mid, size());
-    mystl::copy(first, mid, begin_);
-    auto new_end = mystl::uninitialized_copy(mid, last, end_);
+    dwt_stl::advance(mid, size());
+    dwt_stl::copy(first, mid, begin_);
+    auto new_end = dwt_stl::uninitialized_copy(mid, last, end_);
     end_ = new_end;
   }
 }
@@ -721,10 +721,10 @@ reallocate_emplace(iterator pos, Args&& ...args)
   auto new_end = new_begin;
   try
   {
-    new_end = mystl::uninitialized_move(begin_, pos, new_begin);
-    data_allocator::construct(mystl::address_of(*new_end), mystl::forward<Args>(args)...);
+    new_end = dwt_stl::uninitialized_move(begin_, pos, new_begin);
+    data_allocator::construct(dwt_stl::address_of(*new_end), dwt_stl::forward<Args>(args)...);
     ++new_end;
-    new_end = mystl::uninitialized_move(pos, end_, new_end);
+    new_end = dwt_stl::uninitialized_move(pos, end_, new_end);
   }
   catch (...)
   {
@@ -747,10 +747,10 @@ void vector<T>::reallocate_insert(iterator pos, const value_type& value)
   const value_type& value_copy = value;
   try
   {
-    new_end = mystl::uninitialized_move(begin_, pos, new_begin);
-    data_allocator::construct(mystl::address_of(*new_end), value_copy);
+    new_end = dwt_stl::uninitialized_move(begin_, pos, new_begin);
+    data_allocator::construct(dwt_stl::address_of(*new_end), value_copy);
     ++new_end;
-    new_end = mystl::uninitialized_move(pos, end_, new_end);
+    new_end = dwt_stl::uninitialized_move(pos, end_, new_end);
   }
   catch (...)
   {
@@ -779,16 +779,16 @@ fill_insert(iterator pos, size_type n, const value_type& value)
     auto old_end = end_;
     if (after_elems > n)
     {
-      mystl::uninitialized_copy(end_ - n, end_, end_);
+      dwt_stl::uninitialized_copy(end_ - n, end_, end_);
       end_ += n;
-      mystl::move_backward(pos, old_end - n, old_end);
-      mystl::uninitialized_fill_n(pos, n, value_copy);
+      dwt_stl::move_backward(pos, old_end - n, old_end);
+      dwt_stl::uninitialized_fill_n(pos, n, value_copy);
     }
     else
     {
-      end_ = mystl::uninitialized_fill_n(end_, n - after_elems, value_copy);
-      end_ = mystl::uninitialized_move(pos, old_end, end_);
-      mystl::uninitialized_fill_n(pos, after_elems, value_copy);
+      end_ = dwt_stl::uninitialized_fill_n(end_, n - after_elems, value_copy);
+      end_ = dwt_stl::uninitialized_move(pos, old_end, end_);
+      dwt_stl::uninitialized_fill_n(pos, after_elems, value_copy);
     }
   }
   else
@@ -798,9 +798,9 @@ fill_insert(iterator pos, size_type n, const value_type& value)
     auto new_end = new_begin;
     try
     {
-      new_end = mystl::uninitialized_move(begin_, pos, new_begin);
-      new_end = mystl::uninitialized_fill_n(new_end, n, value);
-      new_end = mystl::uninitialized_move(pos, end_, new_end);
+      new_end = dwt_stl::uninitialized_move(begin_, pos, new_begin);
+      new_end = dwt_stl::uninitialized_fill_n(new_end, n, value);
+      new_end = dwt_stl::uninitialized_move(pos, end_, new_end);
     }
     catch (...)
     {
@@ -823,24 +823,24 @@ copy_insert(iterator pos, IIter first, IIter last)
 {
   if (first == last)
     return;
-  const auto n = mystl::distance(first, last);
+  const auto n = dwt_stl::distance(first, last);
   if ((cap_ - end_) >= n)
   { // 如果备用空间大小足够
     const auto after_elems = end_ - pos;
     auto old_end = end_;
     if (after_elems > n)
     {
-      end_ = mystl::uninitialized_copy(end_ - n, end_, end_);
-      mystl::move_backward(pos, old_end - n, old_end);
-      mystl::uninitialized_copy(first, last, pos);
+      end_ = dwt_stl::uninitialized_copy(end_ - n, end_, end_);
+      dwt_stl::move_backward(pos, old_end - n, old_end);
+      dwt_stl::uninitialized_copy(first, last, pos);
     }
     else
     {
       auto mid = first;
-      mystl::advance(mid, after_elems);
-      end_ = mystl::uninitialized_copy(mid, last, end_);
-      end_ = mystl::uninitialized_move(pos, old_end, end_);
-      mystl::uninitialized_copy(first, mid, pos);
+      dwt_stl::advance(mid, after_elems);
+      end_ = dwt_stl::uninitialized_copy(mid, last, end_);
+      end_ = dwt_stl::uninitialized_move(pos, old_end, end_);
+      dwt_stl::uninitialized_copy(first, mid, pos);
     }
   }
   else
@@ -850,9 +850,9 @@ copy_insert(iterator pos, IIter first, IIter last)
     auto new_end = new_begin;
     try
     {
-      new_end = mystl::uninitialized_move(begin_, pos, new_begin);
-      new_end = mystl::uninitialized_copy(first, last, new_end);
-      new_end = mystl::uninitialized_move(pos, end_, new_end);
+      new_end = dwt_stl::uninitialized_move(begin_, pos, new_begin);
+      new_end = dwt_stl::uninitialized_copy(first, last, new_end);
+      new_end = dwt_stl::uninitialized_move(pos, end_, new_end);
     }
     catch (...)
     {
@@ -873,7 +873,7 @@ void vector<T>::reinsert(size_type size)
   auto new_begin = data_allocator::allocate(size);
   try
   {
-    mystl::uninitialized_move(begin_, end_, new_begin);
+    dwt_stl::uninitialized_move(begin_, end_, new_begin);
   }
   catch (...)
   {
@@ -893,13 +893,13 @@ template <class T>
 bool operator==(const vector<T>& lhs, const vector<T>& rhs)
 {
   return lhs.size() == rhs.size() &&
-    mystl::equal(lhs.begin(), lhs.end(), rhs.begin());
+    dwt_stl::equal(lhs.begin(), lhs.end(), rhs.begin());
 }
 
 template <class T>
 bool operator<(const vector<T>& lhs, const vector<T>& rhs)
 {
-  return mystl::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+  return dwt_stl::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 }
 
 template <class T>
@@ -926,13 +926,13 @@ bool operator>=(const vector<T>& lhs, const vector<T>& rhs)
   return !(lhs < rhs);
 }
 
-// 重载 mystl 的 swap
+// 重载 dwt_stl 的 swap
 template <class T>
 void swap(vector<T>& lhs, vector<T>& rhs)
 {
   lhs.swap(rhs);
 }
 
-} // namespace mystl
+} // namespace dwt_stl
 #endif // !MYTINYSTL_VECTOR_H_
 

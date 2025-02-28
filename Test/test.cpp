@@ -24,7 +24,7 @@
 
 int main()
 {
-  using namespace mystl::test;
+  using namespace dwt_stl::test;
 
   std::cout.sync_with_stdio(false);
 

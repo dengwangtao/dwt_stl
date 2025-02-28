@@ -1,11 +1,11 @@
 ﻿#ifndef MYTINYSTL_FUNCTIONAL_H_
 #define MYTINYSTL_FUNCTIONAL_H_
 
-// 这个头文件包含了 mystl 的函数对象与哈希函数
+// 这个头文件包含了 dwt_stl 的函数对象与哈希函数
 
 #include <cstddef>
 
-namespace mystl
+namespace dwt_stl
 {
 
 // 定义一元函数的参数型别和返回值型别
@@ -195,44 +195,44 @@ struct hash<T*>
 };
 
 // 对于整型类型，只是返回原值
-#define MYSTL_TRIVIAL_HASH_FCN(Type)         \
+#define dwt_stl_TRIVIAL_HASH_FCN(Type)         \
 template <> struct hash<Type>                \
 {                                            \
   size_t operator()(Type val) const noexcept \
   { return static_cast<size_t>(val); }       \
 };
 
-MYSTL_TRIVIAL_HASH_FCN(bool)
+dwt_stl_TRIVIAL_HASH_FCN(bool)
 
-MYSTL_TRIVIAL_HASH_FCN(char)
+dwt_stl_TRIVIAL_HASH_FCN(char)
 
-MYSTL_TRIVIAL_HASH_FCN(signed char)
+dwt_stl_TRIVIAL_HASH_FCN(signed char)
 
-MYSTL_TRIVIAL_HASH_FCN(unsigned char)
+dwt_stl_TRIVIAL_HASH_FCN(unsigned char)
 
-MYSTL_TRIVIAL_HASH_FCN(wchar_t)
+dwt_stl_TRIVIAL_HASH_FCN(wchar_t)
 
-MYSTL_TRIVIAL_HASH_FCN(char16_t)
+dwt_stl_TRIVIAL_HASH_FCN(char16_t)
 
-MYSTL_TRIVIAL_HASH_FCN(char32_t)
+dwt_stl_TRIVIAL_HASH_FCN(char32_t)
 
-MYSTL_TRIVIAL_HASH_FCN(short)
+dwt_stl_TRIVIAL_HASH_FCN(short)
 
-MYSTL_TRIVIAL_HASH_FCN(unsigned short)
+dwt_stl_TRIVIAL_HASH_FCN(unsigned short)
 
-MYSTL_TRIVIAL_HASH_FCN(int)
+dwt_stl_TRIVIAL_HASH_FCN(int)
 
-MYSTL_TRIVIAL_HASH_FCN(unsigned int)
+dwt_stl_TRIVIAL_HASH_FCN(unsigned int)
 
-MYSTL_TRIVIAL_HASH_FCN(long)
+dwt_stl_TRIVIAL_HASH_FCN(long)
 
-MYSTL_TRIVIAL_HASH_FCN(unsigned long)
+dwt_stl_TRIVIAL_HASH_FCN(unsigned long)
 
-MYSTL_TRIVIAL_HASH_FCN(long long)
+dwt_stl_TRIVIAL_HASH_FCN(long long)
 
-MYSTL_TRIVIAL_HASH_FCN(unsigned long long)
+dwt_stl_TRIVIAL_HASH_FCN(unsigned long long)
 
-#undef MYSTL_TRIVIAL_HASH_FCN
+#undef dwt_stl_TRIVIAL_HASH_FCN
 
 // 对于浮点数，逐位哈希
 inline size_t bitwise_hash(const unsigned char* first, size_t count)
@@ -280,6 +280,6 @@ struct hash<long double>
   }
 };
 
-} // namespace mystl
+} // namespace dwt_stl
 #endif // !MYTINYSTL_FUNCTIONAL_H_
 

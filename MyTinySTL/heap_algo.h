@@ -5,7 +5,7 @@
 
 #include "iterator.h"
 
-namespace mystl
+namespace dwt_stl
 {
 
 /*****************************************************************************************/
@@ -29,13 +29,13 @@ void push_heap_aux(RandomIter first, Distance holeIndex, Distance topIndex, T va
 template <class RandomIter, class Distance>
 void push_heap_d(RandomIter first, RandomIter last, Distance*)
 {
-  mystl::push_heap_aux(first, (last - first) - 1, static_cast<Distance>(0), *(last - 1));
+  dwt_stl::push_heap_aux(first, (last - first) - 1, static_cast<Distance>(0), *(last - 1));
 }
 
 template <class RandomIter>
 void push_heap(RandomIter first, RandomIter last)
 { // 新元素应该已置于底部容器的最尾端
-  mystl::push_heap_d(first, last, distance_type(first));
+  dwt_stl::push_heap_d(first, last, distance_type(first));
 }
 
 // 重载版本使用函数对象 comp 代替比较操作
@@ -56,14 +56,14 @@ void push_heap_aux(RandomIter first, Distance holeIndex, Distance topIndex, T va
 template <class RandomIter, class Compared, class Distance>
 void push_heap_d(RandomIter first, RandomIter last, Distance*, Compared comp)
 {
-  mystl::push_heap_aux(first, (last - first) - 1, static_cast<Distance>(0),
+  dwt_stl::push_heap_aux(first, (last - first) - 1, static_cast<Distance>(0),
                        *(last - 1), comp);
 }
 
 template <class RandomIter, class Compared>
 void push_heap(RandomIter first, RandomIter last, Compared comp)
 {
-  mystl::push_heap_d(first, last, distance_type(first), comp);
+  dwt_stl::push_heap_d(first, last, distance_type(first), comp);
 }
 
 /*****************************************************************************************/
@@ -90,7 +90,7 @@ void adjust_heap(RandomIter first, Distance holeIndex, Distance len, T value)
     holeIndex = rchild - 1;
   }
   // 再执行一次上溯(percolate up)过程
-  mystl::push_heap_aux(first, holeIndex, topIndex, value);
+  dwt_stl::push_heap_aux(first, holeIndex, topIndex, value);
 }
 
 template <class RandomIter, class T, class Distance>
@@ -99,13 +99,13 @@ void pop_heap_aux(RandomIter first, RandomIter last, RandomIter result, T value,
 {
   // 先将首值调至尾节点，然后调整[first, last - 1)使之重新成为一个 max-heap
   *result = *first;
-  mystl::adjust_heap(first, static_cast<Distance>(0), last - first, value);
+  dwt_stl::adjust_heap(first, static_cast<Distance>(0), last - first, value);
 }
 
 template <class RandomIter>
 void pop_heap(RandomIter first, RandomIter last)
 {
-  mystl::pop_heap_aux(first, last - 1, last - 1, *(last - 1), distance_type(first));
+  dwt_stl::pop_heap_aux(first, last - 1, last - 1, *(last - 1), distance_type(first));
 }
 
 // 重载版本使用函数对象 comp 代替比较操作
@@ -129,7 +129,7 @@ void adjust_heap(RandomIter first, Distance holeIndex, Distance len, T value,
     holeIndex = rchild - 1;
   }
   // 再执行一次上溯(percolate up)过程
-  mystl::push_heap_aux(first, holeIndex, topIndex, value, comp);
+  dwt_stl::push_heap_aux(first, holeIndex, topIndex, value, comp);
 }
 
 template <class RandomIter, class T, class Distance, class Compared>
@@ -137,13 +137,13 @@ void pop_heap_aux(RandomIter first, RandomIter last, RandomIter result,
                   T value, Distance*, Compared comp)
 {
   *result = *first;  // 先将尾指设置成首值，即尾指为欲求结果
-  mystl::adjust_heap(first, static_cast<Distance>(0), last - first, value, comp);
+  dwt_stl::adjust_heap(first, static_cast<Distance>(0), last - first, value, comp);
 }
 
 template <class RandomIter, class Compared>
 void pop_heap(RandomIter first, RandomIter last, Compared comp)
 {
-  mystl::pop_heap_aux(first, last - 1, last - 1, *(last - 1),
+  dwt_stl::pop_heap_aux(first, last - 1, last - 1, *(last - 1),
                       distance_type(first), comp);
 }
 
@@ -157,7 +157,7 @@ void sort_heap(RandomIter first, RandomIter last)
   // 每执行一次 pop_heap，最大的元素都被放到尾部，直到容器最多只有一个元素，完成排序
   while (last - first > 1)
   {
-    mystl::pop_heap(first, last--);
+    dwt_stl::pop_heap(first, last--);
   }
 }
 
@@ -167,7 +167,7 @@ void sort_heap(RandomIter first, RandomIter last, Compared comp)
 {
   while (last - first > 1)
   {
-    mystl::pop_heap(first, last--, comp);
+    dwt_stl::pop_heap(first, last--, comp);
   }
 }
 
@@ -185,7 +185,7 @@ void make_heap_aux(RandomIter first, RandomIter last, Distance*)
   while (true)
   {
     // 重排以 holeIndex 为首的子树
-    mystl::adjust_heap(first, holeIndex, len, *(first + holeIndex));
+    dwt_stl::adjust_heap(first, holeIndex, len, *(first + holeIndex));
     if (holeIndex == 0)
       return;
     holeIndex--;
@@ -195,7 +195,7 @@ void make_heap_aux(RandomIter first, RandomIter last, Distance*)
 template <class RandomIter>
 void make_heap(RandomIter first, RandomIter last)
 {
-  mystl::make_heap_aux(first, last, distance_type(first));;
+  dwt_stl::make_heap_aux(first, last, distance_type(first));;
 }
 
 // 重载版本使用函数对象 comp 代替比较操作
@@ -209,7 +209,7 @@ void make_heap_aux(RandomIter first, RandomIter last, Distance*, Compared comp)
   while (true)
   {
     // 重排以 holeIndex 为首的子树
-    mystl::adjust_heap(first, holeIndex, len, *(first + holeIndex), comp);
+    dwt_stl::adjust_heap(first, holeIndex, len, *(first + holeIndex), comp);
     if (holeIndex == 0)
       return;
     holeIndex--;
@@ -219,9 +219,9 @@ void make_heap_aux(RandomIter first, RandomIter last, Distance*, Compared comp)
 template <class RandomIter, class Compared>
 void make_heap(RandomIter first, RandomIter last, Compared comp)
 {
-  mystl::make_heap_aux(first, last, distance_type(first), comp);
+  dwt_stl::make_heap_aux(first, last, distance_type(first), comp);
 }
 
-} // namespace mystl
+} // namespace dwt_stl
 #endif // !MYTINYSTL_HEAP_ALGO_H_
 

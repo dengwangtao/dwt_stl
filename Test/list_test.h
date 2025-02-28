@@ -8,7 +8,7 @@
 #include "../MyTinySTL/list.h"
 #include "test.h"
 
-namespace mystl
+namespace dwt_stl
 {
 namespace test
 {
@@ -24,18 +24,18 @@ void list_test()
   std::cout << "[------------------ Run container test : list ------------------]" << std::endl;
   std::cout << "[-------------------------- API test ---------------------------]" << std::endl;
   int a[] = { 1,2,3,4,5 };
-  mystl::list<int> l1;
-  mystl::list<int> l2(5);
-  mystl::list<int> l3(5, 1);
-  mystl::list<int> l4(a, a + 5);
-  mystl::list<int> l5(l2);
-  mystl::list<int> l6(std::move(l2));
-  mystl::list<int> l7{ 1,2,3,4,5,6,7,8,9 };
-  mystl::list<int> l8;
+  dwt_stl::list<int> l1;
+  dwt_stl::list<int> l2(5);
+  dwt_stl::list<int> l3(5, 1);
+  dwt_stl::list<int> l4(a, a + 5);
+  dwt_stl::list<int> l5(l2);
+  dwt_stl::list<int> l6(std::move(l2));
+  dwt_stl::list<int> l7{ 1,2,3,4,5,6,7,8,9 };
+  dwt_stl::list<int> l8;
   l8 = l3;
-  mystl::list<int> l9;
+  dwt_stl::list<int> l9;
   l9 = std::move(l3);
-  mystl::list<int> l10;
+  dwt_stl::list<int> l10;
   l10 = { 1, 2, 2, 3, 5, 6, 7, 8, 9 };
 
   FUN_AFTER(l1, l1.assign(8, 8));
@@ -72,8 +72,8 @@ void list_test()
   FUN_AFTER(l1, l1.unique());
   FUN_AFTER(l1, l1.unique([&](int a, int b) {return b == a + 1; }));
   FUN_AFTER(l1, l1.merge(l7));
-  FUN_AFTER(l1, l1.sort(mystl::greater<int>()));
-  FUN_AFTER(l1, l1.merge(l8, mystl::greater<int>()));
+  FUN_AFTER(l1, l1.sort(dwt_stl::greater<int>()));
+  FUN_AFTER(l1, l1.merge(l8, dwt_stl::greater<int>()));
   FUN_AFTER(l1, l1.reverse());
   FUN_AFTER(l1, l1.clear());
   FUN_AFTER(l1, l1.swap(l9));
@@ -113,6 +113,6 @@ void list_test()
 
 } // namespace list_test
 } // namespace test
-} // namespace mystl
+} // namespace dwt_stl
 #endif // !MYTINYSTL_LIST_TEST_H_
 

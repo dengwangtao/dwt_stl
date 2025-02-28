@@ -6,7 +6,7 @@
 // use standard header for type_traits
 #include <type_traits>
 
-namespace mystl
+namespace dwt_stl
 {
 
 // helper struct
@@ -34,12 +34,12 @@ struct pair;
 // --- forward declaration end
 
 template <class T>
-struct is_pair : mystl::m_false_type {};
+struct is_pair : dwt_stl::m_false_type {};
 
 template <class T1, class T2>
-struct is_pair<mystl::pair<T1, T2>> : mystl::m_true_type {};
+struct is_pair<dwt_stl::pair<T1, T2>> : dwt_stl::m_true_type {};
 
-} // namespace mystl
+} // namespace dwt_stl
 
 #endif // !MYTINYSTL_TYPE_TRAITS_H_
 

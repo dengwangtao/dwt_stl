@@ -3,7 +3,7 @@
 
 #include "basic_string.h"
 
-namespace mystl
+namespace dwt_stl
 {
 
 template<typename T, typename CharT = char,
@@ -31,7 +31,7 @@ public:
     ~istream_iterator() = default;
 
     const T& operator*() const noexcept {
-        MYSTL_DEBUG(m_stream != nullptr);
+        dwt_stl_DEBUG(m_stream != nullptr);
         return m_value;
     }
 
@@ -40,7 +40,7 @@ public:
     }
 
     istream_iterator& operator++() {
-        MYSTL_DEBUG(m_stream != nullptr);
+        dwt_stl_DEBUG(m_stream != nullptr);
         read();
         return *this;
     }

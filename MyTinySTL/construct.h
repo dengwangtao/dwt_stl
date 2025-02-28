@@ -15,7 +15,7 @@
 #pragma warning(disable : 4100)  // unused parameter
 #endif // _MSC_VER
 
-namespace mystl
+namespace dwt_stl
 {
 
 // construct 构造对象
@@ -35,7 +35,7 @@ void construct(Ty1* ptr, const Ty2& value)
 template <class Ty, class... Args>
 void construct(Ty* ptr, Args&&... args)
 {
-  ::new ((void*)ptr) Ty(mystl::forward<Args>(args)...);
+  ::new ((void*)ptr) Ty(dwt_stl::forward<Args>(args)...);
 }
 
 // destroy 将对象析构
@@ -75,7 +75,7 @@ void destroy(ForwardIter first, ForwardIter last)
               typename iterator_traits<ForwardIter>::value_type>{});
 }
 
-} // namespace mystl
+} // namespace dwt_stl
 
 #ifdef _MSC_VER
 #pragma warning(pop)

@@ -7,7 +7,7 @@
 // notes:
 //
 // 异常保证：
-// mystl::list<T> 满足基本异常保证，部分函数无异常保证，并对以下等函数做强异常安全保证：
+// dwt_stl::list<T> 满足基本异常保证，部分函数无异常保证，并对以下等函数做强异常安全保证：
 //   * emplace_front
 //   * emplace_back
 //   * emplace
@@ -23,7 +23,7 @@
 #include "util.h"
 #include "exceptdef.h"
 
-namespace mystl
+namespace dwt_stl
 {
 
 template <class T> struct list_node_base;
@@ -79,7 +79,7 @@ struct list_node : public list_node_base<T>
   {
   }
   list_node(T&& v)
-    :value(mystl::move(v))
+    :value(dwt_stl::move(v))
   {
   }
 
@@ -95,7 +95,7 @@ struct list_node : public list_node_base<T>
 
 // list 的迭代器设计
 template <class T>
-struct list_iterator : public mystl::iterator<mystl::bidirectional_iterator_tag, T>
+struct list_iterator : public dwt_stl::iterator<dwt_stl::bidirectional_iterator_tag, T>
 {
   typedef T                                 value_type;
   typedef T*                                pointer;
@@ -121,7 +121,7 @@ struct list_iterator : public mystl::iterator<mystl::bidirectional_iterator_tag,
 
   self& operator++()
   {
-    MYSTL_DEBUG(node_ != nullptr);
+    dwt_stl_DEBUG(node_ != nullptr);
     node_ = node_->next;
     return *this;
   }
@@ -133,7 +133,7 @@ struct list_iterator : public mystl::iterator<mystl::bidirectional_iterator_tag,
   }
   self& operator--()
   {
-    MYSTL_DEBUG(node_ != nullptr);
+    dwt_stl_DEBUG(node_ != nullptr);
     node_ = node_->prev;
     return *this;
   }
@@ -176,7 +176,7 @@ struct list_const_iterator : public iterator<bidirectional_iterator_tag, T>
 
   self& operator++()
   {
-    MYSTL_DEBUG(node_ != nullptr);
+    dwt_stl_DEBUG(node_ != nullptr);
     node_ = node_->next;
     return *this;
   }
@@ -188,7 +188,7 @@ struct list_const_iterator : public iterator<bidirectional_iterator_tag, T>
   }
   self& operator--()
   {
-    MYSTL_DEBUG(node_ != nullptr);
+    dwt_stl_DEBUG(node_ != nullptr);
     node_ = node_->prev;
     return *this;
   }
@@ -211,10 +211,10 @@ class list
 {
 public:
   // list 的嵌套型别定义
-  typedef mystl::allocator<T>                      allocator_type;
-  typedef mystl::allocator<T>                      data_allocator;
-  typedef mystl::allocator<list_node_base<T>>      base_allocator;
-  typedef mystl::allocator<list_node<T>>           node_allocator;
+  typedef dwt_stl::allocator<T>                      allocator_type;
+  typedef dwt_stl::allocator<T>                      data_allocator;
+  typedef dwt_stl::allocator<list_node_base<T>>      base_allocator;
+  typedef dwt_stl::allocator<list_node<T>>           node_allocator;
 
   typedef typename allocator_type::value_type      value_type;
   typedef typename allocator_type::pointer         pointer;
@@ -226,8 +226,8 @@ public:
 
   typedef list_iterator<T>                         iterator;
   typedef list_const_iterator<T>                   const_iterator;
-  typedef mystl::reverse_iterator<iterator>        reverse_iterator;
-  typedef mystl::reverse_iterator<const_iterator>  const_reverse_iterator;
+  typedef dwt_stl::reverse_iterator<iterator>        reverse_iterator;
+  typedef dwt_stl::reverse_iterator<const_iterator>  const_reverse_iterator;
 
   typedef typename node_traits<T>::base_ptr        base_ptr;
   typedef typename node_traits<T>::node_ptr        node_ptr;
@@ -250,7 +250,7 @@ public:
   { fill_init(n, value); }
 
   template <class Iter, typename std::enable_if<
-    mystl::is_input_iterator<Iter>::value, int>::type = 0>
+    dwt_stl::is_input_iterator<Iter>::value, int>::type = 0>
   list(Iter first, Iter last)
   { copy_init(first, last); }
 
@@ -343,25 +343,25 @@ public:
   // 访问元素相关操作
   reference       front() 
   { 
-    MYSTL_DEBUG(!empty());
+    dwt_stl_DEBUG(!empty());
     return *begin();
   }
 
   const_reference front() const 
   { 
-    MYSTL_DEBUG(!empty()); 
+    dwt_stl_DEBUG(!empty()); 
     return *begin(); 
   }
 
   reference       back() 
   { 
-    MYSTL_DEBUG(!empty());
+    dwt_stl_DEBUG(!empty());
     return *(--end());
   }
 
   const_reference back()  const 
   { 
-    MYSTL_DEBUG(!empty()); 
+    dwt_stl_DEBUG(!empty()); 
     return *(--end());
   }
 
@@ -373,7 +373,7 @@ public:
   { fill_assign(n, value); }
 
   template <class Iter, typename std::enable_if<
-    mystl::is_input_iterator<Iter>::value, int>::type = 0>
+    dwt_stl::is_input_iterator<Iter>::value, int>::type = 0>
   void     assign(Iter first, Iter last)
   { copy_assign(first, last); }
 
@@ -386,7 +386,7 @@ public:
   void     emplace_front(Args&& ...args)
   {
     THROW_LENGTH_ERROR_IF(size_ > max_size() - 1, "list<T>'s size too big");
-    auto link_node = create_node(mystl::forward<Args>(args)...);
+    auto link_node = create_node(dwt_stl::forward<Args>(args)...);
     link_nodes_at_front(link_node->as_base(), link_node->as_base());
     ++size_;
   }
@@ -395,7 +395,7 @@ public:
   void     emplace_back(Args&& ...args)
   {
     THROW_LENGTH_ERROR_IF(size_ > max_size() - 1, "list<T>'s size too big");
-    auto link_node = create_node(mystl::forward<Args>(args)...);
+    auto link_node = create_node(dwt_stl::forward<Args>(args)...);
     link_nodes_at_back(link_node->as_base(), link_node->as_base());
     ++size_;
   }
@@ -404,7 +404,7 @@ public:
   iterator emplace(const_iterator pos, Args&& ...args)
   {
     THROW_LENGTH_ERROR_IF(size_ > max_size() - 1, "list<T>'s size too big");
-    auto link_node = create_node(mystl::forward<Args>(args)...);
+    auto link_node = create_node(dwt_stl::forward<Args>(args)...);
     link_nodes(pos.node_, link_node->as_base(), link_node->as_base());
     ++size_;
     return iterator(link_node);
@@ -423,7 +423,7 @@ public:
   iterator insert(const_iterator pos, value_type&& value)
   {
     THROW_LENGTH_ERROR_IF(size_ > max_size() - 1, "list<T>'s size too big");
-    auto link_node = create_node(mystl::move(value));
+    auto link_node = create_node(dwt_stl::move(value));
     ++size_;
     return link_iter_node(pos, link_node->as_base());
   }
@@ -435,10 +435,10 @@ public:
   }
 
   template <class Iter, typename std::enable_if<
-    mystl::is_input_iterator<Iter>::value, int>::type = 0>
+    dwt_stl::is_input_iterator<Iter>::value, int>::type = 0>
   iterator insert(const_iterator pos, Iter first, Iter last)
   { 
-    size_type n = mystl::distance(first, last);
+    size_type n = dwt_stl::distance(first, last);
     THROW_LENGTH_ERROR_IF(size_ > max_size() - n, "list<T>'s size too big");
     return copy_insert(pos, n, first); 
   }
@@ -455,7 +455,7 @@ public:
 
   void push_front(value_type&& value)
   {
-    emplace_front(mystl::move(value));
+    emplace_front(dwt_stl::move(value));
   }
 
   void push_back(const value_type& value)
@@ -468,14 +468,14 @@ public:
 
   void push_back(value_type&& value)
   {
-    emplace_back(mystl::move(value));
+    emplace_back(dwt_stl::move(value));
   }
 
   // pop_front / pop_back
 
   void pop_front() 
   {
-    MYSTL_DEBUG(!empty());
+    dwt_stl_DEBUG(!empty());
     auto n = node_->next;
     unlink_nodes(n, n);
     destroy_node(n->as_node());
@@ -484,7 +484,7 @@ public:
 
   void pop_back() 
   { 
-    MYSTL_DEBUG(!empty());
+    dwt_stl_DEBUG(!empty());
     auto n = node_->prev;
     unlink_nodes(n, n);
     destroy_node(n->as_node());
@@ -505,8 +505,8 @@ public:
 
   void     swap(list& rhs) noexcept
   {
-    mystl::swap(node_, rhs.node_);
-    mystl::swap(size_, rhs.size_);
+    dwt_stl::swap(node_, rhs.node_);
+    dwt_stl::swap(size_, rhs.size_);
   }
 
   // list 相关操作
@@ -521,17 +521,17 @@ public:
   void remove_if(UnaryPredicate pred);
 
   void unique()
-  { unique(mystl::equal_to<T>()); }
+  { unique(dwt_stl::equal_to<T>()); }
   template <class BinaryPredicate>
   void unique(BinaryPredicate pred);
 
   void merge(list& x)
-  { merge(x, mystl::less<T>()); }
+  { merge(x, dwt_stl::less<T>()); }
   template <class Compare>
   void merge(list& x, Compare comp);
 
   void sort()
-  { list_sort(begin(), end(), size(), mystl::less<T>()); }
+  { list_sort(begin(), end(), size(), dwt_stl::less<T>()); }
   template <class Compared>
   void sort(Compared comp)
   { list_sort(begin(), end(), size(), comp); }
@@ -581,7 +581,7 @@ template <class T>
 typename list<T>::iterator 
 list<T>::erase(const_iterator pos)
 {
-  MYSTL_DEBUG(pos != cend());
+  dwt_stl_DEBUG(pos != cend());
   auto n = pos.node_;
   auto next = n->next;
   unlink_nodes(n, n);
@@ -650,7 +650,7 @@ void list<T>::resize(size_type new_size, const value_type& value)
 template <class T>
 void list<T>::splice(const_iterator pos, list& x)
 {
-  MYSTL_DEBUG(this != &x);
+  dwt_stl_DEBUG(this != &x);
   if (!x.empty())
   {
     THROW_LENGTH_ERROR_IF(size_ > max_size() - x.size_, "list<T>'s size too big");
@@ -690,7 +690,7 @@ void list<T>::splice(const_iterator pos, list& x, const_iterator first, const_it
 {
   if (first != last && this != &x)
   {
-    size_type n = mystl::distance(first, last);
+    size_type n = dwt_stl::distance(first, last);
     THROW_LENGTH_ERROR_IF(size_ > max_size() - n, "list<T>'s size too big");
     auto f = first.node_;
     auto l = last.node_->prev;
@@ -807,10 +807,10 @@ void list<T>::reverse()
   auto e = end();
   while (i.node_ != e.node_)
   {
-    mystl::swap(i.node_->prev, i.node_->next);
+    dwt_stl::swap(i.node_->prev, i.node_->next);
     i.node_ = i.node_->prev;
   }
-  mystl::swap(e.node_->prev, e.node_->next);
+  dwt_stl::swap(e.node_->prev, e.node_->next);
 }
 
 /*****************************************************************************************/
@@ -825,7 +825,7 @@ list<T>::create_node(Args&& ...args)
   node_ptr p = node_allocator::allocate(1);
   try
   {
-    data_allocator::construct(mystl::address_of(p->value), mystl::forward<Args>(args)...);
+    data_allocator::construct(dwt_stl::address_of(p->value), dwt_stl::forward<Args>(args)...);
     p->prev = nullptr;
     p->next = nullptr;
   }
@@ -841,7 +841,7 @@ list<T>::create_node(Args&& ...args)
 template <class T>
 void list<T>::destroy_node(node_ptr p)
 {
-  data_allocator::destroy(mystl::address_of(p->value));
+  data_allocator::destroy(dwt_stl::address_of(p->value));
   node_allocator::deallocate(p);
 }
 
@@ -876,7 +876,7 @@ void list<T>::copy_init(Iter first, Iter last)
 {
   node_ = base_allocator::allocate(1);
   node_->unlink();
-  size_type n = mystl::distance(first, last);
+  size_type n = dwt_stl::distance(first, last);
   size_ = n;
   try
   {
@@ -1101,7 +1101,7 @@ list<T>::list_sort(iterator f1, iterator l2, size_type n, Compared comp)
 
   auto n2 = n / 2;
   auto l1 = f1;
-  mystl::advance(l1, n2);
+  dwt_stl::advance(l1, n2);
   auto result = f1 = list_sort(f1, l1, n2, comp);  // 前半段的最小位置
   auto f2 = l1 = list_sort(l1, l2, n - n2, comp);  // 后半段的最小位置
 
@@ -1171,7 +1171,7 @@ bool operator==(const list<T>& lhs, const list<T>& rhs)
 template <class T>
 bool operator<(const list<T>& lhs, const list<T>& rhs)
 {
-  return mystl::lexicographical_compare(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend());
+  return dwt_stl::lexicographical_compare(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend());
 }
 
 template <class T>
@@ -1198,13 +1198,13 @@ bool operator>=(const list<T>& lhs, const list<T>& rhs)
   return !(lhs < rhs);
 }
 
-// 重载 mystl 的 swap
+// 重载 dwt_stl 的 swap
 template <class T>
 void swap(list<T>& lhs, list<T>& rhs) noexcept
 {
   lhs.swap(rhs);
 }
 
-} // namespace mystl
+} // namespace dwt_stl
 #endif // !MYTINYSTL_LIST_H_
 

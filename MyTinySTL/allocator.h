@@ -6,7 +6,7 @@
 #include "construct.h"
 #include "util.h"
 
-namespace mystl
+namespace dwt_stl
 {
 
 // 模板类：allocator
@@ -74,40 +74,40 @@ void allocator<T>::deallocate(T* ptr, size_type /*size*/)
 template <class T>
 void allocator<T>::construct(T* ptr)
 {
-  mystl::construct(ptr);
+  dwt_stl::construct(ptr);
 }
 
 template <class T>
 void allocator<T>::construct(T* ptr, const T& value)
 {
-  mystl::construct(ptr, value);
+  dwt_stl::construct(ptr, value);
 }
 
 template <class T>
  void allocator<T>::construct(T* ptr, T&& value)
 {
-  mystl::construct(ptr, mystl::move(value));
+  dwt_stl::construct(ptr, dwt_stl::move(value));
 }
 
 template <class T>
 template <class ...Args>
  void allocator<T>::construct(T* ptr, Args&& ...args)
 {
-  mystl::construct(ptr, mystl::forward<Args>(args)...);
+  dwt_stl::construct(ptr, dwt_stl::forward<Args>(args)...);
 }
 
 template <class T>
 void allocator<T>::destroy(T* ptr)
 {
-  mystl::destroy(ptr);
+  dwt_stl::destroy(ptr);
 }
 
 template <class T>
 void allocator<T>::destroy(T* first, T* last)
 {
-  mystl::destroy(first, last);
+  dwt_stl::destroy(first, last);
 }
 
-} // namespace mystl
+} // namespace dwt_stl
 #endif // !MYTINYSTL_ALLOCATOR_H_
 

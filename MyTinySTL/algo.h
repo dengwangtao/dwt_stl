@@ -6,7 +6,7 @@
 #pragma warning(disable : 4244)
 #endif
 
-// 这个头文件包含了 mystl 的一系列算法
+// 这个头文件包含了 dwt_stl 的一系列算法
 
 #include <cstddef>
 #include <ctime>
@@ -16,7 +16,7 @@
 #include "heap_algo.h"
 #include "functional.h"
 
-namespace mystl
+namespace dwt_stl
 {
 
 /*****************************************************************************************/
@@ -144,8 +144,8 @@ ForwardIter1
 search(ForwardIter1 first1, ForwardIter1 last1,
        ForwardIter2 first2, ForwardIter2 last2)
 {
-  auto d1 = mystl::distance(first1, last1);
-  auto d2 = mystl::distance(first2, last2);
+  auto d1 = dwt_stl::distance(first1, last1);
+  auto d2 = dwt_stl::distance(first2, last2);
   if (d1 < d2)
     return last1;
   auto current1 = first1;
@@ -180,8 +180,8 @@ ForwardIter1
 search(ForwardIter1 first1, ForwardIter1 last1,
        ForwardIter2 first2, ForwardIter2 last2, Compared comp)
 {
-  auto d1 = mystl::distance(first1, last1);
-  auto d2 = mystl::distance(first2, last2);
+  auto d1 = dwt_stl::distance(first1, last1);
+  auto d2 = dwt_stl::distance(first2, last2);
   if (d1 < d2)
     return last1;
   auto current1 = first1;
@@ -224,7 +224,7 @@ search_n(ForwardIter first, ForwardIter last, Size n, const T& value)
   }
   else
   {
-    first = mystl::find(first, last, value);
+    first = dwt_stl::find(first, last, value);
     while (first != last)
     {
       auto m = n - 1;
@@ -241,7 +241,7 @@ search_n(ForwardIter first, ForwardIter last, Size n, const T& value)
       }
       else
       {
-        first = mystl::find(i, last, value);
+        first = dwt_stl::find(i, last, value);
       }
     }
     return last;
@@ -316,7 +316,7 @@ find_end_dispatch(ForwardIter1 first1, ForwardIter1 last1,
     while (true)
     {
       // 利用 search 查找某个子序列的首次出现点，找不到则返回 last1
-      auto new_result = mystl::search(first1, last1, first2, last2);
+      auto new_result = dwt_stl::search(first1, last1, first2, last2);
       if (new_result == last1)
       {
         return result;
@@ -342,7 +342,7 @@ find_end_dispatch(BidirectionalIter1 first1, BidirectionalIter1 last1,
   typedef reverse_iterator<BidirectionalIter2> reviter2;
   reviter1 rlast1(first1);
   reviter2 rlast2(first2);
-  reviter1 rresult = mystl::search(reviter1(last1), rlast1, reviter2(last2), rlast2);
+  reviter1 rresult = dwt_stl::search(reviter1(last1), rlast1, reviter2(last2), rlast2);
   if (rresult == rlast1)
   {
     return last1;
@@ -350,7 +350,7 @@ find_end_dispatch(BidirectionalIter1 first1, BidirectionalIter1 last1,
   else
   {
     auto result = rresult.base();
-    mystl::advance(result, -mystl::distance(first2, last2));
+    dwt_stl::advance(result, -dwt_stl::distance(first2, last2));
     return result;
   }
 }
@@ -362,7 +362,7 @@ find_end(ForwardIter1 first1, ForwardIter1 last1,
 {
   typedef typename iterator_traits<ForwardIter1>::iterator_category Category1;
   typedef typename iterator_traits<ForwardIter2>::iterator_category Category2;
-  return mystl::find_end_dispatch(first1, last1, first2, last2, Category1(), Category2());
+  return dwt_stl::find_end_dispatch(first1, last1, first2, last2, Category1(), Category2());
 }
 
 // 重载版本使用函数对象 comp 代替比较操作
@@ -383,7 +383,7 @@ find_end_dispatch(ForwardIter1 first1, ForwardIter1 last1,
     while (true)
     {
       // 利用 search 查找某个子序列的首次出现点，找不到则返回 last1
-      auto new_result = mystl::search(first1, last1, first2, last2, comp);
+      auto new_result = dwt_stl::search(first1, last1, first2, last2, comp);
       if (new_result == last1)
       {
         return result;
@@ -409,7 +409,7 @@ find_end_dispatch(BidirectionalIter1 first1, BidirectionalIter1 last1,
   typedef reverse_iterator<BidirectionalIter2> reviter2;
   reviter1 rlast1(first1);
   reviter2 rlast2(first2);
-  reviter1 rresult = mystl::search(reviter1(last1), rlast1, reviter2(last2), rlast2, comp);
+  reviter1 rresult = dwt_stl::search(reviter1(last1), rlast1, reviter2(last2), rlast2, comp);
   if (rresult == rlast1)
   {
     return last1;
@@ -417,7 +417,7 @@ find_end_dispatch(BidirectionalIter1 first1, BidirectionalIter1 last1,
   else
   {
     auto result = rresult.base();
-    mystl::advance(result, -mystl::distance(first2, last2));
+    dwt_stl::advance(result, -dwt_stl::distance(first2, last2));
     return result;
   }
 }
@@ -429,7 +429,7 @@ find_end(ForwardIter1 first1, ForwardIter1 last1,
 {
   typedef typename iterator_traits<ForwardIter1>::iterator_category Category1;
   typedef typename iterator_traits<ForwardIter2>::iterator_category Category2;
-  return mystl::find_end_dispatch(first1, last1, first2, last2, Category1(), Category2(), comp);
+  return dwt_stl::find_end_dispatch(first1, last1, first2, last2, Category1(), Category2(), comp);
 }
 
 /*****************************************************************************************/
@@ -525,14 +525,14 @@ ForwardIter
 lbound_dispatch(ForwardIter first, ForwardIter last,
                 const T& value, forward_iterator_tag)
 {
-  auto len = mystl::distance(first, last);
+  auto len = dwt_stl::distance(first, last);
   auto half = len;
   ForwardIter middle;
   while (len > 0)
   {
     half = len >> 1;
     middle = first;
-    mystl::advance(middle, half);
+    dwt_stl::advance(middle, half);
     if (*middle < value)
     {
       first = middle;
@@ -577,7 +577,7 @@ template <class ForwardIter, class T>
 ForwardIter
 lower_bound(ForwardIter first, ForwardIter last, const T& value)
 {
-  return mystl::lbound_dispatch(first, last, value, iterator_category(first));
+  return dwt_stl::lbound_dispatch(first, last, value, iterator_category(first));
 }
 
 // 重载版本使用函数对象 comp 代替比较操作
@@ -587,14 +587,14 @@ ForwardIter
 lbound_dispatch(ForwardIter first, ForwardIter last,
                 const T& value, forward_iterator_tag, Compared comp)
 {
-  auto len = mystl::distance(first, last);
+  auto len = dwt_stl::distance(first, last);
   auto half = len;
   ForwardIter middle;
   while (len > 0)
   {
     half = len >> 1;
     middle = first;
-    mystl::advance(middle, half);
+    dwt_stl::advance(middle, half);
     if (comp(*middle, value))
     {
       first = middle;
@@ -639,7 +639,7 @@ template <class ForwardIter, class T, class Compared>
 ForwardIter
 lower_bound(ForwardIter first, ForwardIter last, const T& value, Compared comp)
 {
-  return mystl::lbound_dispatch(first, last, value, iterator_category(first), comp);
+  return dwt_stl::lbound_dispatch(first, last, value, iterator_category(first), comp);
 }
 
 /*****************************************************************************************/
@@ -652,14 +652,14 @@ ForwardIter
 ubound_dispatch(ForwardIter first, ForwardIter last,
                 const T& value, forward_iterator_tag)
 {
-  auto len = mystl::distance(first, last);
+  auto len = dwt_stl::distance(first, last);
   auto half = len;
   ForwardIter middle;
   while (len > 0)
   {
     half = len >> 1;
     middle = first;
-    mystl::advance(middle, half);
+    dwt_stl::advance(middle, half);
     if (value < *middle)
     {
       len = half;
@@ -704,7 +704,7 @@ template <class ForwardIter, class T>
 ForwardIter
 upper_bound(ForwardIter first, ForwardIter last, const T& value)
 {
-  return mystl::ubound_dispatch(first, last, value, iterator_category(first));
+  return dwt_stl::ubound_dispatch(first, last, value, iterator_category(first));
 }
 
 // 重载版本使用函数对象 comp 代替比较操作
@@ -714,14 +714,14 @@ ForwardIter
 ubound_dispatch(ForwardIter first, ForwardIter last,
                 const T& value, forward_iterator_tag, Compared comp)
 {
-  auto len = mystl::distance(first, last);
+  auto len = dwt_stl::distance(first, last);
   auto half = len;
   ForwardIter middle;
   while (len > 0)
   {
     half = len >> 1;
     middle = first;
-    mystl::advance(middle, half);
+    dwt_stl::advance(middle, half);
     if (comp(value, *middle))
     {
       len = half;
@@ -766,7 +766,7 @@ template <class ForwardIter, class T, class Compared>
 ForwardIter
 upper_bound(ForwardIter first, ForwardIter last, const T& value, Compared comp)
 {
-  return mystl::ubound_dispatch(first, last, value, iterator_category(first), comp);
+  return dwt_stl::ubound_dispatch(first, last, value, iterator_category(first), comp);
 }
 
 /*****************************************************************************************/
@@ -776,7 +776,7 @@ upper_bound(ForwardIter first, ForwardIter last, const T& value, Compared comp)
 template <class ForwardIter, class T>
 bool binary_search(ForwardIter first, ForwardIter last, const T& value)
 {
-  auto i = mystl::lower_bound(first, last, value);
+  auto i = dwt_stl::lower_bound(first, last, value);
   return i != last && !(value < *i);
 }
 
@@ -784,7 +784,7 @@ bool binary_search(ForwardIter first, ForwardIter last, const T& value)
 template <class ForwardIter, class T, class Compared>
 bool binary_search(ForwardIter first, ForwardIter last, const T& value, Compared comp)
 {
-  auto i = mystl::lower_bound(first, last, value);
+  auto i = dwt_stl::lower_bound(first, last, value);
   return i != last && !comp(value, *i);
 }
 
@@ -795,18 +795,18 @@ bool binary_search(ForwardIter first, ForwardIter last, const T& value, Compared
 /*****************************************************************************************/
 // erange_dispatch 的 forward_iterator_tag 版本
 template <class ForwardIter, class T>
-mystl::pair<ForwardIter, ForwardIter>
+dwt_stl::pair<ForwardIter, ForwardIter>
 erange_dispatch(ForwardIter first, ForwardIter last,
                 const T& value, forward_iterator_tag)
 {
-  auto len = mystl::distance(first, last);
+  auto len = dwt_stl::distance(first, last);
   auto half = len;
   ForwardIter middle, left, right;
   while (len > 0)
   {
     half = len >> 1;
     middle = first;
-    mystl::advance(middle, half);
+    dwt_stl::advance(middle, half);
     if (*middle < value)
     {
       first = middle;
@@ -819,18 +819,18 @@ erange_dispatch(ForwardIter first, ForwardIter last,
     }
     else
     {
-      left = mystl::lower_bound(first, last, value);
-      mystl::advance(first, len);
-      right = mystl::upper_bound(++middle, first, value);
-      return mystl::pair<ForwardIter, ForwardIter>(left, right);
+      left = dwt_stl::lower_bound(first, last, value);
+      dwt_stl::advance(first, len);
+      right = dwt_stl::upper_bound(++middle, first, value);
+      return dwt_stl::pair<ForwardIter, ForwardIter>(left, right);
     }
   }
-  return mystl::pair<ForwardIter, ForwardIter>(last, last);
+  return dwt_stl::pair<ForwardIter, ForwardIter>(last, last);
 }
 
 // erange_dispatch 的 random_access_iterator_tag 版本
 template <class RandomIter, class T>
-mystl::pair<RandomIter, RandomIter>
+dwt_stl::pair<RandomIter, RandomIter>
 erange_dispatch(RandomIter first, RandomIter last,
                 const T& value, random_access_iterator_tag)
 {
@@ -852,36 +852,36 @@ erange_dispatch(RandomIter first, RandomIter last,
     }
     else
     {
-      left = mystl::lower_bound(first, middle, value);
-      right = mystl::upper_bound(++middle, first + len, value);
-      return mystl::pair<RandomIter, RandomIter>(left, right);
+      left = dwt_stl::lower_bound(first, middle, value);
+      right = dwt_stl::upper_bound(++middle, first + len, value);
+      return dwt_stl::pair<RandomIter, RandomIter>(left, right);
     }
   }
-  return mystl::pair<RandomIter, RandomIter>(last, last);
+  return dwt_stl::pair<RandomIter, RandomIter>(last, last);
 }
 
 template <class ForwardIter, class T>
-mystl::pair<ForwardIter, ForwardIter>
+dwt_stl::pair<ForwardIter, ForwardIter>
 equal_range(ForwardIter first, ForwardIter last, const T& value)
 {
-  return mystl::erange_dispatch(first, last, value, iterator_category(first));
+  return dwt_stl::erange_dispatch(first, last, value, iterator_category(first));
 }
 
 // 重载版本使用函数对象 comp 代替比较操作
 // erange_dispatch 的 forward iterator 版本
 template <class ForwardIter, class T, class Compared>
-mystl::pair<ForwardIter, ForwardIter>
+dwt_stl::pair<ForwardIter, ForwardIter>
 erange_dispatch(ForwardIter first, ForwardIter last,
                 const T& value, forward_iterator_tag, Compared comp)
 {
-  auto len = mystl::distance(first, last);
+  auto len = dwt_stl::distance(first, last);
   auto half = len;
   ForwardIter middle, left, right;
   while (len > 0)
   {
     half = len >> 1;
     middle = first;
-    mystl::advance(middle, half);
+    dwt_stl::advance(middle, half);
     if (comp(*middle, value))
     {
       first = middle;
@@ -894,18 +894,18 @@ erange_dispatch(ForwardIter first, ForwardIter last,
     }
     else
     {
-      left = mystl::lower_bound(first, last, value, comp);
-      mystl::advance(first, len);
-      right = mystl::upper_bound(++middle, first, value, comp);
-      return mystl::pair<ForwardIter, ForwardIter>(left, right);
+      left = dwt_stl::lower_bound(first, last, value, comp);
+      dwt_stl::advance(first, len);
+      right = dwt_stl::upper_bound(++middle, first, value, comp);
+      return dwt_stl::pair<ForwardIter, ForwardIter>(left, right);
     }
   }
-  return mystl::pair<ForwardIter, ForwardIter>(last, last);
+  return dwt_stl::pair<ForwardIter, ForwardIter>(last, last);
 }
 
 // erange_dispatch 的 random access iterator 版本
 template <class RandomIter, class T, class Compared>
-mystl::pair<RandomIter, RandomIter>
+dwt_stl::pair<RandomIter, RandomIter>
 erange_dispatch(RandomIter first, RandomIter last,
                 const T& value, random_access_iterator_tag, Compared comp)
 {
@@ -927,19 +927,19 @@ erange_dispatch(RandomIter first, RandomIter last,
     }
     else
     {
-      left = mystl::lower_bound(first, middle, value, comp);
-      right = mystl::upper_bound(++middle, first + len, value, comp);
-      return mystl::pair<RandomIter, RandomIter>(left, right);
+      left = dwt_stl::lower_bound(first, middle, value, comp);
+      right = dwt_stl::upper_bound(++middle, first + len, value, comp);
+      return dwt_stl::pair<RandomIter, RandomIter>(left, right);
     }
   }
-  return mystl::pair<RandomIter, RandomIter>(last, last);
+  return dwt_stl::pair<RandomIter, RandomIter>(last, last);
 }
 
 template <class ForwardIter, class T, class Compared>
-mystl::pair<ForwardIter, ForwardIter>
+dwt_stl::pair<ForwardIter, ForwardIter>
 equal_range(ForwardIter first, ForwardIter last, const T& value, Compared comp)
 {
-  return mystl::erange_dispatch(first, last, value, iterator_category(first), comp);
+  return dwt_stl::erange_dispatch(first, last, value, iterator_category(first), comp);
 }
 
 /*****************************************************************************************/
@@ -1024,7 +1024,7 @@ bool includes(InputIter1 first1, InputIter1 last1,
 template <class RandomIter>
 bool is_heap(RandomIter first, RandomIter last)
 {
-  auto n = mystl::distance(first, last);
+  auto n = dwt_stl::distance(first, last);
   auto parent = 0;
   for (auto child = 1; child < n; ++child)
   {
@@ -1040,7 +1040,7 @@ bool is_heap(RandomIter first, RandomIter last)
 template <class RandomIter, class Compared>
 bool is_heap(RandomIter first, RandomIter last, Compared comp)
 {
-  auto n = mystl::distance(first, last);
+  auto n = dwt_stl::distance(first, last);
   auto parent = 0;
   for (auto child = 1; child < n; ++child)
   {
@@ -1206,7 +1206,7 @@ swap_ranges(ForwardIter1 first1, ForwardIter1 last1,
 {
   for (; first1 != last1; ++first1, ++first2)
   {
-    mystl::iter_swap(first1, first2);
+    dwt_stl::iter_swap(first1, first2);
   }
   return first2;
 }
@@ -1266,9 +1266,9 @@ remove_copy(InputIter first, InputIter last, OutputIter result, const T& value)
 template <class ForwardIter, class T>
 ForwardIter remove(ForwardIter first, ForwardIter last, const T& value)
 {
-  first = mystl::find(first, last, value);  // 利用 find 找出第一个匹配的地方
+  first = dwt_stl::find(first, last, value);  // 利用 find 找出第一个匹配的地方
   auto next = first;
-  return first == last ? first : mystl::remove_copy(++next, last, first, value);
+  return first == last ? first : dwt_stl::remove_copy(++next, last, first, value);
 }
 
 /*****************************************************************************************/
@@ -1299,9 +1299,9 @@ template <class ForwardIter, class UnaryPredicate>
 ForwardIter
 remove_if(ForwardIter first, ForwardIter last, UnaryPredicate unary_pred)
 {
-  first = mystl::find_if(first, last, unary_pred);  // 利用 find_if 找出第一个匹配的地方
+  first = dwt_stl::find_if(first, last, unary_pred);  // 利用 find_if 找出第一个匹配的地方
   auto next = first;
-  return first == last ? first : mystl::remove_copy_if(++next, last, first, unary_pred);
+  return first == last ? first : dwt_stl::remove_copy_if(++next, last, first, unary_pred);
 }
 
 /*****************************************************************************************/
@@ -1379,7 +1379,7 @@ void reverse_dispatch(BidirectionalIter first, BidirectionalIter last,
   {
     if (first == last || first == --last)
       return;
-    mystl::iter_swap(first++, last);
+    dwt_stl::iter_swap(first++, last);
   }
 }
 
@@ -1389,13 +1389,13 @@ void reverse_dispatch(RandomIter first, RandomIter last,
                       random_access_iterator_tag)
 {
   while (first < last)
-    mystl::iter_swap(first++, --last);
+    dwt_stl::iter_swap(first++, --last);
 }
 
 template <class BidirectionalIter>
 void reverse(BidirectionalIter first, BidirectionalIter last)
 {
-  mystl::reverse_dispatch(first, last, iterator_category(first));
+  dwt_stl::reverse_dispatch(first, last, iterator_category(first));
 }
 
 /*****************************************************************************************/
@@ -1429,7 +1429,7 @@ void random_shuffle(RandomIter first, RandomIter last)
   srand((unsigned)time(0));
   for (auto i = first + 1; i != last; ++i)
   {
-    mystl::iter_swap(i, first + (rand() % (i - first + 1)));
+    dwt_stl::iter_swap(i, first + (rand() % (i - first + 1)));
   }
 }
 
@@ -1440,10 +1440,10 @@ void random_shuffle(RandomIter first, RandomIter last,
 {
   if (first == last)
     return;
-  auto len = mystl::distance(first, last);
+  auto len = dwt_stl::distance(first, last);
   for (auto i = first + 1; i != last; ++i)
   {
-    mystl::iter_swap(i, first + (rand(i - first + 1) % len));
+    dwt_stl::iter_swap(i, first + (rand(i - first + 1) % len));
   }
 }
 
@@ -1461,7 +1461,7 @@ rotate_dispatch(ForwardIter first, ForwardIter middle,
   auto first2 = middle;
   do
   {
-    mystl::swap(*first++, *first2++);
+    dwt_stl::swap(*first++, *first2++);
     if (first == middle)
       middle = first2;
   } while (first2 != last);  // 后半段移到前面
@@ -1470,7 +1470,7 @@ rotate_dispatch(ForwardIter first, ForwardIter middle,
   first2 = middle;
   while (first2 != last)
   {   // 调整剩余元素
-    mystl::swap(*first++, *first2++);
+    dwt_stl::swap(*first++, *first2++);
     if (first == middle)
     {
       middle = first2;
@@ -1489,18 +1489,18 @@ BidirectionalIter
 rotate_dispatch(BidirectionalIter first, BidirectionalIter middle,
                 BidirectionalIter last, bidirectional_iterator_tag)
 {
-  mystl::reverse_dispatch(first, middle, bidirectional_iterator_tag());
-  mystl::reverse_dispatch(middle, last, bidirectional_iterator_tag());
+  dwt_stl::reverse_dispatch(first, middle, bidirectional_iterator_tag());
+  dwt_stl::reverse_dispatch(middle, last, bidirectional_iterator_tag());
   while (first != middle && middle != last)
-    mystl::swap(*first++, *--last);
+    dwt_stl::swap(*first++, *--last);
   if (first == middle)
   {
-    mystl::reverse_dispatch(middle, last, bidirectional_iterator_tag());
+    dwt_stl::reverse_dispatch(middle, last, bidirectional_iterator_tag());
     return last;
   }
   else
   {
-    mystl::reverse_dispatch(first, middle, bidirectional_iterator_tag());
+    dwt_stl::reverse_dispatch(first, middle, bidirectional_iterator_tag());
     return first;
   }
 }
@@ -1531,7 +1531,7 @@ rotate_dispatch(RandomIter first, RandomIter middle,
   auto result = first + (last - middle);
   if (l == r)
   {
-    mystl::swap_ranges(first, middle, middle);
+    dwt_stl::swap_ranges(first, middle, middle);
     return result;
   }
   auto cycle_times = rgcd(n, l);
@@ -1579,7 +1579,7 @@ rotate(ForwardIter first, ForwardIter middle, ForwardIter last)
     return last;
   if (middle == last)
     return first;
-  return mystl::rotate_dispatch(first, middle, last, iterator_category(first));
+  return dwt_stl::rotate_dispatch(first, middle, last, iterator_category(first));
 }
 
 /*****************************************************************************************/
@@ -1591,7 +1591,7 @@ ForwardIter
 rotate_copy(ForwardIter first, ForwardIter middle,
             ForwardIter last, OutputIter result)
 {
-  return mystl::copy(first, middle, mystl::copy(middle, last, result));
+  return dwt_stl::copy(first, middle, dwt_stl::copy(middle, last, result));
 }
 
 /*****************************************************************************************/
@@ -1603,8 +1603,8 @@ bool is_permutation_aux(ForwardIter1 first1, ForwardIter1 last1,
                         ForwardIter2 first2, ForwardIter2 last2,
                         BinaryPred pred)
 {
-  constexpr bool is_ra_it = mystl::is_random_access_iterator<ForwardIter1>::value
-    && mystl::is_random_access_iterator<ForwardIter2>::value;
+  constexpr bool is_ra_it = dwt_stl::is_random_access_iterator<ForwardIter1>::value
+    && dwt_stl::is_random_access_iterator<ForwardIter2>::value;
   if (is_ra_it)
   {
     auto len1 = last1 - first1;
@@ -1626,8 +1626,8 @@ bool is_permutation_aux(ForwardIter1 first1, ForwardIter1 last1,
   }
   else
   {
-    auto len1 = mystl::distance(first1, last1);
-    auto len2 = mystl::distance(first2, last2);
+    auto len1 = dwt_stl::distance(first1, last1);
+    auto len2 = dwt_stl::distance(first2, last2);
     if (len1 == 0 && len2 == 0)
       return true;
     if (len1 != len2)
@@ -1689,9 +1689,9 @@ bool is_permutation(ForwardIter1 first1, ForwardIter1 last1,
   typedef typename iterator_traits<ForwardIter1>::value_type v1;
   typedef typename iterator_traits<ForwardIter2>::value_type v2;
   static_assert(std::is_same<v1, v2>::value,
-                "the type should be same in mystl::is_permutation");
+                "the type should be same in dwt_stl::is_permutation");
   return is_permutation_aux(first1, last1, first2, last2,
-                            mystl::equal_to<v1>());
+                            dwt_stl::equal_to<v1>());
 }
 
 /*****************************************************************************************/
@@ -1711,13 +1711,13 @@ bool next_permutation(BidirectionalIter first, BidirectionalIter last)
     {                 // 找到第一对小于关系的元素
       auto j = last;
       while (!(*i < *--j)) {}
-      mystl::iter_swap(i, j);       // 交换 i，j 所指元素
-      mystl::reverse(ii, last);     // 将 ii 之后的所有元素反转
+      dwt_stl::iter_swap(i, j);       // 交换 i，j 所指元素
+      dwt_stl::reverse(ii, last);     // 将 ii 之后的所有元素反转
       return true;
     }
     if (i == first)
     {
-      mystl::reverse(first, last);
+      dwt_stl::reverse(first, last);
       return false;
     }
   }
@@ -1737,13 +1737,13 @@ bool next_permutation(BidirectionalIter first, BidirectionalIter last, Compared 
     {
       auto j = last;
       while (!comp(*i, *--j)) {}
-      mystl::iter_swap(i, j);       // 交换 i，j 所指元素
-      mystl::reverse(ii, last);     // 将 ii 之后的所有元素反转
+      dwt_stl::iter_swap(i, j);       // 交换 i，j 所指元素
+      dwt_stl::reverse(ii, last);     // 将 ii 之后的所有元素反转
       return true;
     }
     if (i == first)
     {
-      mystl::reverse(first, last);
+      dwt_stl::reverse(first, last);
       return false;
     }
   }
@@ -1766,13 +1766,13 @@ bool prev_permutation(BidirectionalIter first, BidirectionalIter last)
     {                 // 找到第一对大于关系的元素
       auto j = last;
       while (!(*--j < *i)) {}
-      mystl::iter_swap(i, j);       // 交换i，j
-      mystl::reverse(ii, last);     // 将 ii 之后的所有元素反转
+      dwt_stl::iter_swap(i, j);       // 交换i，j
+      dwt_stl::reverse(ii, last);     // 将 ii 之后的所有元素反转
       return true;
     }
     if (i == first)
     {
-      mystl::reverse(first, last);
+      dwt_stl::reverse(first, last);
       return false;
     }
   }
@@ -1792,13 +1792,13 @@ bool prev_permutation(BidirectionalIter first, BidirectionalIter last, Compared 
     {
       auto j = last;
       while (!comp(*--j, *i)) {}
-      mystl::iter_swap(i, j);       // 交换i，j
-      mystl::reverse(ii, last);     // 将 ii 之后的所有元素反转
+      dwt_stl::iter_swap(i, j);       // 交换i，j
+      dwt_stl::reverse(ii, last);     // 将 ii 之后的所有元素反转
       return true;
     }
     if (i == first)
     {
-      mystl::reverse(first, last);
+      dwt_stl::reverse(first, last);
       return false;
     }
   }
@@ -1828,7 +1828,7 @@ merge(InputIter1 first1, InputIter1 last1,
     }
     ++result;
   }
-  return mystl::copy(first2, last2, mystl::copy(first1, last1, result));
+  return dwt_stl::copy(first2, last2, dwt_stl::copy(first1, last1, result));
 }
 
 // 重载版本使用函数对象 comp 代替比较操作
@@ -1852,7 +1852,7 @@ merge(InputIter1 first1, InputIter1 last1,
     }
     ++result;
   }
-  return mystl::copy(first2, last2, mystl::copy(first1, last1, result));
+  return dwt_stl::copy(first2, last2, dwt_stl::copy(first1, last1, result));
 }
 
 /*****************************************************************************************/
@@ -1869,7 +1869,7 @@ void merge_without_buffer(BidirectionalIter first, BidirectionalIter middle,
   if (len1 + len2 == 2)
   {
     if (*middle < *first)
-      mystl::iter_swap(first, middle);
+      dwt_stl::iter_swap(first, middle);
     return;
   }
   auto first_cut = first;
@@ -1879,20 +1879,20 @@ void merge_without_buffer(BidirectionalIter first, BidirectionalIter middle,
   if (len1 > len2)
   {  // 序列一较长，找到序列一的中点
     len11 = len1 >> 1;
-    mystl::advance(first_cut, len11);
-    second_cut = mystl::lower_bound(middle, last, *first_cut);
-    len22 = mystl::distance(middle, second_cut);
+    dwt_stl::advance(first_cut, len11);
+    second_cut = dwt_stl::lower_bound(middle, last, *first_cut);
+    len22 = dwt_stl::distance(middle, second_cut);
   }
   else
   {              // 序列二较长，找到序列二的中点
     len22 = len2 >> 1;
-    mystl::advance(second_cut, len22);
-    first_cut = mystl::upper_bound(first, middle, *second_cut);
-    len11 = mystl::distance(first, first_cut);
+    dwt_stl::advance(second_cut, len22);
+    first_cut = dwt_stl::upper_bound(first, middle, *second_cut);
+    len11 = dwt_stl::distance(first, first_cut);
   }
-  auto new_middle = mystl::rotate(first_cut, middle, second_cut);
-  mystl::merge_without_buffer(first, first_cut, new_middle, len11, len22);
-  mystl::merge_without_buffer(new_middle, second_cut, last, len1 - len11, len2 - len22);
+  auto new_middle = dwt_stl::rotate(first_cut, middle, second_cut);
+  dwt_stl::merge_without_buffer(first, first_cut, new_middle, len11, len22);
+  dwt_stl::merge_without_buffer(new_middle, second_cut, last, len1 - len11, len2 - len22);
 }
 
 template <class BidirectionalIter1, class BidirectionalIter2>
@@ -1902,9 +1902,9 @@ merge_backward(BidirectionalIter1 first1, BidirectionalIter1 last1,
                BidirectionalIter1 result)
 {
   if (first1 == last1)
-    return mystl::copy_backward(first2, last2, result);
+    return dwt_stl::copy_backward(first2, last2, result);
   if (first2 == last2)
-    return mystl::copy_backward(first1, last1, result);
+    return dwt_stl::copy_backward(first1, last1, result);
   --last1;
   --last2;
   while (true)
@@ -1913,14 +1913,14 @@ merge_backward(BidirectionalIter1 first1, BidirectionalIter1 last1,
     {
       *--result = *last1;
       if (first1 == last1)
-        return mystl::copy_backward(first2, ++last2, result);
+        return dwt_stl::copy_backward(first2, ++last2, result);
       --last1;
     }
     else
     {
       *--result = *last2;
       if (first2 == last2)
-        return mystl::copy_backward(first1, ++last1, result);
+        return dwt_stl::copy_backward(first1, ++last1, result);
       --last2;
     }
   }
@@ -1935,19 +1935,19 @@ rotate_adaptive(BidirectionalIter1 first, BidirectionalIter1 middle,
   BidirectionalIter2 buffer_end;
   if (len1 > len2 && len2 <= buffer_size)
   {
-    buffer_end = mystl::copy(middle, last, buffer);
-    mystl::copy_backward(first, middle, last);
-    return mystl::copy(buffer, buffer_end, first);
+    buffer_end = dwt_stl::copy(middle, last, buffer);
+    dwt_stl::copy_backward(first, middle, last);
+    return dwt_stl::copy(buffer, buffer_end, first);
   }
   else if (len1 <= buffer_size)
   {
-    buffer_end = mystl::copy(first, middle, buffer);
-    mystl::copy(middle, last, first);
-    return mystl::copy_backward(buffer, buffer_end, last);
+    buffer_end = dwt_stl::copy(first, middle, buffer);
+    dwt_stl::copy(middle, last, first);
+    return dwt_stl::copy_backward(buffer, buffer_end, last);
   }
   else
   {
-    return mystl::rotate(first, middle, last);
+    return dwt_stl::rotate(first, middle, last);
   }
 }
 
@@ -1960,13 +1960,13 @@ void merge_adaptive(BidirectionalIter first, BidirectionalIter middle,
   // 区间长度足够放进缓冲区
   if (len1 <= len2 && len1 <= buffer_size)
   {
-    Pointer buffer_end = mystl::copy(first, middle, buffer);
-    mystl::merge(buffer, buffer_end, middle, last, first);
+    Pointer buffer_end = dwt_stl::copy(first, middle, buffer);
+    dwt_stl::merge(buffer, buffer_end, middle, last, first);
   }
   else if (len2 <= buffer_size)
   {
-    Pointer buffer_end = mystl::copy(middle, last, buffer);
-    mystl::merge_backward(first, middle, buffer, buffer_end, last);
+    Pointer buffer_end = dwt_stl::copy(middle, last, buffer);
+    dwt_stl::merge_backward(first, middle, buffer, buffer_end, last);
   }
   else
   {  // 区间长度太长，分割递归处理
@@ -1977,21 +1977,21 @@ void merge_adaptive(BidirectionalIter first, BidirectionalIter middle,
     if (len1 > len2)
     {
       len11 = len1 >> 1;
-      mystl::advance(first_cut, len11);
-      second_cut = mystl::lower_bound(middle, last, *first_cut);
-      len22 = mystl::distance(middle, second_cut);
+      dwt_stl::advance(first_cut, len11);
+      second_cut = dwt_stl::lower_bound(middle, last, *first_cut);
+      len22 = dwt_stl::distance(middle, second_cut);
     }
     else
     {
       len22 = len2 >> 1;
-      mystl::advance(second_cut, len22);
-      first_cut = mystl::upper_bound(first, middle, *second_cut);
-      len11 = mystl::distance(first, first_cut);
+      dwt_stl::advance(second_cut, len22);
+      first_cut = dwt_stl::upper_bound(first, middle, *second_cut);
+      len11 = dwt_stl::distance(first, first_cut);
     }
-    auto new_middle = mystl::rotate_adaptive(first_cut, middle, second_cut,
+    auto new_middle = dwt_stl::rotate_adaptive(first_cut, middle, second_cut,
                                              len1 - len11, len22, buffer, buffer_size);
-    mystl::merge_adaptive(first, first_cut, new_middle, len11, len22, buffer, buffer_size);
-    mystl::merge_adaptive(new_middle, second_cut, last, len1 - len11,
+    dwt_stl::merge_adaptive(first, first_cut, new_middle, len11, len22, buffer, buffer_size);
+    dwt_stl::merge_adaptive(new_middle, second_cut, last, len1 - len11,
                           len2 - len22, buffer, buffer_size);
   }
 }
@@ -2001,16 +2001,16 @@ void
 inplace_merge_aux(BidirectionalIter first, BidirectionalIter middle,
                   BidirectionalIter last, T*)
 {
-  auto len1 = mystl::distance(first, middle);
-  auto len2 = mystl::distance(middle, last);
+  auto len1 = dwt_stl::distance(first, middle);
+  auto len2 = dwt_stl::distance(middle, last);
   temporary_buffer<BidirectionalIter, T> buf(first, last);
   if (!buf.begin())
   {
-    mystl::merge_without_buffer(first, middle, last, len1, len2);
+    dwt_stl::merge_without_buffer(first, middle, last, len1, len2);
   }
   else
   {
-    mystl::merge_adaptive(first, middle, last, len1, len2, buf.begin(), buf.size());
+    dwt_stl::merge_adaptive(first, middle, last, len1, len2, buf.begin(), buf.size());
   }
 }
 
@@ -2021,7 +2021,7 @@ inplace_merge(BidirectionalIter first, BidirectionalIter middle,
 {
   if (first == middle || middle == last)
     return;
-  mystl::inplace_merge_aux(first, middle, last, value_type(first));
+  dwt_stl::inplace_merge_aux(first, middle, last, value_type(first));
 }
 
 // 重载版本使用函数对象 comp 代替比较操作
@@ -2036,7 +2036,7 @@ void merge_without_buffer(BidirectionalIter first, BidirectionalIter middle,
   if (len1 + len2 == 2)
   {
     if (comp(*middle, *first))
-      mystl::iter_swap(first, middle);
+      dwt_stl::iter_swap(first, middle);
     return;
   }
   auto first_cut = first;
@@ -2046,20 +2046,20 @@ void merge_without_buffer(BidirectionalIter first, BidirectionalIter middle,
   if (len1 > len2)
   {
     len11 = len1 >> 1;
-    mystl::advance(first_cut, len11);
-    second_cut = mystl::lower_bound(middle, last, *first_cut, comp);
-    len22 = mystl::distance(middle, second_cut);
+    dwt_stl::advance(first_cut, len11);
+    second_cut = dwt_stl::lower_bound(middle, last, *first_cut, comp);
+    len22 = dwt_stl::distance(middle, second_cut);
   }
   else
   {
     len22 = len2 >> 1;
-    mystl::advance(second_cut, len22);
-    first_cut = mystl::upper_bound(first, middle, *second_cut, comp);
-    len11 = mystl::distance(first, first_cut);
+    dwt_stl::advance(second_cut, len22);
+    first_cut = dwt_stl::upper_bound(first, middle, *second_cut, comp);
+    len11 = dwt_stl::distance(first, first_cut);
   }
-  auto new_middle = mystl::rotate(first_cut, middle, second_cut);
-  mystl::merge_without_buffer(first, first_cut, new_middle, len11, len22, comp);
-  mystl::merge_without_buffer(new_middle, second_cut, last, len1 - len11, len2 - len22, comp);
+  auto new_middle = dwt_stl::rotate(first_cut, middle, second_cut);
+  dwt_stl::merge_without_buffer(first, first_cut, new_middle, len11, len22, comp);
+  dwt_stl::merge_without_buffer(new_middle, second_cut, last, len1 - len11, len2 - len22, comp);
 }
 
 template <class BidirectionalIter1, class BidirectionalIter2, class Compared>
@@ -2069,9 +2069,9 @@ merge_backward(BidirectionalIter1 first1, BidirectionalIter1 last1,
                BidirectionalIter1 result, Compared comp)
 {
   if (first1 == last1)
-    return mystl::copy_backward(first2, last2, result);
+    return dwt_stl::copy_backward(first2, last2, result);
   if (first2 == last2)
-    return mystl::copy_backward(first1, last1, result);
+    return dwt_stl::copy_backward(first1, last1, result);
   --last1;
   --last2;
   while (true)
@@ -2080,14 +2080,14 @@ merge_backward(BidirectionalIter1 first1, BidirectionalIter1 last1,
     {
       *--result = *last1;
       if (first1 == last1)
-        return mystl::copy_backward(first2, ++last2, result);
+        return dwt_stl::copy_backward(first2, ++last2, result);
       --last1;
     }
     else
     {
       *--result = *last2;
       if (first2 == last2)
-        return mystl::copy_backward(first1, ++last1, result);
+        return dwt_stl::copy_backward(first1, ++last1, result);
       --last2;
     }
   }
@@ -2102,13 +2102,13 @@ void merge_adaptive(BidirectionalIter first, BidirectionalIter middle,
   // 区间长度足够放进缓冲区
   if (len1 <= len2 && len1 <= buffer_size)
   {
-    Pointer buffer_end = mystl::copy(first, middle, buffer);
-    mystl::merge(buffer, buffer_end, middle, last, first, comp);
+    Pointer buffer_end = dwt_stl::copy(first, middle, buffer);
+    dwt_stl::merge(buffer, buffer_end, middle, last, first, comp);
   }
   else if (len2 <= buffer_size)
   {
-    Pointer buffer_end = mystl::copy(middle, last, buffer);
-    mystl::merge_backward(first, middle, buffer, buffer_end, last, comp);
+    Pointer buffer_end = dwt_stl::copy(middle, last, buffer);
+    dwt_stl::merge_backward(first, middle, buffer, buffer_end, last, comp);
   }
   else
   {  // 区间长度太长，分割递归处理
@@ -2119,22 +2119,22 @@ void merge_adaptive(BidirectionalIter first, BidirectionalIter middle,
     if (len1 > len2)
     {
       len11 = len1 >> 1;
-      mystl::advance(first_cut, len11);
-      second_cut = mystl::lower_bound(middle, last, *first_cut, comp);
-      len22 = mystl::distance(middle, second_cut);
+      dwt_stl::advance(first_cut, len11);
+      second_cut = dwt_stl::lower_bound(middle, last, *first_cut, comp);
+      len22 = dwt_stl::distance(middle, second_cut);
     }
     else
     {
       len22 = len2 >> 1;
-      mystl::advance(second_cut, len22);
-      first_cut = mystl::upper_bound(first, middle, *second_cut, comp);
-      len11 = mystl::distance(first, first_cut);
+      dwt_stl::advance(second_cut, len22);
+      first_cut = dwt_stl::upper_bound(first, middle, *second_cut, comp);
+      len11 = dwt_stl::distance(first, first_cut);
     }
-    auto new_middle = mystl::rotate_adaptive(first_cut, middle, second_cut, len1 - len11,
+    auto new_middle = dwt_stl::rotate_adaptive(first_cut, middle, second_cut, len1 - len11,
                                              len22, buffer, buffer_size);
-    mystl::merge_adaptive(first, first_cut, new_middle, len11,
+    dwt_stl::merge_adaptive(first, first_cut, new_middle, len11,
                           len22, buffer, buffer_size, comp);
-    mystl::merge_adaptive(new_middle, second_cut, last, len1 - len11,
+    dwt_stl::merge_adaptive(new_middle, second_cut, last, len1 - len11,
                           len2 - len22, buffer, buffer_size, comp);
   }
 }
@@ -2144,16 +2144,16 @@ void
 inplace_merge_aux(BidirectionalIter first, BidirectionalIter middle,
                   BidirectionalIter last, T*, Compared comp)
 {
-  auto len1 = mystl::distance(first, middle);
-  auto len2 = mystl::distance(middle, last);
+  auto len1 = dwt_stl::distance(first, middle);
+  auto len2 = dwt_stl::distance(middle, last);
   temporary_buffer<BidirectionalIter, T> buf(first, last);
   if (!buf.begin())
   {
-    mystl::merge_without_buffer(first, middle, last, len1, len2, comp);
+    dwt_stl::merge_without_buffer(first, middle, last, len1, len2, comp);
   }
   else
   {
-    mystl::merge_adaptive(first, middle, last, len1, len2, buf.begin(), buf.size(), comp);
+    dwt_stl::merge_adaptive(first, middle, last, len1, len2, buf.begin(), buf.size(), comp);
   }
 }
 
@@ -2164,7 +2164,7 @@ inplace_merge(BidirectionalIter first, BidirectionalIter middle,
 {
   if (first == middle || middle == last)
     return;
-  mystl::inplace_merge_aux(first, middle, last, value_type(first), comp);
+  dwt_stl::inplace_merge_aux(first, middle, last, value_type(first), comp);
 }
 
 /*****************************************************************************************/
@@ -2175,15 +2175,15 @@ template <class RandomIter>
 void partial_sort(RandomIter first, RandomIter middle,
                   RandomIter last)
 {
-  mystl::make_heap(first, middle);
+  dwt_stl::make_heap(first, middle);
   for (auto i = middle; i < last; ++i)
   {
     if (*i < *first)
     {
-      mystl::pop_heap_aux(first, middle, i, *i, distance_type(first));
+      dwt_stl::pop_heap_aux(first, middle, i, *i, distance_type(first));
     }
   }
-  mystl::sort_heap(first, middle);
+  dwt_stl::sort_heap(first, middle);
 }
 
 // 重载版本使用函数对象 comp 代替比较操作
@@ -2191,15 +2191,15 @@ template <class RandomIter, class Compared>
 void partial_sort(RandomIter first, RandomIter middle,
                   RandomIter last, Compared comp)
 {
-  mystl::make_heap(first, middle, comp);
+  dwt_stl::make_heap(first, middle, comp);
   for (auto i = middle; i < last; ++i)
   {
     if (comp(*i, *first))
     {
-      mystl::pop_heap_aux(first, middle, i, *i, distance_type(first), comp);
+      dwt_stl::pop_heap_aux(first, middle, i, *i, distance_type(first), comp);
     }
   }
-  mystl::sort_heap(first, middle, comp);
+  dwt_stl::sort_heap(first, middle, comp);
 }
 
 /*****************************************************************************************/
@@ -2221,17 +2221,17 @@ psort_copy_aux(InputIter first, InputIter last,
     ++result_iter;
     ++first;
   }
-  mystl::make_heap(result_first, result_iter);
+  dwt_stl::make_heap(result_first, result_iter);
   while (first != last)
   {
     if (*first < *result_first)
     {
-      mystl::adjust_heap(result_first, static_cast<Distance>(0),
+      dwt_stl::adjust_heap(result_first, static_cast<Distance>(0),
                            result_iter - result_first, *first);
     }
     ++first;
   }
-  mystl::sort_heap(result_first, result_iter);
+  dwt_stl::sort_heap(result_first, result_iter);
   return result_iter;
 }
 
@@ -2240,7 +2240,7 @@ RandomIter
 partial_sort_copy(InputIter first, InputIter last,
                   RandomIter result_first, RandomIter result_last)
 {
-  return mystl::psort_copy_aux(first, last, result_first, result_last,
+  return dwt_stl::psort_copy_aux(first, last, result_first, result_last,
                                distance_type(result_first));
 }
 
@@ -2260,17 +2260,17 @@ psort_copy_aux(InputIter first, InputIter last,
     ++result_iter;
     ++first;
   }
-  mystl::make_heap(result_first, result_iter, comp);
+  dwt_stl::make_heap(result_first, result_iter, comp);
   while (first != last)
   {
     if (comp(*first, *result_first))
     {
-      mystl::adjust_heap(result_first, static_cast<Distance>(0),
+      dwt_stl::adjust_heap(result_first, static_cast<Distance>(0),
                            result_iter - result_first, *first, comp);
     }
     ++first;
   }
-  mystl::sort_heap(result_first, result_iter, comp);
+  dwt_stl::sort_heap(result_first, result_iter, comp);
   return result_iter;
 }
 
@@ -2280,7 +2280,7 @@ partial_sort_copy(InputIter first, InputIter last,
                   RandomIter result_first, RandomIter result_last,
                   Compared comp)
 {
-  return mystl::psort_copy_aux(first, last, result_first, result_last,
+  return dwt_stl::psort_copy_aux(first, last, result_first, result_last,
                                distance_type(result_first), comp);
 }
 /*****************************************************************************************/
@@ -2308,7 +2308,7 @@ partition(BidirectionalIter first, BidirectionalIter last,
     }
     if (first == last)
       break;
-    mystl::iter_swap(first, last);
+    dwt_stl::iter_swap(first, last);
     ++first;
   }
   return first;
@@ -2317,10 +2317,10 @@ partition(BidirectionalIter first, BidirectionalIter last,
 /*****************************************************************************************/
 // partition_copy
 // 行为与 partition 类似，不同的是，将被一元操作符判定为 true 的放到 result_true 的输出区间
-// 其余放到 result_false 的输出区间，并返回一个 mystl::pair 指向这两个区间的尾部
+// 其余放到 result_false 的输出区间，并返回一个 dwt_stl::pair 指向这两个区间的尾部
 /*****************************************************************************************/
 template <class InputIter, class OutputIter1, class OutputIter2, class UnaryPredicate>
-mystl::pair<OutputIter1, OutputIter2>
+dwt_stl::pair<OutputIter1, OutputIter2>
 partition_copy(InputIter first, InputIter last,
                OutputIter1 result_true, OutputIter2 result_false,
                UnaryPredicate unary_pred)
@@ -2336,7 +2336,7 @@ partition_copy(InputIter first, InputIter last,
       *result_false++ = *first;
     }
   }
-  return mystl::pair<OutputIter1, OutputIter2>(result_true, result_false);
+  return dwt_stl::pair<OutputIter1, OutputIter2>(result_true, result_false);
 }
 
 /*****************************************************************************************/
@@ -2369,7 +2369,7 @@ unchecked_partition(RandomIter first, RandomIter last, const T& pivot)
       --last;
     if (!(first < last))
       return first;
-    mystl::iter_swap(first, last);
+    dwt_stl::iter_swap(first, last);
     ++first;
   }
 }
@@ -2382,13 +2382,13 @@ void intro_sort(RandomIter first, RandomIter last, Size depth_limit)
   {
     if (depth_limit == 0)
     {                      // 到达最大分割深度限制
-      mystl::partial_sort(first, last, last);  // 改用 heap_sort
+      dwt_stl::partial_sort(first, last, last);  // 改用 heap_sort
       return;
     }
     --depth_limit;
-    auto mid = mystl::median(*(first), *(first + (last - first) / 2), *(last - 1));
-    auto cut = mystl::unchecked_partition(first, last, mid);
-    mystl::intro_sort(cut, last, depth_limit);
+    auto mid = dwt_stl::median(*(first), *(first + (last - first) / 2), *(last - 1));
+    auto cut = dwt_stl::unchecked_partition(first, last, mid);
+    dwt_stl::intro_sort(cut, last, depth_limit);
     last = cut;
   }
 }
@@ -2414,7 +2414,7 @@ void unchecked_insertion_sort(RandomIter first, RandomIter last)
 {
   for (auto i = first; i != last; ++i)
   {
-    mystl::unchecked_linear_insert(i, *i);
+    dwt_stl::unchecked_linear_insert(i, *i);
   }
 }
 
@@ -2429,12 +2429,12 @@ void insertion_sort(RandomIter first, RandomIter last)
     auto value = *i;
     if (value < *first)
     {
-      mystl::copy_backward(first, i, i + 1);
+      dwt_stl::copy_backward(first, i, i + 1);
       *first = value;
     }
     else
     {
-      mystl::unchecked_linear_insert(i, value);
+      dwt_stl::unchecked_linear_insert(i, value);
     }
   }
 }
@@ -2445,12 +2445,12 @@ void final_insertion_sort(RandomIter first, RandomIter last)
 {
   if (static_cast<size_t>(last - first) > kSmallSectionSize)
   {
-    mystl::insertion_sort(first, first + kSmallSectionSize);
-    mystl::unchecked_insertion_sort(first + kSmallSectionSize, last);
+    dwt_stl::insertion_sort(first, first + kSmallSectionSize);
+    dwt_stl::unchecked_insertion_sort(first + kSmallSectionSize, last);
   }
   else
   {
-    mystl::insertion_sort(first, last);
+    dwt_stl::insertion_sort(first, last);
   }
 }
 
@@ -2460,8 +2460,8 @@ void sort(RandomIter first, RandomIter last)
   if (first != last)
   {
     // 内省式排序，将区间分为一个个小区间，然后对整体进行插入排序
-    mystl::intro_sort(first, last, slg2(last - first) * 2);
-    mystl::final_insertion_sort(first, last);
+    dwt_stl::intro_sort(first, last, slg2(last - first) * 2);
+    dwt_stl::final_insertion_sort(first, last);
   }
 }
 
@@ -2481,7 +2481,7 @@ unchecked_partition(RandomIter first, RandomIter last,
       --last;
     if (!(first < last))
       return first;
-    mystl::iter_swap(first, last);
+    dwt_stl::iter_swap(first, last);
     ++first;
   }
 }
@@ -2495,13 +2495,13 @@ void intro_sort(RandomIter first, RandomIter last,
   {
     if (depth_limit == 0)
     {                            // 到达最大分割深度限制
-      mystl::partial_sort(first, last, last, comp);  // 改用 heap_sort
+      dwt_stl::partial_sort(first, last, last, comp);  // 改用 heap_sort
       return;
     }
     --depth_limit;
-    auto mid = mystl::median(*(first), *(first + (last - first) / 2), *(last - 1));
-    auto cut = mystl::unchecked_partition(first, last, mid, comp);
-    mystl::intro_sort(cut, last, depth_limit, comp);
+    auto mid = dwt_stl::median(*(first), *(first + (last - first) / 2), *(last - 1));
+    auto cut = dwt_stl::unchecked_partition(first, last, mid, comp);
+    dwt_stl::intro_sort(cut, last, depth_limit, comp);
     last = cut;
   }
 }
@@ -2528,7 +2528,7 @@ void unchecked_insertion_sort(RandomIter first, RandomIter last,
 {
   for (auto i = first; i != last; ++i)
   {
-    mystl::unchecked_linear_insert(i, *i, comp);
+    dwt_stl::unchecked_linear_insert(i, *i, comp);
   }
 }
 
@@ -2543,12 +2543,12 @@ void insertion_sort(RandomIter first, RandomIter last, Compared comp)
     auto value = *i;
     if (comp(value, *first))
     {
-      mystl::copy_backward(first, i, i + 1);
+      dwt_stl::copy_backward(first, i, i + 1);
       *first = value;
     }
     else
     {
-      mystl::unchecked_linear_insert(i, value, comp);
+      dwt_stl::unchecked_linear_insert(i, value, comp);
     }
   }
 }
@@ -2559,12 +2559,12 @@ void final_insertion_sort(RandomIter first, RandomIter last, Compared comp)
 {
   if (static_cast<size_t>(last - first) > kSmallSectionSize)
   {
-    mystl::insertion_sort(first, first + kSmallSectionSize, comp);
-    mystl::unchecked_insertion_sort(first + kSmallSectionSize, last, comp);
+    dwt_stl::insertion_sort(first, first + kSmallSectionSize, comp);
+    dwt_stl::unchecked_insertion_sort(first + kSmallSectionSize, last, comp);
   }
   else
   {
-    mystl::insertion_sort(first, last, comp);
+    dwt_stl::insertion_sort(first, last, comp);
   }
 }
 
@@ -2574,8 +2574,8 @@ void sort(RandomIter first, RandomIter last, Compared comp)
   if (first != last)
   {
     // 内省式排序，将区间分为一个个小区间，然后对整体进行插入排序
-    mystl::intro_sort(first, last, slg2(last - first) * 2, comp);
-    mystl::final_insertion_sort(first, last, comp);
+    dwt_stl::intro_sort(first, last, slg2(last - first) * 2, comp);
+    dwt_stl::final_insertion_sort(first, last, comp);
   }
 }
 
@@ -2591,7 +2591,7 @@ void nth_element(RandomIter first, RandomIter nth,
     return;
   while (last - first > 3)
   {
-    auto cut = mystl::unchecked_partition(first, last, mystl::median(*first,
+    auto cut = dwt_stl::unchecked_partition(first, last, dwt_stl::median(*first,
 										  *(first + (last - first) / 2),
 										  *(last - 1)));
     if (cut <= nth)  // 如果 nth 位于右段
@@ -2599,7 +2599,7 @@ void nth_element(RandomIter first, RandomIter nth,
     else
       last = cut;    // 对左段进行分割
   }
-  mystl::insertion_sort(first, last);
+  dwt_stl::insertion_sort(first, last);
 }
 
 // 重载版本使用函数对象 comp 代替比较操作
@@ -2611,7 +2611,7 @@ void nth_element(RandomIter first, RandomIter nth,
     return;
   while (last - first > 3)
   {
-    auto cut = mystl::unchecked_partition(first, last, mystl::median(*first, 
+    auto cut = dwt_stl::unchecked_partition(first, last, dwt_stl::median(*first, 
 										  *(first + (last - first) / 2),
 										  *(last - 1)), comp);
     if (cut <= nth)  // 如果 nth 位于右段
@@ -2619,7 +2619,7 @@ void nth_element(RandomIter first, RandomIter nth,
     else
       last = cut;    // 对左段进行分割
   }
-  mystl::insertion_sort(first, last, comp);
+  dwt_stl::insertion_sort(first, last, comp);
 }
 
 /*****************************************************************************************/
@@ -2667,7 +2667,7 @@ unique_copy(InputIter first, InputIter last, OutputIter result)
 {
   if (first == last)
     return result;
-  return mystl::unique_copy_dispatch(first, last, result, iterator_category(result));
+  return dwt_stl::unique_copy_dispatch(first, last, result, iterator_category(result));
 }
 
 // 重载版本使用函数对象 comp 代替比较操作
@@ -2712,7 +2712,7 @@ unique_copy(InputIter first, InputIter last, OutputIter result, Compared comp)
 {
   if (first == last)
     return result;
-  return mystl::unique_copy_dispatch(first, last, result, iterator_category(result), comp);
+  return dwt_stl::unique_copy_dispatch(first, last, result, iterator_category(result), comp);
 }
 
 /*****************************************************************************************/
@@ -2722,19 +2722,19 @@ unique_copy(InputIter first, InputIter last, OutputIter result, Compared comp)
 template <class ForwardIter>
 ForwardIter unique(ForwardIter first, ForwardIter last)
 {
-  first = mystl::adjacent_find(first, last);
-  return mystl::unique_copy(first, last, first);
+  first = dwt_stl::adjacent_find(first, last);
+  return dwt_stl::unique_copy(first, last, first);
 }
 
 // 重载版本使用函数对象 comp 代替比较操作
 template <class ForwardIter, class Compared>
 ForwardIter unique(ForwardIter first, ForwardIter last, Compared comp)
 {
-  first = mystl::adjacent_find(first, last, comp);
-  return mystl::unique_copy(first, last, first, comp);
+  first = dwt_stl::adjacent_find(first, last, comp);
+  return dwt_stl::unique_copy(first, last, first, comp);
 }
 
-} // namespace mystl
+} // namespace dwt_stl
 
 #ifdef _MSC_VER
 #pragma warning(pop)

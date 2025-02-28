@@ -6,12 +6,12 @@
 
 #include "deque.h"    
 
-namespace mystl
+namespace dwt_stl
 {
 
 // 模板类 stack
-// 参数一代表数据类型，参数二代表底层容器类型，缺省使用 mystl::deque 作为底层容器
-template <class T, class Container = mystl::deque<T>>
+// 参数一代表数据类型，参数二代表底层容器类型，缺省使用 dwt_stl::deque 作为底层容器
+template <class T, class Container = dwt_stl::deque<T>>
 class stack
 {
 public:
@@ -56,7 +56,7 @@ public:
   {
   }
   stack(Container&& c) noexcept(std::is_nothrow_move_constructible<Container>::value)
-    :c_(mystl::move(c)) 
+    :c_(dwt_stl::move(c)) 
   {
   }
 
@@ -65,7 +65,7 @@ public:
   {
   }
   stack(stack&& rhs) noexcept(std::is_nothrow_move_constructible<Container>::value)
-    :c_(mystl::move(rhs.c_))
+    :c_(dwt_stl::move(rhs.c_))
   {
   }
 
@@ -76,7 +76,7 @@ public:
   }
   stack& operator=(stack&& rhs) noexcept(std::is_nothrow_move_assignable<Container>::value)
   { 
-    c_ = mystl::move(rhs.c_); 
+    c_ = dwt_stl::move(rhs.c_); 
     return *this;
   }
 
@@ -100,12 +100,12 @@ public:
 
   template <class... Args>
   void emplace(Args&& ...args)
-  { c_.emplace_back(mystl::forward<Args>(args)...); }
+  { c_.emplace_back(dwt_stl::forward<Args>(args)...); }
 
   void push(const value_type& value)
   { c_.push_back(value); }
   void push(value_type&& value)      
-  { c_.push_back(mystl::move(value)); }
+  { c_.push_back(dwt_stl::move(value)); }
 
   void pop() 
   { c_.pop_back(); }
@@ -116,8 +116,8 @@ public:
       pop();
   }
 
-  void swap(stack& rhs) noexcept(noexcept(mystl::swap(c_, rhs.c_)))
-  { mystl::swap(c_, rhs.c_); }
+  void swap(stack& rhs) noexcept(noexcept(dwt_stl::swap(c_, rhs.c_)))
+  { dwt_stl::swap(c_, rhs.c_); }
 
 public:
   friend bool operator==(const stack& lhs, const stack& rhs) { return lhs.c_ == rhs.c_; }
@@ -161,13 +161,13 @@ bool operator>=(const stack<T, Container>& lhs, const stack<T, Container>& rhs)
   return !(lhs < rhs);
 }
 
-// 重载 mystl 的 swap
+// 重载 dwt_stl 的 swap
 template <class T, class Container>
 void swap(stack<T, Container>& lhs, stack<T, Container>& rhs) noexcept(noexcept(lhs.swap(rhs)))
 {
   lhs.swap(rhs);
 }
 
-} // namespace mystl
+} // namespace dwt_stl
 #endif // !MYTINYSTL_STACK_H_
 

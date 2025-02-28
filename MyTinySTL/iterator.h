@@ -7,7 +7,7 @@
 #include "common.h"
 #include "type_traits.h"
 
-namespace mystl
+namespace dwt_stl
 {
 
 // 五种迭代器类型
@@ -385,7 +385,7 @@ operator-(const reverse_iterator<Iterator>& lhs,
 }
 */
 
-} // namespace mystl
+} // namespace dwt_stl
 
 #endif // !MYTINYSTL_ITERATOR_H_
 

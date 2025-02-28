@@ -1,11 +1,11 @@
 ﻿#ifndef MYTINYSTL_NUMERIC_H_
 #define MYTINYSTL_NUMERIC_H_
 
-// 这个头文件包含了 mystl 的数值算法
+// 这个头文件包含了 dwt_stl 的数值算法
 
 #include "iterator.h"
 
-namespace mystl
+namespace dwt_stl
 {
 
 /*****************************************************************************************/
@@ -150,6 +150,6 @@ OutputIter partial_sum(InputIter first, InputIter last, OutputIter result,
   return ++result;
 }
 
-} // namespace mystl
+} // namespace dwt_stl
 #endif // !MYTINYSTL_NUMERIC_H_
 

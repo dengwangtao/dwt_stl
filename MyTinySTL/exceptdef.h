@@ -5,10 +5,10 @@
 
 #include <cassert>
 
-namespace mystl
+namespace dwt_stl
 {
 
-#define MYSTL_DEBUG(expr) \
+#define dwt_stl_DEBUG(expr) \
   assert(expr)  
 
 #define THROW_LENGTH_ERROR_IF(expr, what) \
@@ -20,7 +20,7 @@ namespace mystl
 #define THROW_RUNTIME_ERROR_IF(expr, what) \
   if ((expr)) throw std::runtime_error(what)
 
-} // namepsace mystl
+} // namepsace dwt_stl
 
 #endif // !MYTINYSTL_EXCEPTDEF_H_
 

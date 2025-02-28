@@ -17,7 +17,7 @@
 #include <cstddef>
 #include <cstdio>
 
-namespace mystl
+namespace dwt_stl
 {
 
 // 共用体: FreeList
@@ -259,6 +259,6 @@ char* alloc::M_chunk_alloc(size_t size, size_t& nblock)
   }
 }
 
-} // namespace mystl
+} // namespace dwt_stl
 #endif // !MYTINYSTL_ALLOC_H_
 

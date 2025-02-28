@@ -8,19 +8,19 @@
 // notes:
 //
 // 异常保证：
-// mystl::set<Key> / mystl::multiset<Key> 满足基本异常保证，对以下等函数做强异常安全保证：
+// dwt_stl::set<Key> / dwt_stl::multiset<Key> 满足基本异常保证，对以下等函数做强异常安全保证：
 //   * emplace
 //   * emplace_hint
 //   * insert
 
 #include "rb_tree.h"
 
-namespace mystl
+namespace dwt_stl
 {
 
 // 模板类 set，键值不允许重复
-// 参数一代表键值类型，参数二代表键值比较方式，缺省使用 mystl::less 
-template <class Key, class Compare = mystl::less<Key>>
+// 参数一代表键值类型，参数二代表键值比较方式，缺省使用 dwt_stl::less 
+template <class Key, class Compare = dwt_stl::less<Key>>
 class set
 {
 public:
@@ -30,8 +30,8 @@ public:
   typedef Compare    value_compare;
 
 private:
-  // 以 mystl::rb_tree 作为底层机制
-  typedef mystl::rb_tree<value_type, key_compare>  base_type;
+  // 以 dwt_stl::rb_tree 作为底层机制
+  typedef dwt_stl::rb_tree<value_type, key_compare>  base_type;
   base_type tree_;
 
 public:
@@ -66,7 +66,7 @@ public:
   {
   }
   set(set&& rhs) noexcept
-    :tree_(mystl::move(rhs.tree_))
+    :tree_(dwt_stl::move(rhs.tree_))
   {
   }
 
@@ -77,7 +77,7 @@ public:
   }
   set& operator=(set&& rhs)
   { 
-    tree_ = mystl::move(rhs.tree_); 
+    tree_ = dwt_stl::move(rhs.tree_); 
     return *this; 
   }
   set& operator=(std::initializer_list<value_type> ilist)
@@ -132,13 +132,13 @@ public:
   template <class ...Args>
   pair<iterator, bool> emplace(Args&& ...args)
   {
-    return tree_.emplace_unique(mystl::forward<Args>(args)...);
+    return tree_.emplace_unique(dwt_stl::forward<Args>(args)...);
   }
 
   template <class ...Args>
   iterator emplace_hint(iterator hint, Args&& ...args)
   {
-    return tree_.emplace_unique_use_hint(hint, mystl::forward<Args>(args)...);
+    return tree_.emplace_unique_use_hint(hint, dwt_stl::forward<Args>(args)...);
   }
 
   pair<iterator, bool> insert(const value_type& value)
@@ -147,7 +147,7 @@ public:
   }
   pair<iterator, bool> insert(value_type&& value)
   {
-    return tree_.insert_unique(mystl::move(value));
+    return tree_.insert_unique(dwt_stl::move(value));
   }
 
   iterator insert(iterator hint, const value_type& value)
@@ -156,7 +156,7 @@ public:
   }
   iterator insert(iterator hint, value_type&& value)
   {
-    return tree_.insert_unique(hint, mystl::move(value));
+    return tree_.insert_unique(hint, dwt_stl::move(value));
   }
 
   template <class InputIterator>
@@ -237,7 +237,7 @@ bool operator>=(const set<Key, Compare>& lhs, const set<Key, Compare>& rhs)
   return !(lhs < rhs);
 }
 
-// 重载 mystl 的 swap
+// 重载 dwt_stl 的 swap
 template <class Key, class Compare>
 void swap(set<Key, Compare>& lhs, set<Key, Compare>& rhs) noexcept
 {
@@ -247,8 +247,8 @@ void swap(set<Key, Compare>& lhs, set<Key, Compare>& rhs) noexcept
 /*****************************************************************************************/
 
 // 模板类 multiset，键值允许重复
-// 参数一代表键值类型，参数二代表键值比较方式，缺省使用 mystl::less 
-template <class Key, class Compare = mystl::less<Key>>
+// 参数一代表键值类型，参数二代表键值比较方式，缺省使用 dwt_stl::less 
+template <class Key, class Compare = dwt_stl::less<Key>>
 class multiset
 {
 public:
@@ -258,8 +258,8 @@ public:
   typedef Compare    value_compare;
 
 private:
-  // 以 mystl::rb_tree 作为底层机制
-  typedef mystl::rb_tree<value_type, key_compare>  base_type;
+  // 以 dwt_stl::rb_tree 作为底层机制
+  typedef dwt_stl::rb_tree<value_type, key_compare>  base_type;
   base_type tree_;  // 以 rb_tree 表现 multiset
 
 public:
@@ -294,7 +294,7 @@ public:
   {
   }
   multiset(multiset&& rhs) noexcept
-    :tree_(mystl::move(rhs.tree_))
+    :tree_(dwt_stl::move(rhs.tree_))
   {
   }
 
@@ -305,7 +305,7 @@ public:
   }
   multiset& operator=(multiset&& rhs)
   {
-    tree_ = mystl::move(rhs.tree_);
+    tree_ = dwt_stl::move(rhs.tree_);
     return *this; 
   }
   multiset& operator=(std::initializer_list<value_type> ilist)
@@ -360,13 +360,13 @@ public:
   template <class ...Args>
   iterator emplace(Args&& ...args)
   {
-    return tree_.emplace_multi(mystl::forward<Args>(args)...);
+    return tree_.emplace_multi(dwt_stl::forward<Args>(args)...);
   }
 
   template <class ...Args>
   iterator emplace_hint(iterator hint, Args&& ...args)
   {
-    return tree_.emplace_multi_use_hint(hint, mystl::forward<Args>(args)...);
+    return tree_.emplace_multi_use_hint(hint, dwt_stl::forward<Args>(args)...);
   }
 
   iterator insert(const value_type& value)
@@ -375,7 +375,7 @@ public:
   }
   iterator insert(value_type&& value)
   {
-    return tree_.insert_multi(mystl::move(value));
+    return tree_.insert_multi(dwt_stl::move(value));
   }
 
   iterator insert(iterator hint, const value_type& value)
@@ -384,7 +384,7 @@ public:
   }
   iterator insert(iterator hint, value_type&& value)
   {
-    return tree_.insert_multi(hint, mystl::move(value));
+    return tree_.insert_multi(hint, dwt_stl::move(value));
   }
 
   template <class InputIterator>
@@ -465,13 +465,13 @@ bool operator>=(const multiset<Key, Compare>& lhs, const multiset<Key, Compare>&
   return !(lhs < rhs);
 }
 
-// 重载 mystl 的 swap
+// 重载 dwt_stl 的 swap
 template <class Key, class Compare>
 void swap(multiset<Key, Compare>& lhs, multiset<Key, Compare>& rhs) noexcept
 {
   lhs.swap(rhs);
 }
 
-} // namespace mystl
+} // namespace dwt_stl
 #endif // !MYTINYSTL_SET_H_
 

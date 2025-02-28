@@ -1,14 +1,14 @@
 ﻿#ifndef MYTINYSTL_ALGOBASE_H_
 #define MYTINYSTL_ALGOBASE_H_
 
-// 这个头文件包含了 mystl 的基本算法
+// 这个头文件包含了 dwt_stl 的基本算法
 
 #include <cstring>
 
 #include "iterator.h"
 #include "util.h"
 
-namespace mystl
+namespace dwt_stl
 {
 
 #ifdef max
@@ -62,7 +62,7 @@ const T& min(const T& lhs, const T& rhs, Compare comp)
 template <class FIter1, class FIter2>
 void iter_swap(FIter1 lhs, FIter2 rhs)
 {
-  mystl::swap(*lhs, *rhs);
+  dwt_stl::swap(*lhs, *rhs);
 }
 
 /*****************************************************************************************/
@@ -73,7 +73,7 @@ void iter_swap(FIter1 lhs, FIter2 rhs)
 template <class InputIter, class OutputIter>
 OutputIter 
 unchecked_copy_cat(InputIter first, InputIter last, OutputIter result, 
-                   mystl::input_iterator_tag)
+                   dwt_stl::input_iterator_tag)
 {
   for (; first != last; ++first, ++result)
   {
@@ -86,7 +86,7 @@ unchecked_copy_cat(InputIter first, InputIter last, OutputIter result,
 template <class RandomIter, class OutputIter>
 OutputIter 
 unchecked_copy_cat(RandomIter first, RandomIter last, OutputIter result,
-                   mystl::random_access_iterator_tag)
+                   dwt_stl::random_access_iterator_tag)
 {
   for (auto n = last - first; n > 0; --n, ++first, ++result)
   {
@@ -130,7 +130,7 @@ OutputIter copy(InputIter first, InputIter last, OutputIter result)
 template <class BidirectionalIter1, class BidirectionalIter2>
 BidirectionalIter2 
 unchecked_copy_backward_cat(BidirectionalIter1 first, BidirectionalIter1 last,
-                            BidirectionalIter2 result, mystl::bidirectional_iterator_tag)
+                            BidirectionalIter2 result, dwt_stl::bidirectional_iterator_tag)
 {
   while (first != last)
     *--result = *--last;
@@ -141,7 +141,7 @@ unchecked_copy_backward_cat(BidirectionalIter1 first, BidirectionalIter1 last,
 template <class RandomIter1, class BidirectionalIter2>
 BidirectionalIter2 
 unchecked_copy_backward_cat(RandomIter1 first, RandomIter1 last,
-                            BidirectionalIter2 result, mystl::random_access_iterator_tag)
+                            BidirectionalIter2 result, dwt_stl::random_access_iterator_tag)
 {
   for (auto n = last - first; n > 0; --n)
     *--result = *--last;
@@ -203,27 +203,27 @@ copy_if(InputIter first, InputIter last, OutputIter result, UnaryPredicate unary
 // 返回一个 pair 分别指向拷贝结束的尾部
 /*****************************************************************************************/
 template <class InputIter, class Size, class OutputIter>
-mystl::pair<InputIter, OutputIter>
-unchecked_copy_n(InputIter first, Size n, OutputIter result, mystl::input_iterator_tag)
+dwt_stl::pair<InputIter, OutputIter>
+unchecked_copy_n(InputIter first, Size n, OutputIter result, dwt_stl::input_iterator_tag)
 {
   for (; n > 0; --n, ++first, ++result)
   {
     *result = *first;
   }
-  return mystl::pair<InputIter, OutputIter>(first, result);
+  return dwt_stl::pair<InputIter, OutputIter>(first, result);
 }
 
 template <class RandomIter, class Size, class OutputIter>
-mystl::pair<RandomIter, OutputIter>
+dwt_stl::pair<RandomIter, OutputIter>
 unchecked_copy_n(RandomIter first, Size n, OutputIter result, 
-                 mystl::random_access_iterator_tag)
+                 dwt_stl::random_access_iterator_tag)
 {
   auto last = first + n;
-  return mystl::pair<RandomIter, OutputIter>(last, mystl::copy(first, last, result));
+  return dwt_stl::pair<RandomIter, OutputIter>(last, dwt_stl::copy(first, last, result));
 }
 
 template <class InputIter, class Size, class OutputIter>
-mystl::pair<InputIter, OutputIter> 
+dwt_stl::pair<InputIter, OutputIter> 
 copy_n(InputIter first, Size n, OutputIter result)
 {
   return unchecked_copy_n(first, n, result, iterator_category(first));
@@ -237,11 +237,11 @@ copy_n(InputIter first, Size n, OutputIter result)
 template <class InputIter, class OutputIter>
 OutputIter 
 unchecked_move_cat(InputIter first, InputIter last, OutputIter result,
-                   mystl::input_iterator_tag)
+                   dwt_stl::input_iterator_tag)
 {
   for (; first != last; ++first, ++result)
   {
-    *result = mystl::move(*first);
+    *result = dwt_stl::move(*first);
   }
   return result;
 }
@@ -250,11 +250,11 @@ unchecked_move_cat(InputIter first, InputIter last, OutputIter result,
 template <class RandomIter, class OutputIter>
 OutputIter 
 unchecked_move_cat(RandomIter first, RandomIter last, OutputIter result,
-                   mystl::random_access_iterator_tag)
+                   dwt_stl::random_access_iterator_tag)
 {
   for (auto n = last - first; n > 0; --n, ++first, ++result)
   {
-    *result = mystl::move(*first);
+    *result = dwt_stl::move(*first);
   }
   return result;
 }
@@ -294,10 +294,10 @@ OutputIter move(InputIter first, InputIter last, OutputIter result)
 template <class BidirectionalIter1, class BidirectionalIter2>
 BidirectionalIter2
 unchecked_move_backward_cat(BidirectionalIter1 first, BidirectionalIter1 last,
-                            BidirectionalIter2 result, mystl::bidirectional_iterator_tag)
+                            BidirectionalIter2 result, dwt_stl::bidirectional_iterator_tag)
 {
   while (first != last)
-    *--result = mystl::move(*--last);
+    *--result = dwt_stl::move(*--last);
   return result;
 }
 
@@ -305,10 +305,10 @@ unchecked_move_backward_cat(BidirectionalIter1 first, BidirectionalIter1 last,
 template <class RandomIter1, class RandomIter2>
 RandomIter2
 unchecked_move_backward_cat(RandomIter1 first, RandomIter1 last,
-                            RandomIter2 result, mystl::random_access_iterator_tag)
+                            RandomIter2 result, dwt_stl::random_access_iterator_tag)
 {
   for (auto n = last - first; n > 0; --n)
-    *--result = mystl::move(*--last);
+    *--result = dwt_stl::move(*--last);
   return result;
 }
 
@@ -414,7 +414,7 @@ OutputIter fill_n(OutputIter first, Size n, const T& value)
 /*****************************************************************************************/
 template <class ForwardIter, class T>
 void fill_cat(ForwardIter first, ForwardIter last, const T& value,
-              mystl::forward_iterator_tag)
+              dwt_stl::forward_iterator_tag)
 {
   for (; first != last; ++first)
   {
@@ -424,7 +424,7 @@ void fill_cat(ForwardIter first, ForwardIter last, const T& value,
 
 template <class RandomIter, class T>
 void fill_cat(RandomIter first, RandomIter last, const T& value,
-              mystl::random_access_iterator_tag)
+              dwt_stl::random_access_iterator_tag)
 {
   fill_n(first, last - first, value);
 }
@@ -481,7 +481,7 @@ bool lexicographical_compare(const unsigned char* first1,
   const auto len1 = last1 - first1;
   const auto len2 = last2 - first2;
   // 先比较相同长度的部分
-  const auto result = std::memcmp(first1, first2, mystl::min(len1, len2));
+  const auto result = std::memcmp(first1, first2, dwt_stl::min(len1, len2));
   // 若相等，长度较长的比较大
   return result != 0 ? result < 0 : len1 < len2;
 }
@@ -491,7 +491,7 @@ bool lexicographical_compare(const unsigned char* first1,
 // 平行比较两个序列，找到第一处失配的元素，返回一对迭代器，分别指向两个序列中失配的元素
 /*****************************************************************************************/
 template <class InputIter1, class InputIter2>
-mystl::pair<InputIter1, InputIter2> 
+dwt_stl::pair<InputIter1, InputIter2> 
 mismatch(InputIter1 first1, InputIter1 last1, InputIter2 first2)
 {
   while (first1 != last1 && *first1 == *first2)
@@ -499,12 +499,12 @@ mismatch(InputIter1 first1, InputIter1 last1, InputIter2 first2)
     ++first1;
     ++first2;
   }
-  return mystl::pair<InputIter1, InputIter2>(first1, first2);
+  return dwt_stl::pair<InputIter1, InputIter2>(first1, first2);
 }
 
 // 重载版本使用函数对象 comp 代替比较操作
 template <class InputIter1, class InputIter2, class Compred>
-mystl::pair<InputIter1, InputIter2> 
+dwt_stl::pair<InputIter1, InputIter2> 
 mismatch(InputIter1 first1, InputIter1 last1, InputIter2 first2, Compred comp)
 {
   while (first1 != last1 && comp(*first1, *first2))
@@ -512,9 +512,9 @@ mismatch(InputIter1 first1, InputIter1 last1, InputIter2 first2, Compred comp)
     ++first1;
     ++first2;
   }
-  return mystl::pair<InputIter1, InputIter2>(first1, first2);
+  return dwt_stl::pair<InputIter1, InputIter2>(first1, first2);
 }
 
-} // namespace mystl
+} // namespace dwt_stl
 #endif // !MYTINYSTL_ALGOBASE_H_
 

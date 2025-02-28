@@ -8,7 +8,7 @@
 #include "../MyTinySTL/astring.h"
 #include "test.h"
 
-namespace mystl
+namespace dwt_stl
 {
 namespace test
 {
@@ -21,22 +21,22 @@ void string_test()
   std::cout << "[----------------- Run container test : string -----------------]" << std::endl;
   std::cout << "[-------------------------- API test ---------------------------]" << std::endl;
   const char* s = "abcdefg";
-  mystl::string str;
-  mystl::string str1(5, 'a');
-  mystl::string str2(str1, 3);
-  mystl::string str3(str1, 0, 3);
-  mystl::string str4("abc");
-  mystl::string str5("abcde",3);
-  mystl::string str6(s, s + 5);
-  mystl::string str7(str1);
-  mystl::string str8(std::move(str1));
-  mystl::string str9;
+  dwt_stl::string str;
+  dwt_stl::string str1(5, 'a');
+  dwt_stl::string str2(str1, 3);
+  dwt_stl::string str3(str1, 0, 3);
+  dwt_stl::string str4("abc");
+  dwt_stl::string str5("abcde",3);
+  dwt_stl::string str6(s, s + 5);
+  dwt_stl::string str7(str1);
+  dwt_stl::string str8(std::move(str1));
+  dwt_stl::string str9;
   str9 = str2;
-  mystl::string str10;
+  dwt_stl::string str10;
   str10 = std::move(str2);
-  mystl::string str11;
+  dwt_stl::string str11;
   str11 = "123";
-  mystl::string str12;
+  dwt_stl::string str12;
   str12 = 'A';
 
   STR_FUN_AFTER(str, str = 'a');
@@ -203,5 +203,5 @@ void string_test()
 
 } // namespace string_test
 } // namespace test
-} // namespace mystl
+} // namespace dwt_stl
 #endif // !MYTINYSTL_STRING_TEST_H_

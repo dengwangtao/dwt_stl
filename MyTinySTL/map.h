@@ -8,26 +8,26 @@
 // notes:
 //
 // 异常保证：
-// mystl::map<Key, T> / mystl::multimap<Key, T> 满足基本异常保证，对以下等函数做强异常安全保证：
+// dwt_stl::map<Key, T> / dwt_stl::multimap<Key, T> 满足基本异常保证，对以下等函数做强异常安全保证：
 //   * emplace
 //   * emplace_hint
 //   * insert
 
 #include "rb_tree.h"
 
-namespace mystl
+namespace dwt_stl
 {
 
 // 模板类 map，键值不允许重复
-// 参数一代表键值类型，参数二代表实值类型，参数三代表键值的比较方式，缺省使用 mystl::less
-template <class Key, class T, class Compare = mystl::less<Key>>
+// 参数一代表键值类型，参数二代表实值类型，参数三代表键值的比较方式，缺省使用 dwt_stl::less
+template <class Key, class T, class Compare = dwt_stl::less<Key>>
 class map
 {
 public:
   // map 的嵌套型别定义
   typedef Key                        key_type;
   typedef T                          mapped_type;
-  typedef mystl::pair<const Key, T>  value_type;
+  typedef dwt_stl::pair<const Key, T>  value_type;
   typedef Compare                    key_compare;
 
   // 定义一个 functor，用来进行元素比较
@@ -45,8 +45,8 @@ public:
   };
 
 private:
-  // 以 mystl::rb_tree 作为底层机制
-  typedef mystl::rb_tree<value_type, key_compare>  base_type;
+  // 以 dwt_stl::rb_tree 作为底层机制
+  typedef dwt_stl::rb_tree<value_type, key_compare>  base_type;
   base_type tree_;
 
 public:
@@ -83,7 +83,7 @@ public:
   {
   }
   map(map&& rhs) noexcept
-    :tree_(mystl::move(rhs.tree_))
+    :tree_(dwt_stl::move(rhs.tree_))
   {
   }
 
@@ -94,7 +94,7 @@ public:
   }
   map& operator=(map&& rhs)
   { 
-    tree_ = mystl::move(rhs.tree_);
+    tree_ = dwt_stl::move(rhs.tree_);
     return *this;
   }
 
@@ -178,7 +178,7 @@ public:
     iterator it = lower_bound(key);
     // it->first >= key
     if (it == end() || key_comp()(key, it->first))
-      it = emplace_hint(it, mystl::move(key), T{});
+      it = emplace_hint(it, dwt_stl::move(key), T{});
     return it->second;
   }
 
@@ -187,13 +187,13 @@ public:
   template <class ...Args>
   pair<iterator, bool> emplace(Args&& ...args)
   {
-    return tree_.emplace_unique(mystl::forward<Args>(args)...);
+    return tree_.emplace_unique(dwt_stl::forward<Args>(args)...);
   }
 
   template <class ...Args>
   iterator emplace_hint(iterator hint, Args&& ...args)
   {
-    return tree_.emplace_unique_use_hint(hint, mystl::forward<Args>(args)...);
+    return tree_.emplace_unique_use_hint(hint, dwt_stl::forward<Args>(args)...);
   }
 
   pair<iterator, bool> insert(const value_type& value)
@@ -202,7 +202,7 @@ public:
   }
   pair<iterator, bool> insert(value_type&& value)
   {
-    return tree_.insert_unique(mystl::move(value));
+    return tree_.insert_unique(dwt_stl::move(value));
   }
 
   iterator insert(iterator hint, const value_type& value)
@@ -211,7 +211,7 @@ public:
   }
   iterator insert(iterator hint, value_type&& value)
   {
-    return tree_.insert_unique(hint, mystl::move(value));
+    return tree_.insert_unique(hint, dwt_stl::move(value));
   }
 
   template <class InputIterator>
@@ -292,7 +292,7 @@ bool operator>=(const map<Key, T, Compare>& lhs, const map<Key, T, Compare>& rhs
   return !(lhs < rhs);
 }
 
-// 重载 mystl 的 swap
+// 重载 dwt_stl 的 swap
 template <class Key, class T, class Compare>
 void swap(map<Key, T, Compare>& lhs, map<Key, T, Compare>& rhs) noexcept
 {
@@ -302,15 +302,15 @@ void swap(map<Key, T, Compare>& lhs, map<Key, T, Compare>& rhs) noexcept
 /*****************************************************************************************/
 
 // 模板类 multimap，键值允许重复
-// 参数一代表键值类型，参数二代表实值类型，参数三代表键值的比较方式，缺省使用 mystl::less
-template <class Key, class T, class Compare = mystl::less<Key>>
+// 参数一代表键值类型，参数二代表实值类型，参数三代表键值的比较方式，缺省使用 dwt_stl::less
+template <class Key, class T, class Compare = dwt_stl::less<Key>>
 class multimap
 {
 public:
   // multimap 的型别定义
   typedef Key                        key_type;
   typedef T                          mapped_type;
-  typedef mystl::pair<const Key, T>  value_type;
+  typedef dwt_stl::pair<const Key, T>  value_type;
   typedef Compare                    key_compare;
 
   // 定义一个 functor，用来进行元素比较
@@ -328,8 +328,8 @@ public:
   };
 
 private:
-  // 用 mystl::rb_tree 作为底层机制
-  typedef mystl::rb_tree<value_type, key_compare>  base_type;
+  // 用 dwt_stl::rb_tree 作为底层机制
+  typedef dwt_stl::rb_tree<value_type, key_compare>  base_type;
   base_type tree_;
 
 public:
@@ -365,7 +365,7 @@ public:
   {
   }
   multimap(multimap&& rhs) noexcept
-    :tree_(mystl::move(rhs.tree_))
+    :tree_(dwt_stl::move(rhs.tree_))
   {
   }
 
@@ -376,7 +376,7 @@ public:
   }
   multimap& operator=(multimap&& rhs) 
   { 
-    tree_ = mystl::move(rhs.tree_);
+    tree_ = dwt_stl::move(rhs.tree_);
     return *this; 
   }
 
@@ -432,13 +432,13 @@ public:
   template <class ...Args>
   iterator emplace(Args&& ...args)
   {
-    return tree_.emplace_multi(mystl::forward<Args>(args)...);
+    return tree_.emplace_multi(dwt_stl::forward<Args>(args)...);
   }
 
   template <class ...Args>
   iterator emplace_hint(iterator hint, Args&& ...args)
   {
-    return tree_.emplace_multi_use_hint(hint, mystl::forward<Args>(args)...);
+    return tree_.emplace_multi_use_hint(hint, dwt_stl::forward<Args>(args)...);
   }
 
   iterator insert(const value_type& value)
@@ -447,7 +447,7 @@ public:
   }
   iterator insert(value_type&& value)
   {
-    return tree_.insert_multi(mystl::move(value));
+    return tree_.insert_multi(dwt_stl::move(value));
   }
 
   iterator insert(iterator hint, const value_type& value)
@@ -456,7 +456,7 @@ public:
   }
   iterator insert(iterator hint, value_type&& value)
   {
-    return tree_.insert_multi(hint, mystl::move(value));
+    return tree_.insert_multi(hint, dwt_stl::move(value));
   }
 
   template <class InputIterator>
@@ -537,13 +537,13 @@ bool operator>=(const multimap<Key, T, Compare>& lhs, const multimap<Key, T, Com
   return !(lhs < rhs);
 }
 
-// 重载 mystl 的 swap
+// 重载 dwt_stl 的 swap
 template <class Key, class T, class Compare>
 void swap(multimap<Key, T, Compare>& lhs, multimap<Key, T, Compare>& rhs) noexcept
 {
   lhs.swap(rhs);
 }
 
-} // namespace mystl
+} // namespace dwt_stl
 #endif // !MYTINYSTL_MAP_H_
 

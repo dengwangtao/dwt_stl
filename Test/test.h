@@ -14,7 +14,7 @@
 
 #include "Lib/redbud/io/color.h"
 
-namespace mystl
+namespace dwt_stl
 {
 namespace test
 {
@@ -459,7 +459,7 @@ Example:
 int arr[] = {1,2,3};
 std::vector<int> v1{1, 2, 3};
 std::vector<int> v2{2, 3, 4};
-mystl::vector<long> v3(arr, arr + 3);
+dwt_stl::vector<long> v3(arr, arr + 3);
 EXPECT_CON_NE(v1, v2)   ok
 EXPECT_CON_EQ(arr, v1)  ok
 EXPECT_CON_EQ(v1, v3)   ok
@@ -655,10 +655,10 @@ void test_len(size_t len1, size_t len2, size_t len3, size_t wide)
   FUN_TEST_FORMAT1(std::con, fun, arg, len1);                \
   FUN_TEST_FORMAT1(std::con, fun, arg, len2);                \
   FUN_TEST_FORMAT1(std::con, fun, arg, len3);                \
-  std::cout << "\n|        mystl        |";                  \
-  FUN_TEST_FORMAT1(mystl::con, fun, arg, len1);              \
-  FUN_TEST_FORMAT1(mystl::con, fun, arg, len2);              \
-  FUN_TEST_FORMAT1(mystl::con, fun, arg, len3);    
+  std::cout << "\n|        dwt_stl        |";                  \
+  FUN_TEST_FORMAT1(dwt_stl::con, fun, arg, len1);              \
+  FUN_TEST_FORMAT1(dwt_stl::con, fun, arg, len2);              \
+  FUN_TEST_FORMAT1(dwt_stl::con, fun, arg, len3);    
 
 #define CON_TEST_P2(con, fun, arg1, arg2, len1, len2, len3)  \
   TEST_LEN(len1, len2, len3, WIDE);                          \
@@ -666,10 +666,10 @@ void test_len(size_t len1, size_t len2, size_t len3, size_t wide)
   FUN_TEST_FORMAT2(std::con, fun, arg1, arg2, len1);         \
   FUN_TEST_FORMAT2(std::con, fun, arg1, arg2, len2);         \
   FUN_TEST_FORMAT2(std::con, fun, arg1, arg2, len3);         \
-  std::cout << "\n|        mystl        |";                  \
-  FUN_TEST_FORMAT2(mystl::con, fun, arg1, arg2, len1);       \
-  FUN_TEST_FORMAT2(mystl::con, fun, arg1, arg2, len2);       \
-  FUN_TEST_FORMAT2(mystl::con, fun, arg1, arg2, len3);    
+  std::cout << "\n|        dwt_stl        |";                  \
+  FUN_TEST_FORMAT2(dwt_stl::con, fun, arg1, arg2, len1);       \
+  FUN_TEST_FORMAT2(dwt_stl::con, fun, arg1, arg2, len2);       \
+  FUN_TEST_FORMAT2(dwt_stl::con, fun, arg1, arg2, len3);    
 
 #define MAP_EMPLACE_TEST(con, len1, len2, len3)              \
   TEST_LEN(len1, len2, len3, WIDE);                          \
@@ -677,10 +677,10 @@ void test_len(size_t len1, size_t len2, size_t len3, size_t wide)
   MAP_EMPLACE_DO_TEST(std, con, len1);                       \
   MAP_EMPLACE_DO_TEST(std, con, len2);                       \
   MAP_EMPLACE_DO_TEST(std, con, len3);                       \
-  std::cout << "\n|        mystl        |";                  \
-  MAP_EMPLACE_DO_TEST(mystl, con, len1);                     \
-  MAP_EMPLACE_DO_TEST(mystl, con, len2);                     \
-  MAP_EMPLACE_DO_TEST(mystl, con, len3);
+  std::cout << "\n|        dwt_stl        |";                  \
+  MAP_EMPLACE_DO_TEST(dwt_stl, con, len1);                     \
+  MAP_EMPLACE_DO_TEST(dwt_stl, con, len2);                     \
+  MAP_EMPLACE_DO_TEST(dwt_stl, con, len3);
 
 #define LIST_SORT_TEST(len1, len2, len3)                     \
   TEST_LEN(len1, len2, len3, WIDE);                          \
@@ -688,10 +688,10 @@ void test_len(size_t len1, size_t len2, size_t len3, size_t wide)
   LIST_SORT_DO_TEST(std, len1);                              \
   LIST_SORT_DO_TEST(std, len2);                              \
   LIST_SORT_DO_TEST(std, len3);                              \
-  std::cout << "\n|        mystl        |";                  \
-  LIST_SORT_DO_TEST(mystl, len1);                            \
-  LIST_SORT_DO_TEST(mystl, len2);                            \
-  LIST_SORT_DO_TEST(mystl, len3);
+  std::cout << "\n|        dwt_stl        |";                  \
+  LIST_SORT_DO_TEST(dwt_stl, len1);                            \
+  LIST_SORT_DO_TEST(dwt_stl, len2);                            \
+  LIST_SORT_DO_TEST(dwt_stl, len3);
 
 // 简单测试的宏定义
 #define TEST(testcase_name) \
@@ -699,7 +699,7 @@ void test_len(size_t len1, size_t len2, size_t len3, size_t wide)
 
 // 运行所有测试案例
 #define RUN_ALL_TESTS() \
-  mystl::test::UnitTest::GetInstance()->Run()
+  dwt_stl::test::UnitTest::GetInstance()->Run()
 
 // 是否开启性能测试
 #ifndef PERFORMANCE_TEST_ON
@@ -712,6 +712,6 @@ void test_len(size_t len1, size_t len2, size_t len3, size_t wide)
 #endif // !LARGER_TEST_DATA_ON
 
 }    // namespace test
-}    // namespace mystl
+}    // namespace dwt_stl
 #endif // !MYTINYSTL_TEST_H_
 

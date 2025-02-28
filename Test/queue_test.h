@@ -8,14 +8,14 @@
 #include "../MyTinySTL/queue.h"
 #include "test.h"
 
-namespace mystl
+namespace dwt_stl
 {
 namespace test
 {
 namespace queue_test
 {
 
-void queue_print(mystl::queue<int> q)
+void queue_print(dwt_stl::queue<int> q)
 {
   while (!q.empty())
   {
@@ -25,7 +25,7 @@ void queue_print(mystl::queue<int> q)
   std::cout << std::endl;
 }
 
-void p_queue_print(mystl::priority_queue<int> p)
+void p_queue_print(dwt_stl::priority_queue<int> p)
 {
   while (!p.empty())
   {
@@ -69,21 +69,21 @@ void queue_test()
   std::cout << "[----------------- Run container test : queue ------------------]" << std::endl;
   std::cout << "[-------------------------- API test ---------------------------]" << std::endl;
   int a[] = { 1,2,3,4,5 };
-  mystl::deque<int> d1(5);
-  mystl::queue<int> q1;
-  mystl::queue<int> q2(5);
-  mystl::queue<int> q3(5, 1);
-  mystl::queue<int> q4(a, a + 5);
-  mystl::queue<int> q5(d1);
-  mystl::queue<int> q6(std::move(d1));
-  mystl::queue<int> q7(q2);
-  mystl::queue<int> q8(std::move(q2));
-  mystl::queue<int> q9;
+  dwt_stl::deque<int> d1(5);
+  dwt_stl::queue<int> q1;
+  dwt_stl::queue<int> q2(5);
+  dwt_stl::queue<int> q3(5, 1);
+  dwt_stl::queue<int> q4(a, a + 5);
+  dwt_stl::queue<int> q5(d1);
+  dwt_stl::queue<int> q6(std::move(d1));
+  dwt_stl::queue<int> q7(q2);
+  dwt_stl::queue<int> q8(std::move(q2));
+  dwt_stl::queue<int> q9;
   q9 = q3;
-  mystl::queue<int> q10;
+  dwt_stl::queue<int> q10;
   q10 = std::move(q3);
-  mystl::queue<int> q11{ 1,2,3,4,5 };
-  mystl::queue<int> q12;
+  dwt_stl::queue<int> q11{ 1,2,3,4,5 };
+  dwt_stl::queue<int> q12;
   q12 = { 1,2,3,4,5 };
 
   QUEUE_FUN_AFTER(q1, q1.push(1));
@@ -127,21 +127,21 @@ void priority_test()
   std::cout << "[------------- Run container test : priority_queue -------------]" << std::endl;
   std::cout << "[-------------------------- API test ---------------------------]" << std::endl;
   int a[] = { 1,2,3,4,5 };
-  mystl::vector<int> v1(5);
-  mystl::priority_queue<int> p1;
-  mystl::priority_queue<int> p2(5);
-  mystl::priority_queue<int> p3(5, 1);
-  mystl::priority_queue<int> p4(a, a + 5);
-  mystl::priority_queue<int> p5(v1);
-  mystl::priority_queue<int> p6(std::move(v1));
-  mystl::priority_queue<int> p7(p2);
-  mystl::priority_queue<int> p8(std::move(p2));
-  mystl::priority_queue<int> p9;
+  dwt_stl::vector<int> v1(5);
+  dwt_stl::priority_queue<int> p1;
+  dwt_stl::priority_queue<int> p2(5);
+  dwt_stl::priority_queue<int> p3(5, 1);
+  dwt_stl::priority_queue<int> p4(a, a + 5);
+  dwt_stl::priority_queue<int> p5(v1);
+  dwt_stl::priority_queue<int> p6(std::move(v1));
+  dwt_stl::priority_queue<int> p7(p2);
+  dwt_stl::priority_queue<int> p8(std::move(p2));
+  dwt_stl::priority_queue<int> p9;
   p9 = p3;
-  mystl::priority_queue<int> p10;
+  dwt_stl::priority_queue<int> p10;
   p10 = std::move(p3);
-  mystl::priority_queue<int> p11{ 1,2,3,4,5 };
-  mystl::priority_queue<int> p12;
+  dwt_stl::priority_queue<int> p11{ 1,2,3,4,5 };
+  dwt_stl::priority_queue<int> p12;
   p12 = { 1,2,3,4,5 };
 
   P_QUEUE_FUN_AFTER(p1, p1.push(1));
@@ -181,6 +181,6 @@ void priority_test()
 
 } // namespace queue_test
 } // namespace test
-} // namespace mystl
+} // namespace dwt_stl
 #endif // !MYTINYSTL_QUEUE_TEST_H_
 

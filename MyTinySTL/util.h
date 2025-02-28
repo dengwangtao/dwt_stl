@@ -7,7 +7,7 @@
 #include "common.h"
 #include "type_traits.h"
 
-namespace mystl
+namespace dwt_stl
 {
 
 // m_remove_reference 用于移除 T 的引用属性
@@ -36,11 +36,23 @@ DECL__T(m_remove_reference);
 
 // -----------------------------------
 
+// 判断是否为左值引用
 template<class T>
 struct is_lvalue_reference : false_type {};
 
 template<class T>
 struct is_lvalue_reference<T&> : true_type {};
+
+// -----------------------------------
+
+// -----------------------------------
+
+// 判断是否为右值引用
+template<class T>
+struct is_rvalue_reference : false_type {};
+
+template<class T>
+struct is_rvalue_reference<T&&> : true_type {};
 
 // -----------------------------------
 
@@ -72,23 +84,23 @@ T&& forward(typename m_remove_reference_t<T>&& arg) noexcept
 template <class Tp>
 void swap(Tp& lhs, Tp& rhs)
 {
-  auto tmp(mystl::move(lhs));
-  lhs = mystl::move(rhs);
-  rhs = mystl::move(tmp);
+  auto tmp(dwt_stl::move(lhs));
+  lhs = dwt_stl::move(rhs);
+  rhs = dwt_stl::move(tmp);
 }
 
 template <class ForwardIter1, class ForwardIter2>
 ForwardIter2 swap_range(ForwardIter1 first1, ForwardIter1 last1, ForwardIter2 first2)
 {
   for (; first1 != last1; ++first1, (void) ++first2)
-    mystl::swap(*first1, *first2);
+    dwt_stl::swap(*first1, *first2);
   return first2;
 }
 
 template <class Tp, size_t N>
 void swap(Tp(&a)[N], Tp(&b)[N])
 {
-  mystl::swap_range(a, a + N, b);
+  dwt_stl::swap_range(a, a + N, b);
 }
 
 // --------------------------------------------------------------------------------------
@@ -151,8 +163,8 @@ struct pair
     std::is_convertible<Other1&&, Ty1>::value &&
     std::is_convertible<Other2&&, Ty2>::value, int>::type = 0>
     constexpr pair(Other1&& a, Other2&& b)
-    : first(mystl::forward<Other1>(a)),
-    second(mystl::forward<Other2>(b))
+    : first(dwt_stl::forward<Other1>(a)),
+    second(dwt_stl::forward<Other2>(b))
   {
   }
 
@@ -164,8 +176,8 @@ struct pair
     (!std::is_convertible<Other1, Ty1>::value ||
      !std::is_convertible<Other2, Ty2>::value), int>::type = 0>
     explicit constexpr pair(Other1&& a, Other2&& b)
-    : first(mystl::forward<Other1>(a)),
-    second(mystl::forward<Other2>(b))
+    : first(dwt_stl::forward<Other1>(a)),
+    second(dwt_stl::forward<Other2>(b))
   {
   }
 
@@ -203,8 +215,8 @@ struct pair
     std::is_convertible<Other1, Ty1>::value &&
     std::is_convertible<Other2, Ty2>::value, int>::type = 0>
     constexpr pair(pair<Other1, Other2>&& other)
-    : first(mystl::forward<Other1>(other.first)),
-    second(mystl::forward<Other2>(other.second))
+    : first(dwt_stl::forward<Other1>(other.first)),
+    second(dwt_stl::forward<Other2>(other.second))
   {
   }
 
@@ -216,8 +228,8 @@ struct pair
     (!std::is_convertible<Other1, Ty1>::value ||
      !std::is_convertible<Other2, Ty2>::value), int>::type = 0>
     explicit constexpr pair(pair<Other1, Other2>&& other)
-    : first(mystl::forward<Other1>(other.first)),
-    second(mystl::forward<Other2>(other.second))
+    : first(dwt_stl::forward<Other1>(other.first)),
+    second(dwt_stl::forward<Other2>(other.second))
   {
   }
 
@@ -237,8 +249,8 @@ struct pair
   {
     if (this != &rhs)
     {
-      first = mystl::move(rhs.first);
-      second = mystl::move(rhs.second);
+      first = dwt_stl::move(rhs.first);
+      second = dwt_stl::move(rhs.second);
     }
     return *this;
   }
@@ -256,8 +268,8 @@ struct pair
   template <class Other1, class Other2>
   pair& operator=(pair<Other1, Other2>&& other)
   {
-    first = mystl::forward<Other1>(other.first);
-    second = mystl::forward<Other2>(other.second);
+    first = dwt_stl::forward<Other1>(other.first);
+    second = dwt_stl::forward<Other2>(other.second);
     return *this;
   }
 
@@ -267,8 +279,8 @@ struct pair
   {
     if (this != &other)
     {
-      mystl::swap(first, other.first);
-      mystl::swap(second, other.second);
+      dwt_stl::swap(first, other.first);
+      dwt_stl::swap(second, other.second);
     }
   }
 
@@ -311,7 +323,7 @@ bool operator>=(const pair<Ty1, Ty2>& lhs, const pair<Ty1, Ty2>& rhs)
   return !(lhs < rhs);
 }
 
-// 重载 mystl 的 swap
+// 重载 dwt_stl 的 swap
 template <class Ty1, class Ty2>
 void swap(pair<Ty1, Ty2>& lhs, pair<Ty1, Ty2>& rhs)
 {
@@ -322,7 +334,7 @@ void swap(pair<Ty1, Ty2>& lhs, pair<Ty1, Ty2>& rhs)
 template <class Ty1, class Ty2>
 pair<Ty1, Ty2> make_pair(Ty1&& first, Ty2&& second)
 {
-  return pair<Ty1, Ty2>(mystl::forward<Ty1>(first), mystl::forward<Ty2>(second));
+  return pair<Ty1, Ty2>(dwt_stl::forward<Ty1>(first), dwt_stl::forward<Ty2>(second));
 }
 
 }

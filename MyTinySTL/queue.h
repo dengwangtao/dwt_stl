@@ -10,12 +10,12 @@
 #include "functional.h"
 #include "heap_algo.h"
 
-namespace mystl
+namespace dwt_stl
 {
 
 // 模板类 queue
-// 参数一代表数据类型，参数二代表底层容器类型，缺省使用 mystl::deque 作为底层容器
-template <class T, class Container = mystl::deque<T>>
+// 参数一代表数据类型，参数二代表底层容器类型，缺省使用 dwt_stl::deque 作为底层容器
+template <class T, class Container = dwt_stl::deque<T>>
 class queue
 {
 public:
@@ -61,7 +61,7 @@ public:
   {
   }
   queue(Container&& c) noexcept(std::is_nothrow_move_constructible<Container>::value)
-    :c_(mystl::move(c)) 
+    :c_(dwt_stl::move(c)) 
   {
   }
 
@@ -70,7 +70,7 @@ public:
   {
   }
   queue(queue&& rhs) noexcept(std::is_nothrow_move_constructible<Container>::value)
-    :c_(mystl::move(rhs.c_)) 
+    :c_(dwt_stl::move(rhs.c_)) 
   {
   }
 
@@ -81,7 +81,7 @@ public:
   }
   queue& operator=(queue&& rhs) noexcept(std::is_nothrow_move_assignable<Container>::value)
   { 
-    c_ = mystl::move(rhs.c_);
+    c_ = dwt_stl::move(rhs.c_);
     return *this;
   }
 
@@ -106,12 +106,12 @@ public:
   // 修改容器相关操作
   template <class ...Args>
   void emplace(Args&& ...args)
-  { c_.emplace_back(mystl::forward<Args>(args)...); }
+  { c_.emplace_back(dwt_stl::forward<Args>(args)...); }
 
   void push(const value_type& value) 
   { c_.push_back(value); }
   void push(value_type&& value)      
-  { c_.emplace_back(mystl::move(value)); }
+  { c_.emplace_back(dwt_stl::move(value)); }
 
   void pop()                         
   { c_.pop_front(); }
@@ -122,8 +122,8 @@ public:
       pop(); 
   }
 
-  void swap(queue& rhs) noexcept(noexcept(mystl::swap(c_, rhs.c_)))
-  { mystl::swap(c_, rhs.c_); }
+  void swap(queue& rhs) noexcept(noexcept(dwt_stl::swap(c_, rhs.c_)))
+  { dwt_stl::swap(c_, rhs.c_); }
 
 public:
   friend bool operator==(const queue& lhs, const queue& rhs) { return lhs.c_ == rhs.c_; }
@@ -167,7 +167,7 @@ bool operator>=(const queue<T, Container>& lhs, const queue<T, Container>& rhs)
   return !(lhs < rhs);
 }
 
-// 重载 mystl 的 swap
+// 重载 dwt_stl 的 swap
 template <class T, class Container>
 void swap(queue<T, Container>& lhs, queue<T, Container>& rhs) noexcept(noexcept(lhs.swap(rhs)))
 {
@@ -177,10 +177,10 @@ void swap(queue<T, Container>& lhs, queue<T, Container>& rhs) noexcept(noexcept(
 /*****************************************************************************************/
 
 // 模板类 priority_queue
-// 参数一代表数据类型，参数二代表容器类型，缺省使用 mystl::vector 作为底层容器
-// 参数三代表比较权值的方式，缺省使用 mystl::less 作为比较方式
-template <class T, class Container = mystl::vector<T>,
-  class Compare = mystl::less<typename Container::value_type>>
+// 参数一代表数据类型，参数二代表容器类型，缺省使用 dwt_stl::vector 作为底层容器
+// 参数三代表比较权值的方式，缺省使用 dwt_stl::less 作为比较方式
+template <class T, class Container = dwt_stl::vector<T>,
+  class Compare = dwt_stl::less<typename Container::value_type>>
 class priority_queue
 {
 public:
@@ -211,68 +211,68 @@ public:
   explicit priority_queue(size_type n)
     :c_(n)
   {
-    mystl::make_heap(c_.begin(), c_.end(), comp_);
+    dwt_stl::make_heap(c_.begin(), c_.end(), comp_);
   }
   priority_queue(size_type n, const value_type& value) 
     :c_(n, value)
   {
-    mystl::make_heap(c_.begin(), c_.end(), comp_);
+    dwt_stl::make_heap(c_.begin(), c_.end(), comp_);
   }
 
   template <class IIter>
   priority_queue(IIter first, IIter last) 
     :c_(first, last)
   {
-    mystl::make_heap(c_.begin(), c_.end(), comp_);
+    dwt_stl::make_heap(c_.begin(), c_.end(), comp_);
   }
 
   priority_queue(std::initializer_list<T> ilist)
     :c_(ilist)
   {
-    mystl::make_heap(c_.begin(), c_.end(), comp_);
+    dwt_stl::make_heap(c_.begin(), c_.end(), comp_);
   }
 
   priority_queue(const Container& s)
     :c_(s)
   {
-    mystl::make_heap(c_.begin(), c_.end(), comp_);
+    dwt_stl::make_heap(c_.begin(), c_.end(), comp_);
   }
   priority_queue(Container&& s) 
-    :c_(mystl::move(s))
+    :c_(dwt_stl::move(s))
   {
-    mystl::make_heap(c_.begin(), c_.end(), comp_);
+    dwt_stl::make_heap(c_.begin(), c_.end(), comp_);
   }
 
   priority_queue(const priority_queue& rhs)
     :c_(rhs.c_), comp_(rhs.comp_)
   {
-    mystl::make_heap(c_.begin(), c_.end(), comp_);
+    dwt_stl::make_heap(c_.begin(), c_.end(), comp_);
   }
   priority_queue(priority_queue&& rhs) 
-    :c_(mystl::move(rhs.c_)), comp_(rhs.comp_)
+    :c_(dwt_stl::move(rhs.c_)), comp_(rhs.comp_)
   {
-    mystl::make_heap(c_.begin(), c_.end(), comp_);
+    dwt_stl::make_heap(c_.begin(), c_.end(), comp_);
   }
 
   priority_queue& operator=(const priority_queue& rhs)
   {
     c_ = rhs.c_;
     comp_ = rhs.comp_;
-    mystl::make_heap(c_.begin(), c_.end(), comp_);
+    dwt_stl::make_heap(c_.begin(), c_.end(), comp_);
     return *this;
   }
   priority_queue& operator=(priority_queue&& rhs)
   {
-    c_ = mystl::move(rhs.c_);
+    c_ = dwt_stl::move(rhs.c_);
     comp_ = rhs.comp_;
-    mystl::make_heap(c_.begin(), c_.end(), comp_);
+    dwt_stl::make_heap(c_.begin(), c_.end(), comp_);
     return *this;
   }
   priority_queue& operator=(std::initializer_list<T> ilist)
   {
     c_ = ilist;
     comp_ = value_compare();
-    mystl::make_heap(c_.begin(), c_.end(), comp_);
+    dwt_stl::make_heap(c_.begin(), c_.end(), comp_);
     return *this;
   }
 
@@ -291,24 +291,24 @@ public:
   template <class... Args>
   void emplace(Args&& ...args)
   {
-    c_.emplace_back(mystl::forward<Args>(args)...);
-    mystl::push_heap(c_.begin(), c_.end(), comp_);
+    c_.emplace_back(dwt_stl::forward<Args>(args)...);
+    dwt_stl::push_heap(c_.begin(), c_.end(), comp_);
   }
 
   void push(const value_type& value)
   {
     c_.push_back(value);
-    mystl::push_heap(c_.begin(), c_.end(), comp_);
+    dwt_stl::push_heap(c_.begin(), c_.end(), comp_);
   }
   void push(value_type&& value)
   {
-    c_.push_back(mystl::move(value));
-    mystl::push_heap(c_.begin(), c_.end(), comp_);
+    c_.push_back(dwt_stl::move(value));
+    dwt_stl::push_heap(c_.begin(), c_.end(), comp_);
   }
 
   void pop()
   {
-    mystl::pop_heap(c_.begin(), c_.end(), comp_);
+    dwt_stl::pop_heap(c_.begin(), c_.end(), comp_);
     c_.pop_back();
   }
 
@@ -318,11 +318,11 @@ public:
       pop();
   }
 
-  void swap(priority_queue& rhs) noexcept(noexcept(mystl::swap(c_, rhs.c_)) &&
-                                          noexcept(mystl::swap(comp_, rhs.comp_)))
+  void swap(priority_queue& rhs) noexcept(noexcept(dwt_stl::swap(c_, rhs.c_)) &&
+                                          noexcept(dwt_stl::swap(comp_, rhs.comp_)))
   {
-    mystl::swap(c_, rhs.c_);
-    mystl::swap(comp_, rhs.comp_);
+    dwt_stl::swap(c_, rhs.c_);
+    dwt_stl::swap(comp_, rhs.comp_);
   }
 
 public:
@@ -351,7 +351,7 @@ bool operator!=(priority_queue<T, Container, Compare>& lhs,
   return lhs != rhs;
 }
 
-// 重载 mystl 的 swap
+// 重载 dwt_stl 的 swap
 template <class T, class Container, class Compare>
 void swap(priority_queue<T, Container, Compare>& lhs, 
           priority_queue<T, Container, Compare>& rhs) noexcept(noexcept(lhs.swap(rhs)))
@@ -359,6 +359,6 @@ void swap(priority_queue<T, Container, Compare>& lhs,
   lhs.swap(rhs);
 }
 
-} // namespace mystl
+} // namespace dwt_stl
 #endif // !MYTINYSTL_QUEUE_H_
 

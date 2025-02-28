@@ -14,7 +14,7 @@
 #include "type_traits.h"
 #include "exceptdef.h"
 
-namespace mystl
+namespace dwt_stl
 {
 
 // rb tree 节点颜色的类型
@@ -77,7 +77,7 @@ struct rb_tree_value_traits_imp<T, true>
 template <class T>
 struct rb_tree_value_traits
 {
-  static constexpr bool is_map = mystl::is_pair<T>::value;
+  static constexpr bool is_map = dwt_stl::is_pair<T>::value;
 
   typedef rb_tree_value_traits_imp<T, is_map> value_traits_type;
 
@@ -189,7 +189,7 @@ struct rb_tree_traits
 // rb tree 的迭代器设计
 
 template <class T>
-struct rb_tree_iterator_base :public mystl::iterator<mystl::bidirectional_iterator_tag, T>
+struct rb_tree_iterator_base :public dwt_stl::iterator<dwt_stl::bidirectional_iterator_tag, T>
 {
   typedef typename rb_tree_traits<T>::base_ptr  base_ptr;
 
@@ -589,7 +589,7 @@ NodePtr rb_tree_erase_rebalance(NodePtr z, NodePtr& root, NodePtr& leftmost, Nod
     else
       z->parent->right = y;
     y->parent = z->parent;
-    mystl::swap(y->color, z->color);
+    dwt_stl::swap(y->color, z->color);
     y = z;
   }
   // y == z 说明 z 至多只有一个孩子
@@ -726,10 +726,10 @@ public:
   typedef typename tree_traits::value_type         value_type;
   typedef Compare                                  key_compare;
 
-  typedef mystl::allocator<T>                      allocator_type;
-  typedef mystl::allocator<T>                      data_allocator;
-  typedef mystl::allocator<base_type>              base_allocator;
-  typedef mystl::allocator<node_type>              node_allocator;
+  typedef dwt_stl::allocator<T>                      allocator_type;
+  typedef dwt_stl::allocator<T>                      data_allocator;
+  typedef dwt_stl::allocator<base_type>              base_allocator;
+  typedef dwt_stl::allocator<node_type>              node_allocator;
 
   typedef typename allocator_type::pointer         pointer;
   typedef typename allocator_type::const_pointer   const_pointer;
@@ -740,8 +740,8 @@ public:
 
   typedef rb_tree_iterator<T>                      iterator;
   typedef rb_tree_const_iterator<T>                const_iterator;
-  typedef mystl::reverse_iterator<iterator>        reverse_iterator;
-  typedef mystl::reverse_iterator<const_iterator>  const_reverse_iterator;
+  typedef dwt_stl::reverse_iterator<iterator>        reverse_iterator;
+  typedef dwt_stl::reverse_iterator<const_iterator>  const_reverse_iterator;
 
   allocator_type get_allocator() const { return node_allocator(); }
   key_compare    key_comp()      const { return key_comp_; }
@@ -814,7 +814,7 @@ public:
   iterator  emplace_multi(Args&& ...args);
 
   template <class ...Args>
-  mystl::pair<iterator, bool> emplace_unique(Args&& ...args);
+  dwt_stl::pair<iterator, bool> emplace_unique(Args&& ...args);
 
   template <class ...Args>
   iterator  emplace_multi_use_hint(iterator hint, Args&& ...args);
@@ -827,7 +827,7 @@ public:
   iterator  insert_multi(const value_type& value);
   iterator  insert_multi(value_type&& value)
   {
-    return emplace_multi(mystl::move(value));
+    return emplace_multi(dwt_stl::move(value));
   }
 
   iterator  insert_multi(iterator hint, const value_type& value)
@@ -836,22 +836,22 @@ public:
   }
   iterator  insert_multi(iterator hint, value_type&& value)
   {
-    return emplace_multi_use_hint(hint, mystl::move(value));
+    return emplace_multi_use_hint(hint, dwt_stl::move(value));
   }
 
   template <class InputIterator>
   void      insert_multi(InputIterator first, InputIterator last)
   {
-    size_type n = mystl::distance(first, last);
+    size_type n = dwt_stl::distance(first, last);
     THROW_LENGTH_ERROR_IF(node_count_ > max_size() - n, "rb_tree<T, Comp>'s size too big");
     for (; n > 0; --n, ++first)
       insert_multi(end(), *first);
   }
 
-  mystl::pair<iterator, bool> insert_unique(const value_type& value);
-  mystl::pair<iterator, bool> insert_unique(value_type&& value)
+  dwt_stl::pair<iterator, bool> insert_unique(const value_type& value);
+  dwt_stl::pair<iterator, bool> insert_unique(value_type&& value)
   {
-    return emplace_unique(mystl::move(value));
+    return emplace_unique(dwt_stl::move(value));
   }
 
   iterator  insert_unique(iterator hint, const value_type& value)
@@ -860,13 +860,13 @@ public:
   }
   iterator  insert_unique(iterator hint, value_type&& value)
   {
-    return emplace_unique_use_hint(hint, mystl::move(value));
+    return emplace_unique_use_hint(hint, dwt_stl::move(value));
   }
 
   template <class InputIterator>
   void      insert_unique(InputIterator first, InputIterator last)
   {
-    size_type n = mystl::distance(first, last);
+    size_type n = dwt_stl::distance(first, last);
     THROW_LENGTH_ERROR_IF(node_count_ > max_size() - n, "rb_tree<T, Comp>'s size too big");
     for (; n > 0; --n, ++first)
       insert_unique(end(), *first);
@@ -891,7 +891,7 @@ public:
   size_type      count_multi(const key_type& key) const
   {
     auto p = equal_range_multi(key);
-    return static_cast<size_type>(mystl::distance(p.first, p.second));
+    return static_cast<size_type>(dwt_stl::distance(p.first, p.second));
   }
   size_type      count_unique(const key_type& key) const
   {
@@ -904,30 +904,30 @@ public:
   iterator       upper_bound(const key_type& key);
   const_iterator upper_bound(const key_type& key) const;
 
-  mystl::pair<iterator, iterator>             
+  dwt_stl::pair<iterator, iterator>             
   equal_range_multi(const key_type& key)
   {
-    return mystl::pair<iterator, iterator>(lower_bound(key), upper_bound(key));
+    return dwt_stl::pair<iterator, iterator>(lower_bound(key), upper_bound(key));
   }
-  mystl::pair<const_iterator, const_iterator>
+  dwt_stl::pair<const_iterator, const_iterator>
   equal_range_multi(const key_type& key) const
   {
-    return mystl::pair<const_iterator, const_iterator>(lower_bound(key), upper_bound(key));
+    return dwt_stl::pair<const_iterator, const_iterator>(lower_bound(key), upper_bound(key));
   }
 
-  mystl::pair<iterator, iterator>             
+  dwt_stl::pair<iterator, iterator>             
   equal_range_unique(const key_type& key)
   {
     iterator it = find(key);
     auto next = it;
-    return it == end() ? mystl::make_pair(it, it) : mystl::make_pair(it, ++next);
+    return it == end() ? dwt_stl::make_pair(it, it) : dwt_stl::make_pair(it, ++next);
   }
-  mystl::pair<const_iterator, const_iterator> 
+  dwt_stl::pair<const_iterator, const_iterator> 
   equal_range_unique(const key_type& key) const
   {
     const_iterator it = find(key);
     auto next = it;
-    return it == end() ? mystl::make_pair(it, it) : mystl::make_pair(it, ++next);
+    return it == end() ? dwt_stl::make_pair(it, it) : dwt_stl::make_pair(it, ++next);
   }
 
   void swap(rb_tree& rhs) noexcept;
@@ -945,9 +945,9 @@ private:
   void     reset();
 
   // get insert pos
-  mystl::pair<base_ptr, bool> 
+  dwt_stl::pair<base_ptr, bool> 
            get_insert_multi_pos(const key_type& key);
-  mystl::pair<mystl::pair<base_ptr, bool>, bool> 
+  dwt_stl::pair<dwt_stl::pair<base_ptr, bool>, bool> 
            get_insert_unique_pos(const key_type& key);
 
   // insert value / insert node
@@ -985,7 +985,7 @@ rb_tree(const rb_tree& rhs)
 template <class T, class Compare>
 rb_tree<T, Compare>::
 rb_tree(rb_tree&& rhs) noexcept
-  :header_(mystl::move(rhs.header_)),
+  :header_(dwt_stl::move(rhs.header_)),
   node_count_(rhs.node_count_),
   key_comp_(rhs.key_comp_)
 {
@@ -1022,7 +1022,7 @@ rb_tree<T, Compare>::
 operator=(rb_tree&& rhs)
 {
   clear();
-  header_ = mystl::move(rhs.header_);
+  header_ = dwt_stl::move(rhs.header_);
   node_count_ = rhs.node_count_;
   key_comp_ = rhs.key_comp_;
   rhs.reset();
@@ -1037,7 +1037,7 @@ rb_tree<T, Compare>::
 emplace_multi(Args&& ...args)
 {
   THROW_LENGTH_ERROR_IF(node_count_ > max_size() - 1, "rb_tree<T, Comp>'s size too big");
-  node_ptr np = create_node(mystl::forward<Args>(args)...);
+  node_ptr np = create_node(dwt_stl::forward<Args>(args)...);
   auto res = get_insert_multi_pos(value_traits::get_key(np->value));
   return insert_node_at(res.first, np, res.second);
 }
@@ -1045,19 +1045,19 @@ emplace_multi(Args&& ...args)
 // 就地插入元素，键值不允许重复
 template <class T, class Compare>
 template <class ...Args>
-mystl::pair<typename rb_tree<T, Compare>::iterator, bool> 
+dwt_stl::pair<typename rb_tree<T, Compare>::iterator, bool> 
 rb_tree<T, Compare>::
 emplace_unique(Args&& ...args)
 {
   THROW_LENGTH_ERROR_IF(node_count_ > max_size() - 1, "rb_tree<T, Comp>'s size too big");
-  node_ptr np = create_node(mystl::forward<Args>(args)...);
+  node_ptr np = create_node(dwt_stl::forward<Args>(args)...);
   auto res = get_insert_unique_pos(value_traits::get_key(np->value));
   if (res.second)
   { // 插入成功
-    return mystl::make_pair(insert_node_at(res.first.first, np, res.first.second), true);
+    return dwt_stl::make_pair(insert_node_at(res.first.first, np, res.first.second), true);
   }
   destroy_node(np);
-  return mystl::make_pair(iterator(res.first.first), false);
+  return dwt_stl::make_pair(iterator(res.first.first), false);
 }
 
 // 就地插入元素，键值允许重复，当 hint 位置与插入位置接近时，插入操作的时间复杂度可以降低
@@ -1068,7 +1068,7 @@ rb_tree<T, Compare>::
 emplace_multi_use_hint(iterator hint, Args&& ...args)
 {
   THROW_LENGTH_ERROR_IF(node_count_ > max_size() - 1, "rb_tree<T, Comp>'s size too big");
-  node_ptr np = create_node(mystl::forward<Args>(args)...);
+  node_ptr np = create_node(dwt_stl::forward<Args>(args)...);
   if (node_count_ == 0)
   {
     return insert_node_at(header_, np, true);
@@ -1109,7 +1109,7 @@ rb_tree<T, Compare>::
 emplace_unique_use_hint(iterator hint, Args&& ...args)
 {
   THROW_LENGTH_ERROR_IF(node_count_ > max_size() - 1, "rb_tree<T, Comp>'s size too big");
-  node_ptr np = create_node(mystl::forward<Args>(args)...);
+  node_ptr np = create_node(dwt_stl::forward<Args>(args)...);
   if (node_count_ == 0)
   {
     return insert_node_at(header_, np, true);
@@ -1165,7 +1165,7 @@ insert_multi(const value_type& value)
 
 // 插入新值，节点键值不允许重复，返回一个 pair，若插入成功，pair 的第二参数为 true，否则为 false
 template <class T, class Compare>
-mystl::pair<typename rb_tree<T, Compare>::iterator, bool>
+dwt_stl::pair<typename rb_tree<T, Compare>::iterator, bool>
 rb_tree<T, Compare>::
 insert_unique(const value_type& value)
 {
@@ -1173,9 +1173,9 @@ insert_unique(const value_type& value)
   auto res = get_insert_unique_pos(value_traits::get_key(value));
   if (res.second)
   { // 插入成功
-    return mystl::make_pair(insert_value_at(res.first.first, value, res.first.second), true);
+    return dwt_stl::make_pair(insert_value_at(res.first.first, value, res.first.second), true);
   }
-  return mystl::make_pair(res.first.first, false);
+  return dwt_stl::make_pair(res.first.first, false);
 }
 
 // 删除 hint 位置的节点
@@ -1201,7 +1201,7 @@ rb_tree<T, Compare>::
 erase_multi(const key_type& key)
 {
   auto p = equal_range_multi(key);
-  size_type n = mystl::distance(p.first, p.second);
+  size_type n = dwt_stl::distance(p.first, p.second);
   erase(p.first, p.second);
   return n;
 }
@@ -1390,9 +1390,9 @@ swap(rb_tree& rhs) noexcept
 {
   if (this != &rhs)
   {
-    mystl::swap(header_, rhs.header_);
-    mystl::swap(node_count_, rhs.node_count_);
-    mystl::swap(key_comp_, rhs.key_comp_);
+    dwt_stl::swap(header_, rhs.header_);
+    dwt_stl::swap(node_count_, rhs.node_count_);
+    dwt_stl::swap(key_comp_, rhs.key_comp_);
   }
 }
 
@@ -1409,7 +1409,7 @@ create_node(Args&&... args)
   auto tmp = node_allocator::allocate(1);
   try
   {
-    data_allocator::construct(mystl::address_of(tmp->value), mystl::forward<Args>(args)...);
+    data_allocator::construct(dwt_stl::address_of(tmp->value), dwt_stl::forward<Args>(args)...);
     tmp->left = nullptr;
     tmp->right = nullptr;
     tmp->parent = nullptr;
@@ -1467,7 +1467,7 @@ void rb_tree<T, Compare>::reset()
 
 // get_insert_multi_pos 函数
 template <class T, class Compare>
-mystl::pair<typename rb_tree<T, Compare>::base_ptr, bool>
+dwt_stl::pair<typename rb_tree<T, Compare>::base_ptr, bool>
 rb_tree<T, Compare>::get_insert_multi_pos(const key_type& key)
 {
   auto x = root();
@@ -1479,12 +1479,12 @@ rb_tree<T, Compare>::get_insert_multi_pos(const key_type& key)
     add_to_left = key_comp_(key, value_traits::get_key(x->get_node_ptr()->value));
     x = add_to_left ? x->left : x->right;
   }
-  return mystl::make_pair(y, add_to_left);
+  return dwt_stl::make_pair(y, add_to_left);
 }
 
 // get_insert_unique_pos 函数
 template <class T, class Compare>
-mystl::pair<mystl::pair<typename rb_tree<T, Compare>::base_ptr, bool>, bool>
+dwt_stl::pair<dwt_stl::pair<typename rb_tree<T, Compare>::base_ptr, bool>, bool>
 rb_tree<T, Compare>::get_insert_unique_pos(const key_type& key)
 { // 返回一个 pair，第一个值为一个 pair，包含插入点的父节点和一个 bool 表示是否在左边插入，
   // 第二个值为一个 bool，表示是否插入成功
@@ -1502,7 +1502,7 @@ rb_tree<T, Compare>::get_insert_unique_pos(const key_type& key)
   {
     if (y == header_ || j == begin())
     { // 如果树为空树或插入点在最左节点处，肯定可以插入新的节点
-      return mystl::make_pair(mystl::make_pair(y, true), true);
+      return dwt_stl::make_pair(dwt_stl::make_pair(y, true), true);
     }
     else
     { // 否则，如果存在重复节点，那么 --j 就是重复的值
@@ -1511,10 +1511,10 @@ rb_tree<T, Compare>::get_insert_unique_pos(const key_type& key)
   }
   if (key_comp_(value_traits::get_key(*j), key))  
   { // 表明新节点没有重复
-    return mystl::make_pair(mystl::make_pair(y, add_to_left), true);
+    return dwt_stl::make_pair(dwt_stl::make_pair(y, add_to_left), true);
   }
   // 进行至此，表示新节点与现有节点键值重复
-  return mystl::make_pair(mystl::make_pair(y, add_to_left), false);
+  return dwt_stl::make_pair(dwt_stl::make_pair(y, add_to_left), false);
 }
 
 // insert_value_at 函数
@@ -1693,13 +1693,13 @@ erase_since(base_ptr x)
 template <class T, class Compare>
 bool operator==(const rb_tree<T, Compare>& lhs, const rb_tree<T, Compare>& rhs)
 {
-  return lhs.size() == rhs.size() && mystl::equal(lhs.begin(), lhs.end(), rhs.begin());
+  return lhs.size() == rhs.size() && dwt_stl::equal(lhs.begin(), lhs.end(), rhs.begin());
 }
 
 template <class T, class Compare>
 bool operator<(const rb_tree<T, Compare>& lhs, const rb_tree<T, Compare>& rhs)
 {
-  return mystl::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+  return dwt_stl::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 }
 
 template <class T, class Compare>
@@ -1726,13 +1726,13 @@ bool operator>=(const rb_tree<T, Compare>& lhs, const rb_tree<T, Compare>& rhs)
   return !(lhs < rhs);
 }
 
-// 重载 mystl 的 swap
+// 重载 dwt_stl 的 swap
 template <class T, class Compare>
 void swap(rb_tree<T, Compare>& lhs, rb_tree<T, Compare>& rhs) noexcept
 {
   lhs.swap(rhs);
 }
 
-} // namespace mystl
+} // namespace dwt_stl
 #endif // !MYTINYSTL_RB_TREE_H_
 
