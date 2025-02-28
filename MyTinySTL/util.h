@@ -116,6 +116,7 @@ struct pair
 {
   using first_type  = Ty1;
   using second_type = Ty2;
+  using self        = pair<Ty1, Ty2>;
 
   first_type first;    // 保存第一个数据
   second_type second;  // 保存第二个数据
@@ -286,51 +287,15 @@ struct pair
     }
   }
 
+  // 重载比较操作符 
+  bool operator<(const self& other) const { return first < other.first || (first == other.first && second < other.second); }
+  bool operator==(const self& other) const { return first == other.first && second == other.second; }
+  bool operator!=(const self& other) const { return !(*this == other); }
+  bool operator>(const self& other) const { return other < *this; }
+  bool operator<=(const self& other) const { return !(*this > other); }
+  bool operator>=(const self& other) const { return !(*this < other); }
+
 };
-
-// 重载比较操作符 
-template <class Ty1, class Ty2>
-bool operator==(const pair<Ty1, Ty2>& lhs, const pair<Ty1, Ty2>& rhs)
-{
-  return lhs.first == rhs.first && lhs.second == rhs.second;
-}
-
-template <class Ty1, class Ty2>
-bool operator<(const pair<Ty1, Ty2>& lhs, const pair<Ty1, Ty2>& rhs)
-{
-  return lhs.first < rhs.first || (lhs.first == rhs.first && lhs.second < rhs.second);
-}
-
-template <class Ty1, class Ty2>
-bool operator!=(const pair<Ty1, Ty2>& lhs, const pair<Ty1, Ty2>& rhs)
-{
-  return !(lhs == rhs);
-}
-
-template <class Ty1, class Ty2>
-bool operator>(const pair<Ty1, Ty2>& lhs, const pair<Ty1, Ty2>& rhs)
-{
-  return rhs < lhs;
-}
-
-template <class Ty1, class Ty2>
-bool operator<=(const pair<Ty1, Ty2>& lhs, const pair<Ty1, Ty2>& rhs)
-{
-  return !(rhs < lhs);
-}
-
-template <class Ty1, class Ty2>
-bool operator>=(const pair<Ty1, Ty2>& lhs, const pair<Ty1, Ty2>& rhs)
-{
-  return !(lhs < rhs);
-}
-
-// 重载 dwt_stl 的 swap
-template <class Ty1, class Ty2>
-void swap(pair<Ty1, Ty2>& lhs, pair<Ty1, Ty2>& rhs)
-{
-  lhs.swap(rhs);
-}
 
 // 全局函数，让两个数据成为一个 pair
 template <class Ty1, class Ty2>
