@@ -74,8 +74,7 @@ template <class T>
 struct has_iterator_cat<T, std::void_t<typename T::iterator_category>> : std::true_type {};
 
 
-template <class Iterator, class = void>
-struct iterator_traits_impl {};
+
 
 // 判断一个迭代器是否可以隐式转换到 input_iterator_tag 或 output_iterator_tag
 template<class T, class = void>
@@ -86,6 +85,9 @@ struct is_convertible_iterator<T,
   std::enable_if_t<std::is_convertible_v<typename T::iterator_category, input_iterator_tag> || std::is_convertible_v<typename T::iterator_category, output_iterator_tag>, void> >
     : std::true_type
 {};
+
+template <class Iterator, class = void>
+struct iterator_traits_impl {};
 
 // 偏特化版本: 针对 可以隐式转换到 input_iterator_tag 和 output_iterator_tag 的偏特化版本, 5种迭代器都可以转换到这两种迭代器
 template <class Iterator>
@@ -126,16 +128,17 @@ struct iterator_traits<const T*>
   typedef ptrdiff_t                            difference_type;
 };
 
-template <class T, class U, bool = has_iterator_cat<iterator_traits<T>>::value>
-struct has_iterator_cat_of
-  : public m_bool_constant<std::is_convertible<
-  typename iterator_traits<T>::iterator_category, U>::value>
-{
-};
 
 // 萃取某种迭代器
+template <class T, class U, class = void>
+struct has_iterator_cat_of : std::false_type {};
+
 template <class T, class U>
-struct has_iterator_cat_of<T, U, false> : public m_false_type {};
+struct has_iterator_cat_of<T, U,
+    std::enable_if_t<has_iterator_cat<iterator_traits<T>>::value && std::is_convertible_v<typename iterator_traits<T>::iterator_category, U>, void>
+  > : public std::true_type
+{
+};
 
 template <class Iter>
 struct is_exactly_input_iterator : public m_bool_constant<has_iterator_cat_of<Iter, input_iterator_tag>::value && 
