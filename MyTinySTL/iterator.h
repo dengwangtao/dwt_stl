@@ -73,7 +73,7 @@ struct has_iterator_cat : false_type {};
 template <class T>
 struct has_iterator_cat<T, std::void_t<typename T::iterator_category>> : true_type {};
 
-
+DECL__V(has_iterator_cat);
 
 
 // 判断一个迭代器是否可以隐式转换到 input_iterator_tag 或 output_iterator_tag
@@ -86,13 +86,15 @@ struct is_convertible_iterator<T,
     : true_type
 {};
 
+DECL__V(is_convertible_iterator);
+
 template <class Iterator, class = void>
 struct iterator_traits_impl {};
 
 // 偏特化版本: 针对 可以隐式转换到 input_iterator_tag 和 output_iterator_tag 的偏特化版本, 5种迭代器都可以转换到这两种迭代器
 template <class Iterator>
 struct iterator_traits_impl<Iterator, 
-    std::enable_if_t<is_convertible_iterator<Iterator>::value, void> >
+    std::enable_if_t<is_convertible_iterator_v<Iterator>, void> >
 {
   typedef typename Iterator::iterator_category iterator_category;
   typedef typename Iterator::value_type        value_type;
@@ -133,29 +135,19 @@ struct iterator_traits<const T*>
 template <class T, class U, class = void>
 struct has_iterator_cat_of : false_type {};
 
-//template <class T, class U>
-//struct has_iterator_cat_of<T, U,
-//    std::enable_if_t<has_iterator_cat<iterator_traits<T>>::value && std::is_convertible_v<typename iterator_traits<T>::iterator_category, U>, void>
-//  > : public true_type
-//{
-//};
-// has_iterator_cat<iterator_traits<T>>::value 这个条件可以去掉
 
 template <class T, class U>
 struct has_iterator_cat_of<T, U,
-    std::enable_if_t<std::is_convertible_v<typename iterator_traits<T>::iterator_category, U>, void>
+    std::enable_if_t<has_iterator_cat_v<iterator_traits<T>> && std::is_convertible_v<typename iterator_traits<T>::iterator_category, U>, void>
 > : public true_type
 {
 };
 
+DECL__V2(has_iterator_cat_of);
 
-
-template <class Iter, class = void>
-struct is_exactly_input_iterator : false_type {};
 
 template <class Iter>
-struct is_exactly_input_iterator<Iter, std::enable_if_t<has_iterator_cat_of<Iter, input_iterator_tag>::value && !has_iterator_cat_of<Iter, forward_iterator_tag>::value> >
-    : public true_type {};
+struct is_exactly_input_iterator : public dwt_stl::bool_constant<has_iterator_cat_of_v<Iter, input_iterator_tag> && !has_iterator_cat_of_v<Iter, forward_iterator_tag>> {};
 
 template <class Iter>
 struct is_input_iterator : public has_iterator_cat_of<Iter, input_iterator_tag> {};
@@ -364,14 +356,14 @@ public:
     return *(*this + n);
   }
 
-  difference_type operator-(const self& rhs) { return base() - rhs.base(); }
+  difference_type operator-(const self& other) { return other.base() - base(); }
 
-  bool operator<(const self& rhs)   { return base() < rhs.base(); }
-  bool operator==(const self& rhs)  { return base() == rhs.base(); }
-  bool operator!=(const self& rhs)  { return !(*this == rhs); }
-  bool operator>(const self& rhs)   { return rhs.base() < base(); }
-  bool operator>=(const self& rhs)   { return !(*this < rhs.base()); }
-  bool operator<=(const self& rhs)   { return !(*this > rhs.base()); }
+  bool operator<(const self& other)   { return base() > other.base(); }
+  bool operator==(const self& other)  { return base() == other.base(); }
+  bool operator!=(const self& other)  { return !(*this == other); }
+  bool operator>(const self& other)   { return other.base() < base(); }
+  bool operator>=(const self& other)   { return !(*this < other.base()); }
+  bool operator<=(const self& other)   { return !(*this > other.base()); }
 };
 
 /*
