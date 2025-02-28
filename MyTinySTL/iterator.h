@@ -4,7 +4,7 @@
 // 这个头文件用于迭代器设计，包含了一些模板结构体与全局函数，
 
 #include <cstddef>
-
+#include "common.h"
 #include "type_traits.h"
 
 namespace mystl
@@ -68,22 +68,22 @@ public:
 
 // 再换一种写法:
 template <class T, class = void>
-struct has_iterator_cat : std::false_type {};
+struct has_iterator_cat : false_type {};
 
 template <class T>
-struct has_iterator_cat<T, std::void_t<typename T::iterator_category>> : std::true_type {};
+struct has_iterator_cat<T, std::void_t<typename T::iterator_category>> : true_type {};
 
 
 
 
 // 判断一个迭代器是否可以隐式转换到 input_iterator_tag 或 output_iterator_tag
 template<class T, class = void>
-struct is_convertible_iterator : std::false_type {};
+struct is_convertible_iterator : false_type {};
 
 template<class T>
 struct is_convertible_iterator<T,
   std::enable_if_t<std::is_convertible_v<typename T::iterator_category, input_iterator_tag> || std::is_convertible_v<typename T::iterator_category, output_iterator_tag>, void> >
-    : std::true_type
+    : true_type
 {};
 
 template <class Iterator, class = void>
@@ -131,12 +131,12 @@ struct iterator_traits<const T*>
 
 // 萃取某种迭代器
 template <class T, class U, class = void>
-struct has_iterator_cat_of : std::false_type {};
+struct has_iterator_cat_of : false_type {};
 
 //template <class T, class U>
 //struct has_iterator_cat_of<T, U,
 //    std::enable_if_t<has_iterator_cat<iterator_traits<T>>::value && std::is_convertible_v<typename iterator_traits<T>::iterator_category, U>, void>
-//  > : public std::true_type
+//  > : public true_type
 //{
 //};
 // has_iterator_cat<iterator_traits<T>>::value 这个条件可以去掉
@@ -144,26 +144,18 @@ struct has_iterator_cat_of : std::false_type {};
 template <class T, class U>
 struct has_iterator_cat_of<T, U,
     std::enable_if_t<std::is_convertible_v<typename iterator_traits<T>::iterator_category, U>, void>
-> : public std::true_type
+> : public true_type
 {
 };
 
 
 
-
-#define DECL__V(struct_) \
-    template <class Iter> constexpr bool struct_##_v = struct_<Iter>::value;
-
-#define DECL__T(struct_) \
-    template <class Iter> using struct_##_t = typename struct_<Iter>::type;
-
-
 template <class Iter, class = void>
-struct is_exactly_input_iterator : std::false_type {};
+struct is_exactly_input_iterator : false_type {};
 
 template <class Iter>
 struct is_exactly_input_iterator<Iter, std::enable_if_t<has_iterator_cat_of<Iter, input_iterator_tag>::value && !has_iterator_cat_of<Iter, forward_iterator_tag>::value> >
-    : public std::true_type {};
+    : public true_type {};
 
 template <class Iter>
 struct is_input_iterator : public has_iterator_cat_of<Iter, input_iterator_tag> {};

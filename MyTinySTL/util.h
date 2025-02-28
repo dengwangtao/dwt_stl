@@ -4,33 +4,67 @@
 // 这个文件包含一些通用工具，包括 move, forward, swap 等函数，以及 pair 等 
 
 #include <cstddef>
-
+#include "common.h"
 #include "type_traits.h"
 
 namespace mystl
 {
 
+// m_remove_reference 用于移除 T 的引用属性
+template <class T>
+struct m_remove_reference
+{
+  using type = T;
+  using const_type = const T;
+};
+
+template <class T>
+struct m_remove_reference<T&>
+{
+  using type = T;
+  using const_type = const T;
+};
+
+template <class T>
+struct m_remove_reference<T&&>
+{
+  using type = T;
+  using const_type = const T;
+};
+
+DECL__T(m_remove_reference);
+
+// -----------------------------------
+
+template<class T>
+struct is_lvalue_reference : false_type {};
+
+template<class T>
+struct is_lvalue_reference<T&> : true_type {};
+
+// -----------------------------------
+
 // move
 
 template <class T>
-typename std::remove_reference<T>::type&& move(T&& arg) noexcept
+typename m_remove_reference_t<T>&& move(T&& arg) noexcept
 {
-  return static_cast<typename std::remove_reference<T>::type&&>(arg);
+  return static_cast<typename m_remove_reference_t<T> &&>(arg);
 }
 
 // forward
 
 template <class T>
-T&& forward(typename std::remove_reference<T>::type& arg) noexcept
+T&& forward(typename m_remove_reference_t<T>& arg) noexcept
 {
-  return static_cast<T&&>(arg);
+  return static_cast<T&&>(arg); // 利用引用折叠 & && -> &
 }
 
 template <class T>
-T&& forward(typename std::remove_reference<T>::type&& arg) noexcept
+T&& forward(typename m_remove_reference_t<T>&& arg) noexcept
 {
-  static_assert(!std::is_lvalue_reference<T>::value, "bad forward");
-  return static_cast<T&&>(arg);
+  static_assert(!is_lvalue_reference<T>::value, "bad forward");
+  return static_cast<T&&>(arg); // // 利用引用折叠 && && -> &&
 }
 
 // swap

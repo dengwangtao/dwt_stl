@@ -153,6 +153,9 @@
     <ClInclude Include="..\MyTinySTL\exceptdef.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\MyTinySTL\common.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Test\test.cpp">

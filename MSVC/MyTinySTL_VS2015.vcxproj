@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\MyTinySTL\common.h" />
     <ClInclude Include="..\Test\algorithm_performance_test.h" />
     <ClInclude Include="..\Test\algorithm_test.h" />
     <ClInclude Include="..\Test\deque_test.h" />
