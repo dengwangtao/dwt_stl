@@ -133,36 +133,59 @@ struct iterator_traits<const T*>
 template <class T, class U, class = void>
 struct has_iterator_cat_of : std::false_type {};
 
+//template <class T, class U>
+//struct has_iterator_cat_of<T, U,
+//    std::enable_if_t<has_iterator_cat<iterator_traits<T>>::value && std::is_convertible_v<typename iterator_traits<T>::iterator_category, U>, void>
+//  > : public std::true_type
+//{
+//};
+// has_iterator_cat<iterator_traits<T>>::value 这个条件可以去掉
+
 template <class T, class U>
 struct has_iterator_cat_of<T, U,
-    std::enable_if_t<has_iterator_cat<iterator_traits<T>>::value && std::is_convertible_v<typename iterator_traits<T>::iterator_category, U>, void>
-  > : public std::true_type
+    std::enable_if_t<std::is_convertible_v<typename iterator_traits<T>::iterator_category, U>, void>
+> : public std::true_type
 {
 };
 
+
+
+
+#define DECL__V(struct_) \
+    template <class Iter> constexpr bool struct_##_v = struct_<Iter>::value;
+
+
+
+template <class Iter, class = void>
+struct is_exactly_input_iterator : std::false_type {};
+
 template <class Iter>
-struct is_exactly_input_iterator : public m_bool_constant<has_iterator_cat_of<Iter, input_iterator_tag>::value && 
-    !has_iterator_cat_of<Iter, forward_iterator_tag>::value> {};
+struct is_exactly_input_iterator<Iter, std::enable_if_t<has_iterator_cat_of<Iter, input_iterator_tag>::value && !has_iterator_cat_of<Iter, forward_iterator_tag>::value> >
+    : public std::true_type {};
 
 template <class Iter>
 struct is_input_iterator : public has_iterator_cat_of<Iter, input_iterator_tag> {};
+DECL__V(is_input_iterator);
 
 template <class Iter>
 struct is_output_iterator : public has_iterator_cat_of<Iter, output_iterator_tag> {};
+DECL__V(is_output_iterator);
 
 template <class Iter>
 struct is_forward_iterator : public has_iterator_cat_of<Iter, forward_iterator_tag> {};
+DECL__V(is_forward_iterator);
 
 template <class Iter>
 struct is_bidirectional_iterator : public has_iterator_cat_of<Iter, bidirectional_iterator_tag> {};
+DECL__V(is_bidirectional_iterator);
 
 template <class Iter>
 struct is_random_access_iterator : public has_iterator_cat_of<Iter, random_access_iterator_tag> {};
+DECL__V(is_random_access_iterator);
 
 template <class Iterator>
 struct is_iterator :
-  public m_bool_constant<is_input_iterator<Iterator>::value ||
-    is_output_iterator<Iterator>::value>
+  public m_bool_constant<is_input_iterator_v<Iterator> || is_output_iterator_v<Iterator>>
 {
 };
 

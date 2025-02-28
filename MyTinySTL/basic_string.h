@@ -342,7 +342,7 @@ public:
   }
 
   template <class Iter, typename std::enable_if<
-    mystl::is_input_iterator<Iter>::value, int>::type = 0>
+    mystl::is_input_iterator_v<Iter>, int>::type = 0>
   basic_string(Iter first, Iter last)
   { copy_init(first, last, iterator_category(first)); }
 
