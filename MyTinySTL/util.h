@@ -10,29 +10,29 @@
 namespace dwt_stl
 {
 
-// m_remove_reference 用于移除 T 的引用属性
+// remove_reference 用于移除 T 的引用属性
 template <class T>
-struct m_remove_reference
+struct remove_reference
 {
   using type = T;
   using const_type = const T;
 };
 
 template <class T>
-struct m_remove_reference<T&>
+struct remove_reference<T&>
 {
   using type = T;
   using const_type = const T;
 };
 
 template <class T>
-struct m_remove_reference<T&&>
+struct remove_reference<T&&>
 {
   using type = T;
   using const_type = const T;
 };
 
-DECL__T(m_remove_reference);
+DECL__T(remove_reference);
 
 // -----------------------------------
 
@@ -42,6 +42,8 @@ struct is_lvalue_reference : false_type {};
 
 template<class T>
 struct is_lvalue_reference<T&> : true_type {};
+
+DECL__V(is_lvalue_reference);
 
 // -----------------------------------
 
@@ -59,23 +61,23 @@ struct is_rvalue_reference<T&&> : true_type {};
 // move
 
 template <class T>
-typename m_remove_reference_t<T>&& move(T&& arg) noexcept
+typename dwt_stl::remove_reference_t<T>&& move(T&& arg) noexcept
 {
-  return static_cast<typename m_remove_reference_t<T> &&>(arg);
+  return static_cast<typename remove_reference_t<T> &&>(arg);
 }
 
 // forward
 
 template <class T>
-T&& forward(typename m_remove_reference_t<T>& arg) noexcept
+T&& forward(typename dwt_stl::remove_reference_t<T>& arg) noexcept
 {
   return static_cast<T&&>(arg); // 利用引用折叠 & && -> &
 }
 
 template <class T>
-T&& forward(typename m_remove_reference_t<T>&& arg) noexcept
+T&& forward(typename dwt_stl::remove_reference_t<T>&& arg) noexcept
 {
-  static_assert(!is_lvalue_reference<T>::value, "bad forward");
+  static_assert(!dwt_stl::is_lvalue_reference_v<T>, "bad forward");
   return static_cast<T&&>(arg); // // 利用引用折叠 && && -> &&
 }
 
@@ -112,17 +114,17 @@ void swap(Tp(&a)[N], Tp(&b)[N])
 template <class Ty1, class Ty2>
 struct pair
 {
-  typedef Ty1    first_type;
-  typedef Ty2    second_type;
+  using first_type  = Ty1;
+  using second_type = Ty2;
 
   first_type first;    // 保存第一个数据
   second_type second;  // 保存第二个数据
 
   // default constructiable
-  template <class Other1 = Ty1, class Other2 = Ty2,
-    typename = typename std::enable_if<
-    std::is_default_constructible<Other1>::value &&
-    std::is_default_constructible<Other2>::value, void>::type>
+  template <class Other1 = Ty1, class Other2 = Ty2, 
+            typename = typename std::enable_if<
+              std::is_default_constructible<Other1>::value &&
+              std::is_default_constructible<Other2>::value, void>::type>
     constexpr pair()
     : first(), second()
   {
