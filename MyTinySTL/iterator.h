@@ -154,6 +154,8 @@ struct has_iterator_cat_of<T, U,
 #define DECL__V(struct_) \
     template <class Iter> constexpr bool struct_##_v = struct_<Iter>::value;
 
+#define DECL__T(struct_) \
+    template <class Iter> using struct_##_t = typename struct_<Iter>::type;
 
 
 template <class Iter, class = void>
@@ -189,27 +191,28 @@ struct is_iterator :
 {
 };
 
+
+
+// ***下面函数不会在运行时调用***
+
 // 萃取某个迭代器的 category
 template <class Iterator>
-typename iterator_traits<Iterator>::iterator_category
-iterator_category(const Iterator&)
+typename iterator_traits<Iterator>::iterator_category iterator_category(const Iterator&)
 {
-  typedef typename iterator_traits<Iterator>::iterator_category Category;
-  return Category();
+   typedef typename iterator_traits<Iterator>::iterator_category Category;
+   return Category();
 }
 
 // 萃取某个迭代器的 distance_type
 template <class Iterator>
-typename iterator_traits<Iterator>::difference_type*
-distance_type(const Iterator&)
+typename iterator_traits<Iterator>::difference_type* distance_type(const Iterator&)
 {
-  return static_cast<typename iterator_traits<Iterator>::difference_type*>(0);
+   return static_cast<typename iterator_traits<Iterator>::difference_type*>(0);
 }
 
 // 萃取某个迭代器的 value_type
 template <class Iterator>
-typename iterator_traits<Iterator>::value_type*
-value_type(const Iterator&)
+typename iterator_traits<Iterator>::value_type* value_type(const Iterator&)
 {
   return static_cast<typename iterator_traits<Iterator>::value_type*>(0);
 }
@@ -218,8 +221,7 @@ value_type(const Iterator&)
 
 // distance 的 input_iterator_tag 的版本
 template <class InputIterator>
-typename iterator_traits<InputIterator>::difference_type
-distance_dispatch(InputIterator first, InputIterator last, input_iterator_tag)
+typename iterator_traits<InputIterator>::difference_type distance_dispatch(InputIterator first, InputIterator last, input_iterator_tag)
 {
   typename iterator_traits<InputIterator>::difference_type n = 0;
   while (first != last)
@@ -230,18 +232,17 @@ distance_dispatch(InputIterator first, InputIterator last, input_iterator_tag)
   return n;
 }
 
+// 随机访问迭代器直接相减
 // distance 的 random_access_iterator_tag 的版本
 template <class RandomIter>
-typename iterator_traits<RandomIter>::difference_type
-distance_dispatch(RandomIter first, RandomIter last,
-                  random_access_iterator_tag)
+typename iterator_traits<RandomIter>::difference_type distance_dispatch(RandomIter first, RandomIter last, random_access_iterator_tag)
 {
   return last - first;
 }
 
+// 外部调用该函数distance
 template <class InputIterator>
-typename iterator_traits<InputIterator>::difference_type
-distance(InputIterator first, InputIterator last)
+typename iterator_traits<InputIterator>::difference_type distance(InputIterator first, InputIterator last)
 {
   return distance_dispatch(first, last, iterator_category(first));
 }
@@ -291,14 +292,14 @@ private:
 
 public:
   // 反向迭代器的五种相应型别
-  typedef typename iterator_traits<Iterator>::iterator_category iterator_category;
-  typedef typename iterator_traits<Iterator>::value_type        value_type;
-  typedef typename iterator_traits<Iterator>::difference_type   difference_type;
-  typedef typename iterator_traits<Iterator>::pointer           pointer;
-  typedef typename iterator_traits<Iterator>::reference         reference;
+  using iterator_category =  typename iterator_traits<Iterator>::iterator_category ;
+  using value_type        =  typename iterator_traits<Iterator>::value_type        ;
+  using difference_type   =  typename iterator_traits<Iterator>::difference_type   ;
+  using pointer           =  typename iterator_traits<Iterator>::pointer           ;
+  using reference         =  typename iterator_traits<Iterator>::reference         ;
 
-  typedef Iterator                                              iterator_type;
-  typedef reverse_iterator<Iterator>                            self;
+  using iterator_type     = Iterator;
+  using self              = reverse_iterator<Iterator>;
 
 public:
   // 构造函数
@@ -370,8 +371,18 @@ public:
   {
     return *(*this + n);
   }
+
+  difference_type operator-(const self& rhs) { return base() - rhs.base(); }
+
+  bool operator<(const self& rhs)   { return base() < rhs.base(); }
+  bool operator==(const self& rhs)  { return base() == rhs.base(); }
+  bool operator!=(const self& rhs)  { return !(*this == rhs); }
+  bool operator>(const self& rhs)   { return rhs.base() < base(); }
+  bool operator>=(const self& rhs)   { return !(*this < rhs.base()); }
+  bool operator<=(const self& rhs)   { return !(*this > rhs.base()); }
 };
 
+/*
 // 重载 operator-
 template <class Iterator>
 typename reverse_iterator<Iterator>::difference_type
@@ -380,49 +391,7 @@ operator-(const reverse_iterator<Iterator>& lhs,
 {
   return rhs.base() - lhs.base();
 }
-
-// 重载比较操作符
-template <class Iterator>
-bool operator==(const reverse_iterator<Iterator>& lhs,
-                const reverse_iterator<Iterator>& rhs)
-{
-  return lhs.base() == rhs.base();
-}
-
-template <class Iterator>
-bool operator<(const reverse_iterator<Iterator>& lhs,
-  const reverse_iterator<Iterator>& rhs)
-{
-  return rhs.base() < lhs.base();
-}
-
-template <class Iterator>
-bool operator!=(const reverse_iterator<Iterator>& lhs,
-                const reverse_iterator<Iterator>& rhs)
-{
-  return !(lhs == rhs);
-}
-
-template <class Iterator>
-bool operator>(const reverse_iterator<Iterator>& lhs,
-               const reverse_iterator<Iterator>& rhs)
-{
-  return rhs < lhs;
-}
-
-template <class Iterator>
-bool operator<=(const reverse_iterator<Iterator>& lhs,
-                const reverse_iterator<Iterator>& rhs)
-{
-  return !(rhs < lhs);
-}
-
-template <class Iterator>
-bool operator>=(const reverse_iterator<Iterator>& lhs,
-                const reverse_iterator<Iterator>& rhs)
-{
-  return !(lhs < rhs);
-}
+*/
 
 } // namespace mystl
 
