@@ -20,17 +20,17 @@ namespace dwt_stl
 
 // construct 构造对象
 
-template <class Ty>
-void construct(Ty* ptr)
-{
-  ::new ((void*)ptr) Ty();
-}
+// template <class Ty>
+// void construct(Ty* ptr)
+// {
+//   ::new ((void*)ptr) Ty();
+// }
 
-template <class Ty1, class Ty2>
-void construct(Ty1* ptr, const Ty2& value)
-{
-  ::new ((void*)ptr) Ty1(value);
-}
+// template <class Ty1, class Ty2>
+// void construct(Ty1* ptr, const Ty2& value)
+// {
+//   ::new ((void*)ptr) Ty1(value);
+// }
 
 template <class Ty, class... Args>
 void construct(Ty* ptr, Args&&... args)
@@ -65,14 +65,14 @@ void destroy_cat(ForwardIter first, ForwardIter last, std::false_type)
 template <class Ty>
 void destroy(Ty* pointer)
 {
-  destroy_one(pointer, std::is_trivially_destructible<Ty>{});
+  destroy_one(pointer, std::is_trivially_destructible<Ty>{}); // 是否是平凡析构
 }
 
 template <class ForwardIter>
 void destroy(ForwardIter first, ForwardIter last)
 {
-  destroy_cat(first, last, std::is_trivially_destructible<
-              typename iterator_traits<ForwardIter>::value_type>{});
+  destroy_cat(first, last, 
+      std::is_trivially_destructible<typename iterator_traits<ForwardIter>::value_type>{});
 }
 
 } // namespace dwt_stl
