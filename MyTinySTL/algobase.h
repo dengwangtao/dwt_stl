@@ -154,7 +154,7 @@ unchecked_copy_backward(BidirectionalIter1 first, BidirectionalIter1 last,
 // 为 trivially_copy_assignable 类型提供特化版本
 template <class Tp, class Up>
 typename std::enable_if<
-  std::is_same<typename std::remove_const<Tp>::type, Up>::value &&
+  dwt_stl::is_same_v<typename dwt_stl::remove_const_t<Tp>, Up> &&
   std::is_trivially_copy_assignable<Up>::value,
   Up*>::type
 unchecked_copy_backward(Tp* first, Tp* last, Up* result)
@@ -196,6 +196,7 @@ copy_if(InputIter first, InputIter last, OutputIter result, UnaryPredicate unary
 // 把 [first, first + n)区间上的元素拷贝到 [result, result + n)上
 // 返回一个 pair 分别指向拷贝结束的尾部
 /*****************************************************************************************/
+#ifdef OLD_CODE // 标签分发 (推荐)
 template <class InputIter, class Size, class OutputIter>
 dwt_stl::pair<InputIter, OutputIter>
 unchecked_copy_n(InputIter first, Size n, OutputIter result, dwt_stl::input_iterator_tag)
@@ -222,6 +223,47 @@ copy_n(InputIter first, Size n, OutputIter result)
 {
   return unchecked_copy_n(first, n, result, iterator_category(first));
 }
+#else
+
+// 类模板特化方式
+
+template <class InputIter, class Size, class OutputIter, class = void>
+struct unchecked_copy_n_impl;
+
+template <class InputIter, class Size, class OutputIter>
+struct unchecked_copy_n_impl<InputIter, Size, OutputIter, std::enable_if_t<is_same_v<typename iterator_traits<InputIter>::iterator_category, input_iterator_tag>, void> >
+{
+  dwt_stl::pair<InputIter, OutputIter>
+  operator()(InputIter first, Size n, OutputIter result)
+  {
+    for (; n > 0; --n, ++first, ++result)
+    {
+      *result = *first;
+    }
+    return dwt_stl::pair<InputIter, OutputIter>(first, result);
+  }
+};
+
+template <class RandomIter, class Size, class OutputIter>
+struct unchecked_copy_n_impl<RandomIter, Size, OutputIter, std::enable_if_t<is_same_v<typename iterator_traits<RandomIter>::iterator_category, random_access_iterator_tag>, void> >
+{
+  dwt_stl::pair<RandomIter, OutputIter>
+  operator()(RandomIter first, Size n, OutputIter result)
+  {
+    auto last = first + n;
+    return dwt_stl::pair<RandomIter, OutputIter>(last, dwt_stl::copy(first, last, result));
+  }
+};
+
+
+template <class InputIter, class Size, class OutputIter>
+dwt_stl::pair<InputIter, OutputIter> 
+copy_n(InputIter first, Size n, OutputIter result)
+{
+  return unchecked_copy_n_impl<InputIter, Size, OutputIter>()(first, n, result);
+}
+
+#endif
 
 /*****************************************************************************************/
 // move
