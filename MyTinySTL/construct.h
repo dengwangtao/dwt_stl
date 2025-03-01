@@ -20,22 +20,22 @@ namespace dwt_stl
 
 // construct 构造对象
 
-template <class Ty>
-void construct(Ty* ptr)
-{
-  ::new ((void*)ptr) Ty();
-}
+// template <class Ty>
+// void construct(Ty* ptr)
+// {
+//   ::new ((void*)ptr) Ty(); // 使用placement new 在 ptr地址上构造Ty对象
+// }
 
-template <class Ty1, class Ty2>
-void construct(Ty1* ptr, const Ty2& value)
-{
-  ::new ((void*)ptr) Ty1(value);
-}
+// template <class Ty1, class Ty2>
+// void construct(Ty1* ptr, const Ty2& value)
+// {
+//   ::new ((void*)ptr) Ty1(value); // 使用placement new 在 ptr地址上构造Ty对象, 调用一个参数的构造函数
+// }    
 
 template <class Ty, class... Args>
 void construct(Ty* ptr, Args&&... args)
 {
-  ::new ((void*)ptr) Ty(dwt_stl::forward<Args>(args)...);
+  ::new ((void*)ptr) Ty(dwt_stl::forward<Args>(args)...); // 使用placement new 在 ptr地址上构造Ty对象, 调用多个参数的构造函数, 转发参数包
 }
 
 // destroy 将对象析构

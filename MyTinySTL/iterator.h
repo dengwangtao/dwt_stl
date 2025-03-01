@@ -171,7 +171,7 @@ DECL__V(is_random_access_iterator);
 
 template <class Iterator>
 struct is_iterator :
-  public m_bool_constant<is_input_iterator_v<Iterator> || is_output_iterator_v<Iterator>>
+  public bool_constant<is_input_iterator_v<Iterator> || is_output_iterator_v<Iterator>>
 {
 };
 
