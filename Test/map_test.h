@@ -5,8 +5,8 @@
 
 #include <map>
 
-#include "../MyTinySTL/map.h"
-#include "../MyTinySTL/vector.h"
+#include "../DwtSTL/map.h"
+#include "../DwtSTL/vector.h"
 #include "test.h"
 
 namespace dwt_stl

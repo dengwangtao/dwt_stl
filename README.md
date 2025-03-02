@@ -1,8 +1,8 @@
-MyTinySTL
+DwtSTL
 =====
 ## 简介
 
-   基于 [Alinshans/MyTinySTL: Achieve a tiny STL in C++11](https://github.com/Alinshans/MyTinySTL) 的 `tinySTL`
+   基于 [Alinshans/DwtSTL: Achieve a tiny STL in C++11](https://github.com/Alinshans/DwtSTL) 的 `tinySTL`
 
 ## 支持
 
@@ -26,7 +26,7 @@ MyTinySTL
   1. 克隆仓库
 ```bash
 $ git clone ...
-$ cd MyTinySTL
+$ cd DwtSTL
 ```
   2. 构建并运行
 ```bash
@@ -41,7 +41,7 @@ $ cd ../bin && ./stltest
   2. 使用 `vs2015`（或 `vs2017`）打开 `MSVC/MyTinySTL_VS2015.sln`，配置成 `Release` 模式，（Ctrl + F5）开始执行。
 
 ## 文档
-  见 [Wiki](https://github.com/Alinshans/MyTinySTL/wiki)。
+  见 [Wiki](https://github.com/Alinshans/DwtSTL/wiki)。
 
 ## 测试
 

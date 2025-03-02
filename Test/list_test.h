@@ -5,7 +5,7 @@
 
 #include <list>
 
-#include "../MyTinySTL/list.h"
+#include "../DwtSTL/list.h"
 #include "test.h"
 
 namespace dwt_stl

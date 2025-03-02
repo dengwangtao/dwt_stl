@@ -5,7 +5,7 @@
 
 #include <string>
 
-#include "../MyTinySTL/astring.h"
+#include "../DwtSTL/astring.h"
 #include "test.h"
 
 namespace dwt_stl

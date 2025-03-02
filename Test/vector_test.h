@@ -5,7 +5,7 @@
 
 #include <vector>
 
-#include "../MyTinySTL/vector.h"
+#include "../DwtSTL/vector.h"
 #include "test.h"
 
 namespace dwt_stl

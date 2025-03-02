@@ -2,8 +2,8 @@
 #define MYTINYSTL_ITERATOR_TEST_H_
 
 #include "test.h"
-#include "../MyTinySTL/iterator.h"
-#include "../MyTinySTL/stream_iterator.h"
+#include "../DwtSTL/iterator.h"
+#include "../DwtSTL/stream_iterator.h"
 
 namespace dwt_stl
 {

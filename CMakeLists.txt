@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(MyTinySTL)
+project(DwtSTL)
 
 # version
 set(MyTinySTL_VERSION_MAJOR 2)
