@@ -56,7 +56,7 @@ struct PrintOne<T, std::enable_if_t<has_iterator_v<T>, void>>
                 std::cout << ", ";
             }
             first = false;
-            PrintOne<decltype(i)>()(i);
+            PrintOne<typename T::value_type>()(i);
         }
         std::cout << "}";
     }
