@@ -15,7 +15,7 @@ namespace dwt_stl
 template <class RandomIter, class Distance, class T>
 void push_heap_aux(RandomIter first, Distance holeIndex, Distance topIndex, T value)
 {
-  auto parent = (holeIndex - 1) / 2;
+  auto parent = (holeIndex - 1) / 2; // 父节点索引
   while (holeIndex > topIndex && *(first + parent) < value)
   {
     // 使用 operator<，所以 heap 为 max-heap
@@ -70,6 +70,7 @@ void push_heap(RandomIter first, RandomIter last, Compared comp)
 // pop_heap
 // 该函数接受两个迭代器，表示 heap 容器的首尾，将 heap 的根节点取出放到容器尾部，调整 heap
 /*****************************************************************************************/
+#ifdef OLD_ADJUST_HEAP
 template <class RandomIter, class T, class Distance>
 void adjust_heap(RandomIter first, Distance holeIndex, Distance len, T value)
 {
@@ -92,13 +93,44 @@ void adjust_heap(RandomIter first, Distance holeIndex, Distance len, T value)
   // 再执行一次上溯(percolate up)过程
   dwt_stl::push_heap_aux(first, holeIndex, topIndex, value);
 }
+#else
+
+template <class RandomIter, class T, class Distance>
+void adjust_heap(RandomIter first, Distance holeIndex, Distance len, T value)
+{
+  // 直接将 value 放置到顶部, down一遍
+  *(first + holeIndex) = value;
+  auto topIndex = holeIndex;
+  while (topIndex < len)
+  {
+    auto oldTopIndex = topIndex;
+    auto lchild = 2 * topIndex + 1;
+    auto rchild = 2 * topIndex + 2;
+    if (lchild < len && *(first + lchild) > *(first + topIndex))
+    {
+      topIndex = lchild;
+    }
+    if (rchild < len && *(first + rchild) > *(first + topIndex))
+    {
+      topIndex = rchild;
+    }
+    if (topIndex == oldTopIndex)
+    {
+      break;
+    }
+    // 交换父节点和子节点
+    dwt_stl::swap(*(first + oldTopIndex), *(first + topIndex));
+  }
+}
+
+#endif
 
 template <class RandomIter, class T, class Distance>
 void pop_heap_aux(RandomIter first, RandomIter last, RandomIter result, T value,
                   Distance*)
 {
   // 先将首值调至尾节点，然后调整[first, last - 1)使之重新成为一个 max-heap
-  *result = *first;
+  *result = *first; // 将值复制到尾节点
   dwt_stl::adjust_heap(first, static_cast<Distance>(0), last - first, value);
 }
 
@@ -108,6 +140,7 @@ void pop_heap(RandomIter first, RandomIter last)
   dwt_stl::pop_heap_aux(first, last - 1, last - 1, *(last - 1), distance_type(first));
 }
 
+#ifdef OLD_ADJUST_HEAP
 // 重载版本使用函数对象 comp 代替比较操作
 template <class RandomIter, class T, class Distance, class Compared>
 void adjust_heap(RandomIter first, Distance holeIndex, Distance len, T value,
@@ -131,6 +164,40 @@ void adjust_heap(RandomIter first, Distance holeIndex, Distance len, T value,
   // 再执行一次上溯(percolate up)过程
   dwt_stl::push_heap_aux(first, holeIndex, topIndex, value, comp);
 }
+#else
+
+// 重载版本使用函数对象 comp 代替比较操作
+template <class RandomIter, class T, class Distance, class Compared>
+void adjust_heap(RandomIter first, Distance holeIndex, Distance len, T value,
+                 Compared comp)
+{
+  // 直接将 value 放置到顶部, down一遍
+  *(first + holeIndex) = value;
+  auto topIndex = holeIndex;
+  while (topIndex < len)
+  {
+    auto oldTopIndex = topIndex;
+    auto lchild = 2 * topIndex + 1;
+    auto rchild = 2 * topIndex + 2;
+    if (lchild < len && comp(*(first + lchild), *(first + topIndex)) )
+    {
+      topIndex = lchild;
+    }
+    if (rchild < len && comp(*(first + rchild), *(first + topIndex)) )
+    {
+      topIndex = rchild;
+    }
+    if (topIndex == oldTopIndex)
+    {
+      break;
+    }
+    // 交换父节点和子节点
+    dwt_stl::swap(*(first + oldTopIndex), *(first + topIndex));
+  }
+}
+
+
+#endif
 
 template <class RandomIter, class T, class Distance, class Compared>
 void pop_heap_aux(RandomIter first, RandomIter last, RandomIter result, 

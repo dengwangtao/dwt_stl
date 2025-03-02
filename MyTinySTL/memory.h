@@ -28,13 +28,17 @@ constexpr Tp* address_of(Tp& value) noexcept
 template <class T>
 pair<T*, ptrdiff_t> get_buffer_helper(ptrdiff_t len, T*)
 {
-  if (len > static_cast<ptrdiff_t>(INT_MAX / sizeof(T)))
+  if (len > static_cast<ptrdiff_t>(INT_MAX / sizeof(T))) // 最大申请不能超过 INT_MAX / sizeof(T)
+  {
     len = INT_MAX / sizeof(T);
+  }
   while (len > 0)
   {
     T* tmp = static_cast<T*>(malloc(static_cast<size_t>(len) * sizeof(T)));
     if (tmp)
+    {
       return pair<T*, ptrdiff_t>(tmp, len);
+    }
     len /= 2;  // 申请失败时减少 len 的大小
   }
   return pair<T*, ptrdiff_t>(nullptr, 0);
@@ -55,7 +59,10 @@ pair<T*, ptrdiff_t> get_temporary_buffer(ptrdiff_t len, T*)
 template <class T>
 void release_temporary_buffer(T* ptr)
 {
-  free(ptr);
+  if (ptr)
+  {
+    free(ptr);
+  }
 }
 
 // --------------------------------------------------------------------------------------
@@ -75,7 +82,7 @@ public:
 
   ~temporary_buffer()
   {
-    dwt_stl::destroy(buffer, buffer + len);
+    dwt_stl::destroy(buffer, buffer + len); // 析构
     free(buffer);
   }
 
@@ -125,13 +132,17 @@ void temporary_buffer<ForwardIterator, T>::allocate_buffer()
 {
   original_len = len;
   if (len > static_cast<ptrdiff_t>(INT_MAX / sizeof(T)))
+  {
     len = INT_MAX / sizeof(T);
+  }
   while (len > 0)
   {
     buffer = static_cast<T*>(malloc(len * sizeof(T)));
     if (buffer)
+    {
       break;
-    len /= 2;  // 申请失败时减少申请空间大小
+    }
+    len >>= 1;  // 申请失败时减少申请空间大小, 每次减半
   }
 }
 
@@ -142,7 +153,7 @@ template <class T>
 class auto_ptr
 {
 public:
-  typedef T    elem_type;
+  using elem_type = T;
 
 private:
   T* m_ptr;  // 实际指针
@@ -151,6 +162,7 @@ public:
   // 构造、复制、析构函数
   explicit auto_ptr(T* p = nullptr) :m_ptr(p) {}
   auto_ptr(auto_ptr& rhs) :m_ptr(rhs.release()) {}
+
   template <class U>
   auto_ptr(auto_ptr<U>& rhs) : m_ptr(rhs.release()) {}
 

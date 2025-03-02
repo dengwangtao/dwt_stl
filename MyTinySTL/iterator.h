@@ -96,11 +96,11 @@ template <class Iterator>
 struct iterator_traits_impl<Iterator, 
     std::enable_if_t<is_convertible_iterator_v<Iterator>, void> >
 {
-  typedef typename Iterator::iterator_category iterator_category;
-  typedef typename Iterator::value_type        value_type;
-  typedef typename Iterator::pointer           pointer;
-  typedef typename Iterator::reference         reference;
-  typedef typename Iterator::difference_type   difference_type;
+  using iterator_category = typename Iterator::iterator_category;
+  using value_type        = typename Iterator::value_type       ;
+  using pointer           = typename Iterator::pointer          ;
+  using reference         = typename Iterator::reference        ;
+  using difference_type   = typename Iterator::difference_type  ;
 };
 
 
@@ -171,7 +171,7 @@ DECL__V(is_random_access_iterator);
 
 template <class Iterator>
 struct is_iterator :
-  public m_bool_constant<is_input_iterator_v<Iterator> || is_output_iterator_v<Iterator>>
+  public bool_constant<is_input_iterator_v<Iterator> || is_output_iterator_v<Iterator>>
 {
 };
 
