@@ -285,6 +285,7 @@ TEST(push_heap_test)
   {
     std::push_heap(arr1, arr1 + i);
     dwt_stl::push_heap(arr2, arr2 + i);
+    EXPECT_EQ(arr1[0], arr2[0]);
     EXPECT_CON_EQ(arr1, arr2);
   }
   int arr3[] = { 1,2,3,4,5,6,7,8,9 };
@@ -293,6 +294,7 @@ TEST(push_heap_test)
   std::make_heap(arr4, arr4 + 9, std::greater<int>());
   std::push_heap(arr3, arr3 + 9, std::greater<int>());
   dwt_stl::push_heap(arr4, arr4 + 9, std::greater<int>());
+  EXPECT_EQ(arr3[0], arr4[0]);
   EXPECT_CON_EQ(arr3, arr4);
 }
 
