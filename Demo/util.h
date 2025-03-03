@@ -3,6 +3,9 @@
 #define DEMO_UTIL_H_
 
 #include <iostream>
+#include "astring.h"
+
+
 
 
 template <typename T, class = void>
@@ -13,12 +16,18 @@ struct has_iterator<T, std::void_t<typename T::iterator>> : std::true_type {};
 
 DECL__V(has_iterator);
 
+template <typename T>
+struct is_string : dwt_stl::false_type {};
 
+template <typename T, typename C>
+struct is_string<dwt_stl::basic_string<T, C>> : dwt_stl::true_type {};
+
+DECL__V(is_string);
 
 template <typename T, class = void>
 struct PrintOne
 {
-    void operator()(const T& val) const {
+    void operator()(const T&) const {
         std::cout << "unknown type";
     }
 };
@@ -31,8 +40,18 @@ struct PrintOne<T, std::enable_if_t<std::is_trivial<T>::value, void>>
     }
 };
 
+// string 特化
 template <typename T>
-struct PrintOne<T, std::enable_if_t<dwt_stl::is_pair<T>::value, void>>
+struct PrintOne<T, std::enable_if_t<is_string_v<T>, void>>
+{
+    void operator()(const T& val) const {
+        std::cout << "\"" << val << "\"";
+    }
+};
+
+// pair 特化
+template <typename T>
+struct PrintOne<T, std::enable_if_t<dwt_stl::is_pair_v<T>, void>>
 {
     void operator()(const T& val) const {
         std::cout << "(";
@@ -44,12 +63,13 @@ struct PrintOne<T, std::enable_if_t<dwt_stl::is_pair<T>::value, void>>
 };
 
 
-// 遍历容器
+// 可迭代容器 特化
 template <typename T>
-struct PrintOne<T, std::enable_if_t<has_iterator_v<T>, void>>
+struct PrintOne<T, std::enable_if_t<!is_string_v<T> && has_iterator_v<T>, void>>
 {
     void operator()(const T& val) const {
         bool first = true;
+        // std::cout << typeid(T).name() << " {";
         std::cout << "{";
         for (const auto& i : val) {
             if (!first) {
