@@ -56,11 +56,11 @@ struct PrintOne<T, std::enable_if_t<std::is_same_v<std::remove_cv<T>, char*>, vo
 template <typename T, std::size_t N>
 struct PrintOne<T[N], void> {
     void operator()(const T(&arr)[N]) const {
-        if constexpr (std::is_same_v<T, char>)
-        {
-            std::cout << "\"" << arr << "\"";
-            return;
-        }
+        // if constexpr (std::is_same_v<T, char>)
+        // {
+        //     std::cout << "\"" << arr << "\"";
+        //     return;
+        // }
         std::cout << "[";
         bool first = true;
         for (std::size_t i = 0; i < N; ++i) {
@@ -69,6 +69,13 @@ struct PrintOne<T[N], void> {
             PrintOne<T>()(arr[i]);
         }
         std::cout << "]";
+    }
+};
+
+template <std::size_t N>
+struct PrintOne<char[N], void> {
+    void operator()(const char(&arr)[N]) const {
+        std::cout << "\"" << arr << "\"";
     }
 };
 
