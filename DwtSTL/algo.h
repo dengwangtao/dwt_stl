@@ -135,6 +135,9 @@ find_if_not(InputIter first, InputIter last, UnaryPredicate unary_pred)
   return first;
 }
 
+
+#ifdef OLD_SEARCH_
+
 /*****************************************************************************************/
 // search
 // 在[first1, last1)中查找[first2, last2)的首次出现点
@@ -209,6 +212,99 @@ search(ForwardIter1 first1, ForwardIter1 last1,
   }
   return first1;
 }
+
+#else
+
+
+/*****************************************************************************************/
+// search
+// 在[first1, last1)中查找[first2, last2)的首次出现点
+/*****************************************************************************************/
+template <class ForwardIter1, class ForwardIter2>
+ForwardIter1
+search(ForwardIter1 first1, ForwardIter1 last1,
+       ForwardIter2 first2, ForwardIter2 last2)
+{
+  auto d1 = dwt_stl::distance(first1, last1);
+  auto d2 = dwt_stl::distance(first2, last2);
+  if (d1 < d2)
+    return last1;
+
+  auto cur1 = first1;
+  auto cur2 = first2;
+  for (;   first1 != last1; ++ first1)
+  {
+    cur1 = first1;
+    cur2 = first2;
+    while (cur2 != last2 && cur1 != last1)
+    {
+      if (*cur1 != *cur2)
+      {
+        break;
+      }
+
+      ++ cur1;
+      ++ cur2;
+    }
+    if (cur2 == last2)
+    {
+      return first1;
+    }
+    else
+    {
+      if (d1 == d2)
+      {
+        return last1;
+      }
+    }
+  }
+
+  return last1;
+}
+
+template <class ForwardIter1, class ForwardIter2, class Compared>
+ForwardIter1
+search(ForwardIter1 first1, ForwardIter1 last1,
+       ForwardIter2 first2, ForwardIter2 last2, Compared comp)
+{
+  auto d1 = dwt_stl::distance(first1, last1);
+  auto d2 = dwt_stl::distance(first2, last2);
+  if (d1 < d2)
+    return last1;
+
+  auto cur1 = first1;
+  auto cur2 = first2;
+  for (; first1 != last1; ++ first1)
+  {
+    cur1 = first1;
+    cur2 = first2;
+    while (cur2 != last2 && cur1 != last1)
+    {
+      if (!(comp(*cur1, *cur2)))
+      {
+        break;
+      }
+
+      ++ cur1;
+      ++ cur2;
+    }
+    if (cur2 == last2)
+    {
+      return first1;
+    }
+    else
+    {
+      if (d1 == d2)
+      {
+        return last1;
+      }
+    }
+  }
+
+  return last1;
+}
+
+#endif
 
 /*****************************************************************************************/
 // search_n
