@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8...3.5)
 
 project(DwtSTL)
 
@@ -12,7 +12,7 @@ message(STATUS "The version of this project is: ${MyTinySTL_VERSION}")
 # build type
 set(CMAKE_BUILD_TYPE release)
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wall -Wextra -Wno-sign-compare -Wno-unused-but-set-variable -Wno-array-bounds")
 	# set(EXTRA_CXX_FLAGS -Weffc++ -Wswitch-default -Wfloat-equal -Wconversion -Wsign-conversion)
 	if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "5.0.0")
