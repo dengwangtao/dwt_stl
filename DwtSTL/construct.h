@@ -65,14 +65,14 @@ void destroy_cat(ForwardIter first, ForwardIter last, std::false_type)
 template <class Ty>
 void destroy(Ty* pointer)
 {
-  destroy_one(pointer, std::is_trivially_destructible<Ty>{});
+  destroy_one(pointer, std::is_trivially_destructible<Ty>{}); // 是否是平凡析构
 }
 
 template <class ForwardIter>
 void destroy(ForwardIter first, ForwardIter last)
 {
-  destroy_cat(first, last, std::is_trivially_destructible<
-              typename iterator_traits<ForwardIter>::value_type>{});
+  destroy_cat(first, last, 
+      std::is_trivially_destructible<typename iterator_traits<ForwardIter>::value_type>{});
 }
 
 } // namespace dwt_stl

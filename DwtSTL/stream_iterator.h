@@ -1,4 +1,4 @@
-#ifndef MYTINYSTL_STREAM_ITERATOR_H_
+﻿#ifndef MYTINYSTL_STREAM_ITERATOR_H_
 #define MYTINYSTL_STREAM_ITERATOR_H_
 
 #include "basic_string.h"

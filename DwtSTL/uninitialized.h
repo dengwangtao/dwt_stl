@@ -32,13 +32,13 @@ unchecked_uninit_copy(InputIter first, InputIter last, ForwardIter result, std::
   {
     for (; first != last; ++first, ++cur)
     {
-      dwt_stl::construct(&*cur, *first);
+      dwt_stl::construct(address_of(*cur), *first);
     }
   }
   catch (...)
   {
     for (; result != cur; --cur)
-      dwt_stl::destroy(&*cur);
+      dwt_stl::destroy(address_of(*cur));
   }
   return cur;
 }
@@ -47,9 +47,7 @@ template <class InputIter, class ForwardIter>
 ForwardIter uninitialized_copy(InputIter first, InputIter last, ForwardIter result)
 {
   return dwt_stl::unchecked_uninit_copy(first, last, result, 
-                                     std::is_trivially_copy_assignable<
-                                     typename iterator_traits<ForwardIter>::
-                                     value_type>{});
+        std::is_trivially_copy_assignable<typename iterator_traits<ForwardIter>::value_type>{});
 }
 
 /*****************************************************************************************/
@@ -87,9 +85,7 @@ template <class InputIter, class Size, class ForwardIter>
 ForwardIter uninitialized_copy_n(InputIter first, Size n, ForwardIter result)
 {
   return dwt_stl::unchecked_uninit_copy_n(first, n, result,
-                                        std::is_trivially_copy_assignable<
-                                        typename iterator_traits<InputIter>::
-                                        value_type>{});
+      std::is_trivially_copy_assignable<typename iterator_traits<InputIter>::value_type>{});
 }
 
 /*****************************************************************************************/
@@ -126,9 +122,7 @@ template <class ForwardIter, class T>
 void  uninitialized_fill(ForwardIter first, ForwardIter last, const T& value)
 {
   dwt_stl::unchecked_uninit_fill(first, last, value, 
-                               std::is_trivially_copy_assignable<
-                               typename iterator_traits<ForwardIter>::
-                               value_type>{});
+      std::is_trivially_copy_assignable<typename iterator_traits<ForwardIter>::value_type>{});
 }
 
 /*****************************************************************************************/
@@ -166,9 +160,7 @@ template <class ForwardIter, class Size, class T>
 ForwardIter uninitialized_fill_n(ForwardIter first, Size n, const T& value)
 {
   return dwt_stl::unchecked_uninit_fill_n(first, n, value, 
-                                        std::is_trivially_copy_assignable<
-                                        typename iterator_traits<ForwardIter>::
-                                        value_type>{});
+      std::is_trivially_copy_assignable<typename iterator_traits<ForwardIter>::value_type>{});
 }
 
 /*****************************************************************************************/
@@ -205,9 +197,7 @@ template <class InputIter, class ForwardIter>
 ForwardIter uninitialized_move(InputIter first, InputIter last, ForwardIter result)
 {
   return dwt_stl::unchecked_uninit_move(first, last, result,
-                                      std::is_trivially_move_assignable<
-                                      typename iterator_traits<InputIter>::
-                                      value_type>{});
+      std::is_trivially_move_assignable<typename iterator_traits<InputIter>::value_type>{});
 }
 
 /*****************************************************************************************/
@@ -246,9 +236,7 @@ template <class InputIter, class Size, class ForwardIter>
 ForwardIter uninitialized_move_n(InputIter first, Size n, ForwardIter result)
 {
   return dwt_stl::unchecked_uninit_move_n(first, n, result,
-                                        std::is_trivially_move_assignable<
-                                        typename iterator_traits<InputIter>::
-                                        value_type>{});
+    std::is_trivially_move_assignable<typename iterator_traits<InputIter>::value_type>{});
 }
 
 } // namespace dwt_stl

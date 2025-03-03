@@ -1,4 +1,4 @@
-#ifndef MYTINYSTL_ALGORITHM_TEST_H_
+﻿#ifndef MYTINYSTL_ALGORITHM_TEST_H_
 #define MYTINYSTL_ALGORITHM_TEST_H_
 
 // 算法测试: 包含了 dwt_stl 的 81 个算法测试
@@ -7,8 +7,8 @@
 #include <functional>
 #include <numeric>
 
-#include "../MyTinySTL/algorithm.h"
-#include "../MyTinySTL/vector.h"
+#include "../DwtSTL/algorithm.h"
+#include "../DwtSTL/vector.h"
 #include "test.h"
 
 namespace dwt_stl
@@ -285,6 +285,7 @@ TEST(push_heap_test)
   {
     std::push_heap(arr1, arr1 + i);
     dwt_stl::push_heap(arr2, arr2 + i);
+    EXPECT_EQ(arr1[0], arr2[0]);
     EXPECT_CON_EQ(arr1, arr2);
   }
   int arr3[] = { 1,2,3,4,5,6,7,8,9 };
@@ -293,6 +294,7 @@ TEST(push_heap_test)
   std::make_heap(arr4, arr4 + 9, std::greater<int>());
   std::push_heap(arr3, arr3 + 9, std::greater<int>());
   dwt_stl::push_heap(arr4, arr4 + 9, std::greater<int>());
+  EXPECT_EQ(arr3[0], arr4[0]);
   EXPECT_CON_EQ(arr3, arr4);
 }
 
@@ -898,10 +900,10 @@ TEST(remove_test)
 {
   std::vector<int> v1{ 1,2,3,4,5,6,6,6 };
   std::vector<int> v2(v1);
-  std::remove(v1.begin(), v1.end(), 3);
+  (void)std::remove(v1.begin(), v1.end(), 3);
   dwt_stl::remove(v2.begin(), v2.end(), 3);
   EXPECT_CON_EQ(v1, v2);
-  std::remove(v1.begin(), v1.end(), 6);
+  (void)std::remove(v1.begin(), v1.end(), 6);
   dwt_stl::remove(v2.begin(), v2.end(), 6);
   EXPECT_CON_EQ(v1, v2);
 }
@@ -935,7 +937,7 @@ TEST(remove_if_test)
 {
   std::vector<int> v1{ 1,2,3,4,5,6,7,8,9,10 };
   std::vector<int> v2(v1);
-  std::remove_if(v1.begin(), v1.end(), is_odd);
+  (void)std::remove_if(v1.begin(), v1.end(), is_odd);
   dwt_stl::remove_if(v2.begin(), v2.end(), is_odd);
   EXPECT_CON_EQ(v1, v2);
 }
@@ -1133,9 +1135,9 @@ TEST(unique_test)
   int arr2[] = { 1,1,1,2,2,3,4,4,5,6 };
   int arr3[] = { 1,2,3,6,6,6,8,8,9 };
   int arr4[] = { 1,2,3,6,6,6,8,8,9 };
-  std::unique(arr1, arr1 + 10);
+  (void)std::unique(arr1, arr1 + 10);
   dwt_stl::unique(arr2, arr2 + 10);
-  std::unique(arr3, arr3 + 9, std::equal_to<int>());
+  (void)std::unique(arr3, arr3 + 9, std::equal_to<int>());
   dwt_stl::unique(arr4, arr4 + 9, std::equal_to<int>());
   EXPECT_CON_EQ(arr1, arr2);
   EXPECT_CON_EQ(arr3, arr4);

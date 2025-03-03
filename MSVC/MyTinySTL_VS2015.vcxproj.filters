@@ -21,82 +21,82 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\MyTinySTL\type_traits.h">
+    <ClInclude Include="..\DwtSTL\type_traits.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\construct.h">
+    <ClInclude Include="..\DwtSTL\construct.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\alloc.h">
+    <ClInclude Include="..\DwtSTL\alloc.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\allocator.h">
+    <ClInclude Include="..\DwtSTL\allocator.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\uninitialized.h">
+    <ClInclude Include="..\DwtSTL\uninitialized.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\iterator.h">
+    <ClInclude Include="..\DwtSTL\iterator.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\numeric.h">
+    <ClInclude Include="..\DwtSTL\numeric.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\algobase.h">
+    <ClInclude Include="..\DwtSTL\algobase.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\heap_algo.h">
+    <ClInclude Include="..\DwtSTL\heap_algo.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\set_algo.h">
+    <ClInclude Include="..\DwtSTL\set_algo.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\algo.h">
+    <ClInclude Include="..\DwtSTL\algo.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\algorithm.h">
+    <ClInclude Include="..\DwtSTL\algorithm.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\vector.h">
+    <ClInclude Include="..\DwtSTL\vector.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\memory.h">
+    <ClInclude Include="..\DwtSTL\memory.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\list.h">
+    <ClInclude Include="..\DwtSTL\list.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\deque.h">
+    <ClInclude Include="..\DwtSTL\deque.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\stack.h">
+    <ClInclude Include="..\DwtSTL\stack.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\queue.h">
+    <ClInclude Include="..\DwtSTL\queue.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\functional.h">
+    <ClInclude Include="..\DwtSTL\functional.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\rb_tree.h">
+    <ClInclude Include="..\DwtSTL\rb_tree.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\set.h">
+    <ClInclude Include="..\DwtSTL\set.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\map.h">
+    <ClInclude Include="..\DwtSTL\map.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\hashtable.h">
+    <ClInclude Include="..\DwtSTL\hashtable.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\basic_string.h">
+    <ClInclude Include="..\DwtSTL\basic_string.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\unordered_set.h">
+    <ClInclude Include="..\DwtSTL\unordered_set.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\unordered_map.h">
+    <ClInclude Include="..\DwtSTL\unordered_map.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\Test\algorithm_performance_test.h">
@@ -144,16 +144,16 @@
     <ClInclude Include="..\Test\Lib\redbud\io\color.h">
       <Filter>test\Lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\astring.h">
+    <ClInclude Include="..\DwtSTL\astring.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\util.h">
+    <ClInclude Include="..\DwtSTL\util.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\exceptdef.h">
+    <ClInclude Include="..\DwtSTL\exceptdef.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyTinySTL\common.h">
+    <ClInclude Include="..\DwtSTL\common.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

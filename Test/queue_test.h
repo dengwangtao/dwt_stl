@@ -5,7 +5,7 @@
 
 #include <queue>
 
-#include "../MyTinySTL/queue.h"
+#include "../DwtSTL/queue.h"
 #include "test.h"
 
 namespace dwt_stl

@@ -5,7 +5,7 @@
 
 #include <stack>
 
-#include "../MyTinySTL/stack.h"
+#include "../DwtSTL/stack.h"
 #include "test.h"
 
 namespace dwt_stl

@@ -5,7 +5,7 @@
 
 #include <deque>
 
-#include "../MyTinySTL/deque.h"
+#include "../DwtSTL/deque.h"
 #include "test.h"
 
 namespace dwt_stl

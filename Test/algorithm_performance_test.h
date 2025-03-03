@@ -5,7 +5,7 @@
 
 #include <algorithm>
 
-#include "../MyTinySTL/algorithm.h"
+#include "../DwtSTL/algorithm.h"
 #include "test.h"
 
 namespace dwt_stl
@@ -44,7 +44,7 @@ namespace algorithm_performance_test
     for(size_t i = 0; i < count; ++i)  *(arr + i) = rand();    \
     start = clock();                                           \
     for(size_t i = 0; i < count; ++i)                          \
-        mode::fun(arr, arr + count, rand());                   \
+        (void)mode::fun(arr, arr + count, rand());             \
     end = clock();                                             \
     int n = static_cast<int>(static_cast<double>(end - start)  \
         / CLOCKS_PER_SEC * 1000);                              \

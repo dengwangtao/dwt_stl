@@ -17,5 +17,5 @@ build:
   
 test_script:
   - cmd: cd .\MSVC\x64\Release\
-  - cmd: MyTinySTL.exe
+  - cmd: DwtSTL.exe
 

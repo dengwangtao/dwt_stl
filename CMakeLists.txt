@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(MyTinySTL)
+project(DwtSTL)
 
 # version
 set(MyTinySTL_VERSION_MAJOR 2)
@@ -33,3 +33,4 @@ endif()
 message(STATUS "The cmake_cxx_flags is: ${CMAKE_CXX_FLAGS}")
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/Test)
+add_subdirectory(${PROJECT_SOURCE_DIR}/Demo)
