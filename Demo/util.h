@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #ifndef DEMO_UTIL_H_
 #define DEMO_UTIL_H_
 
@@ -33,10 +33,42 @@ struct PrintOne
 };
 
 template <typename T>
-struct PrintOne<T, std::enable_if_t<std::is_trivial<T>::value, void>>
+struct PrintOne<T, std::enable_if_t<std::is_trivial<T>::value && !std::is_array_v<T>, void>>
 {
     void operator()(const T& val) const {
         std::cout << val;
+    }
+};
+
+
+// char* 特化
+template <typename T>
+struct PrintOne<T, std::enable_if_t<std::is_same_v<std::remove_cv<T>, char*>, void>>
+{
+    void operator()(const T& val) const {
+        std::cout << "\"" << val << "\"";
+    }
+};
+
+
+
+// 或者针对传统数组语法
+template <typename T, std::size_t N>
+struct PrintOne<T[N], void> {
+    void operator()(const T(&arr)[N]) const {
+        if constexpr (std::is_same_v<T, char>)
+        {
+            std::cout << "\"" << arr << "\"";
+            return;
+        }
+        std::cout << "[";
+        bool first = true;
+        for (std::size_t i = 0; i < N; ++i) {
+            if (!first) std::cout << ", ";
+            first = false;
+            PrintOne<T>()(arr[i]);
+        }
+        std::cout << "]";
     }
 };
 
@@ -61,7 +93,6 @@ struct PrintOne<T, std::enable_if_t<dwt_stl::is_pair_v<T>, void>>
         std::cout << ")";
     }
 };
-
 
 // 可迭代容器 特化
 template <typename T>
