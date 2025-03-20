@@ -313,7 +313,7 @@ public:
     --current;
     return *this;
   }
-  self operator++(int)
+  self operator++(s32)
   {
     self tmp = *this;
     --current;
@@ -325,7 +325,7 @@ public:
     ++current;
     return *this;
   }
-  self operator--(int)
+  self operator--(s32)
   {
     self tmp = *this;
     ++current;

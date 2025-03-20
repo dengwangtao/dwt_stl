@@ -18,15 +18,15 @@ namespace algorithm_performance_test
 // 函数性能测试宏定义
 #define FUN_TEST1(mode, fun, count) do {                      \
     std::string fun_name = #fun;                               \
-    srand((int)time(0));                                       \
+    srand((s32)time(0));                                       \
     char buf[10];                                              \
     clock_t start, end;                                        \
-    int *arr = new int[count];                                 \
+    s32 *arr = new s32[count];                                 \
     for(size_t i = 0; i < count; ++i)  *(arr + i) = rand();    \
     start = clock();                                           \
     mode::fun(arr, arr + count);                               \
     end = clock();                                             \
-    int n = static_cast<int>(static_cast<double>(end - start)  \
+    s32 n = static_cast<s32>(static_cast<double>(end - start)  \
         / CLOCKS_PER_SEC * 1000);                              \
     std::snprintf(buf, sizeof(buf), "%d", n);                  \
     std::string t = buf;                                       \
@@ -37,16 +37,16 @@ namespace algorithm_performance_test
 
 #define FUN_TEST2(mode, fun, count) do {                      \
     std::string fun_name = #fun;                               \
-    srand((int)time(0));                                       \
+    srand((s32)time(0));                                       \
     char buf[10];                                              \
     clock_t start, end;                                        \
-    int *arr = new int[count];                                 \
+    s32 *arr = new s32[count];                                 \
     for(size_t i = 0; i < count; ++i)  *(arr + i) = rand();    \
     start = clock();                                           \
     for(size_t i = 0; i < count; ++i)                          \
         (void)mode::fun(arr, arr + count, rand());             \
     end = clock();                                             \
-    int n = static_cast<int>(static_cast<double>(end - start)  \
+    s32 n = static_cast<s32>(static_cast<double>(end - start)  \
         / CLOCKS_PER_SEC * 1000);                              \
     std::snprintf(buf, sizeof(buf), "%d", n);                  \
     std::string t = buf;                                       \

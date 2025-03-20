@@ -125,7 +125,7 @@ struct list_iterator : public dwt_stl::iterator<dwt_stl::bidirectional_iterator_
     node_ = node_->next;
     return *this;
   }
-  self operator++(int)
+  self operator++(s32)
   {
     self tmp = *this;
     ++*this;
@@ -137,7 +137,7 @@ struct list_iterator : public dwt_stl::iterator<dwt_stl::bidirectional_iterator_
     node_ = node_->prev;
     return *this;
   }
-  self operator--(int)
+  self operator--(s32)
   {
     self tmp = *this;
     --*this;
@@ -180,7 +180,7 @@ struct list_const_iterator : public iterator<bidirectional_iterator_tag, T>
     node_ = node_->next;
     return *this;
   }
-  self operator++(int)
+  self operator++(s32)
   {
     self tmp = *this;
     ++*this;
@@ -192,7 +192,7 @@ struct list_const_iterator : public iterator<bidirectional_iterator_tag, T>
     node_ = node_->prev;
     return *this;
   }
-  self operator--(int)
+  self operator--(s32)
   {
     self tmp = *this;
     --*this;
@@ -250,7 +250,7 @@ public:
   { fill_init(n, value); }
 
   template <class Iter, typename std::enable_if<
-    dwt_stl::is_input_iterator<Iter>::value, int>::type = 0>
+    dwt_stl::is_input_iterator<Iter>::value, s32>::type = 0>
   list(Iter first, Iter last)
   { copy_init(first, last); }
 
@@ -373,7 +373,7 @@ public:
   { fill_assign(n, value); }
 
   template <class Iter, typename std::enable_if<
-    dwt_stl::is_input_iterator<Iter>::value, int>::type = 0>
+    dwt_stl::is_input_iterator<Iter>::value, s32>::type = 0>
   void     assign(Iter first, Iter last)
   { copy_assign(first, last); }
 
@@ -435,7 +435,7 @@ public:
   }
 
   template <class Iter, typename std::enable_if<
-    dwt_stl::is_input_iterator<Iter>::value, int>::type = 0>
+    dwt_stl::is_input_iterator<Iter>::value, s32>::type = 0>
   iterator insert(const_iterator pos, Iter first, Iter last)
   { 
     size_type n = dwt_stl::distance(first, last);

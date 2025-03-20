@@ -16,26 +16,26 @@ namespace list_test
 {
 
 // 一个辅助测试函数
-bool is_odd(int x) { return x & 1; }
+bool is_odd(s32 x) { return x & 1; }
 
 void list_test()
 {
   std::cout << "[===============================================================]" << std::endl;
   std::cout << "[------------------ Run container test : list ------------------]" << std::endl;
   std::cout << "[-------------------------- API test ---------------------------]" << std::endl;
-  int a[] = { 1,2,3,4,5 };
-  dwt_stl::list<int> l1;
-  dwt_stl::list<int> l2(5);
-  dwt_stl::list<int> l3(5, 1);
-  dwt_stl::list<int> l4(a, a + 5);
-  dwt_stl::list<int> l5(l2);
-  dwt_stl::list<int> l6(std::move(l2));
-  dwt_stl::list<int> l7{ 1,2,3,4,5,6,7,8,9 };
-  dwt_stl::list<int> l8;
+  s32 a[] = { 1,2,3,4,5 };
+  dwt_stl::list<s32> l1;
+  dwt_stl::list<s32> l2(5);
+  dwt_stl::list<s32> l3(5, 1);
+  dwt_stl::list<s32> l4(a, a + 5);
+  dwt_stl::list<s32> l5(l2);
+  dwt_stl::list<s32> l6(std::move(l2));
+  dwt_stl::list<s32> l7{ 1,2,3,4,5,6,7,8,9 };
+  dwt_stl::list<s32> l8;
   l8 = l3;
-  dwt_stl::list<int> l9;
+  dwt_stl::list<s32> l9;
   l9 = std::move(l3);
-  dwt_stl::list<int> l10;
+  dwt_stl::list<s32> l10;
   l10 = { 1, 2, 2, 3, 5, 6, 7, 8, 9 };
 
   FUN_AFTER(l1, l1.assign(8, 8));
@@ -70,10 +70,10 @@ void list_test()
   FUN_VALUE(l1.size());
   FUN_AFTER(l1, l1.sort());
   FUN_AFTER(l1, l1.unique());
-  FUN_AFTER(l1, l1.unique([&](int a, int b) {return b == a + 1; }));
+  FUN_AFTER(l1, l1.unique([&](s32 a, s32 b) {return b == a + 1; }));
   FUN_AFTER(l1, l1.merge(l7));
-  FUN_AFTER(l1, l1.sort(dwt_stl::greater<int>()));
-  FUN_AFTER(l1, l1.merge(l8, dwt_stl::greater<int>()));
+  FUN_AFTER(l1, l1.sort(dwt_stl::greater<s32>()));
+  FUN_AFTER(l1, l1.merge(l8, dwt_stl::greater<s32>()));
   FUN_AFTER(l1, l1.reverse());
   FUN_AFTER(l1, l1.clear());
   FUN_AFTER(l1, l1.swap(l9));
@@ -92,9 +92,9 @@ void list_test()
   std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;
   std::cout << "|       insert        |";
 #if LARGER_TEST_DATA_ON
-  CON_TEST_P2(list<int>, insert, end, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
+  CON_TEST_P2(list<s32>, insert, end, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
 #else
-  CON_TEST_P2(list<int>, insert, end, rand(), SCALE_M(LEN1), SCALE_M(LEN2), SCALE_M(LEN3));
+  CON_TEST_P2(list<s32>, insert, end, rand(), SCALE_M(LEN1), SCALE_M(LEN2), SCALE_M(LEN3));
 #endif
   std::cout << std::endl;
   std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;

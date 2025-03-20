@@ -45,7 +45,7 @@ public:
         return *this;
     }
 
-     istream_iterator operator++(int) {
+     istream_iterator operator++(s32) {
         auto tmp = *this;
         ++*this;
         return tmp;

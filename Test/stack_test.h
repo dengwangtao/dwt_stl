@@ -15,7 +15,7 @@ namespace test
 namespace stack_test
 {
 
-void stack_print(dwt_stl::stack<int> s)
+void stack_print(dwt_stl::stack<s32> s)
 {
   while (!s.empty())
   {
@@ -44,22 +44,22 @@ void stack_test()
   std::cout << "[===============================================================]" << std::endl;
   std::cout << "[----------------- Run container test : stack ------------------]" << std::endl;
   std::cout << "[-------------------------- API test ---------------------------]" << std::endl;
-  int a[] = { 1,2,3,4,5 };
-  dwt_stl::deque<int> d1(5);
-  dwt_stl::stack<int> s1;
-  dwt_stl::stack<int> s2(5);
-  dwt_stl::stack<int> s3(5, 1);
-  dwt_stl::stack<int> s4(a, a + 5);
-  dwt_stl::stack<int> s5(d1);
-  dwt_stl::stack<int> s6(std::move(d1));
-  dwt_stl::stack<int> s7(s2);
-  dwt_stl::stack<int> s8(std::move(s2));
-  dwt_stl::stack<int> s9;
+  s32 a[] = { 1,2,3,4,5 };
+  dwt_stl::deque<s32> d1(5);
+  dwt_stl::stack<s32> s1;
+  dwt_stl::stack<s32> s2(5);
+  dwt_stl::stack<s32> s3(5, 1);
+  dwt_stl::stack<s32> s4(a, a + 5);
+  dwt_stl::stack<s32> s5(d1);
+  dwt_stl::stack<s32> s6(std::move(d1));
+  dwt_stl::stack<s32> s7(s2);
+  dwt_stl::stack<s32> s8(std::move(s2));
+  dwt_stl::stack<s32> s9;
   s9 = s3;
-  dwt_stl::stack<int> s10;
+  dwt_stl::stack<s32> s10;
   s10 = std::move(s3);
-  dwt_stl::stack<int> s11{ 1,2,3,4,5 };
-  dwt_stl::stack<int> s12;
+  dwt_stl::stack<s32> s11{ 1,2,3,4,5 };
+  dwt_stl::stack<s32> s12;
   s12 = { 1,2,3,4,5 };
 
   STACK_FUN_AFTER(s1, s1.push(1));
@@ -85,9 +85,9 @@ void stack_test()
   std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;
   std::cout << "|         push        |";
 #if LARGER_TEST_DATA_ON
-  CON_TEST_P1(stack<int>, push, rand(), SCALE_LL(LEN1), SCALE_LL(LEN2), SCALE_LL(LEN3));
+  CON_TEST_P1(stack<s32>, push, rand(), SCALE_LL(LEN1), SCALE_LL(LEN2), SCALE_LL(LEN3));
 #else
-  CON_TEST_P1(stack<int>, push, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
+  CON_TEST_P1(stack<s32>, push, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
 #endif
   std::cout << std::endl;
   std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;

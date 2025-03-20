@@ -20,15 +20,15 @@ void vector_test()
   std::cout << "[===============================================================]\n";
   std::cout << "[----------------- Run container test : vector -----------------]\n";
   std::cout << "[-------------------------- API test ---------------------------]\n";
-  int a[] = { 1,2,3,4,5 };
-  dwt_stl::vector<int> v1;
-  dwt_stl::vector<int> v2(10);
-  dwt_stl::vector<int> v3(10, 1);
-  dwt_stl::vector<int> v4(a, a + 5);
-  dwt_stl::vector<int> v5(v2);
-  dwt_stl::vector<int> v6(std::move(v2));
-  dwt_stl::vector<int> v7{ 1,2,3,4,5,6,7,8,9 };
-  dwt_stl::vector<int> v8, v9, v10;
+  s32 a[] = { 1,2,3,4,5 };
+  dwt_stl::vector<s32> v1;
+  dwt_stl::vector<s32> v2(10);
+  dwt_stl::vector<s32> v3(10, 1);
+  dwt_stl::vector<s32> v4(a, a + 5);
+  dwt_stl::vector<s32> v5(v2);
+  dwt_stl::vector<s32> v6(std::move(v2));
+  dwt_stl::vector<s32> v7{ 1,2,3,4,5,6,7,8,9 };
+  dwt_stl::vector<s32> v8, v9, v10;
   v8 = v3;
   v9 = std::move(v3);
   v10 = { 1,2,3,4,5,6,7,8,9 };
@@ -54,7 +54,7 @@ void vector_test()
   FUN_VALUE(v1.back());
   FUN_VALUE(v1[0]);
   FUN_VALUE(v1.at(1));
-  int* p = v1.data();
+  s32* p = v1.data();
   *p = 10;
   *++p = 20;
   p[1] = 30;
@@ -96,9 +96,9 @@ void vector_test()
   std::cout << "|---------------------|-------------|-------------|-------------|\n";
   std::cout << "|      push_back      |";
 #if LARGER_TEST_DATA_ON
-  CON_TEST_P1(vector<int>, push_back, rand(), SCALE_LL(LEN1), SCALE_LL(LEN2), SCALE_LL(LEN3));
+  CON_TEST_P1(vector<s32>, push_back, rand(), SCALE_LL(LEN1), SCALE_LL(LEN2), SCALE_LL(LEN3));
 #else
-  CON_TEST_P1(vector<int>, push_back, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
+  CON_TEST_P1(vector<s32>, push_back, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
 #endif
   std::cout << "\n";
   std::cout << "|---------------------|-------------|-------------|-------------|\n";

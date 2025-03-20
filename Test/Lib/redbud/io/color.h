@@ -143,9 +143,9 @@ inline const std::streambuf*& get_clogbuf()
 }
 
 // Gets an unique integer to use as index to iword()
-inline int get_iword()
+inline s32 get_iword()
 {
-  static int i = std::ios_base::xalloc();
+  static s32 i = std::ios_base::xalloc();
   return i;
 }
 
@@ -221,7 +221,7 @@ using state_return_t = typename std::enable_if<
 template <typename T>
 inline color_return_t<T> set_color(std::ostream& os, const T& value)
 {
-  return os << "\033[" << static_cast<int>(value) << "m";
+  return os << "\033[" << static_cast<s32>(value) << "m";
 }
 
 #elif defined(REDBUD_WIN)

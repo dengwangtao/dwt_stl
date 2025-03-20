@@ -45,7 +45,7 @@ public:
 
 public:
   const char* testcase_name;  // 测试案例的名称
-  int         nTestResult;    // 测试案例的执行结果 
+  s32         nTestResult;    // 测试案例的执行结果 
   double      nFailed;        // 测试失败的案例数
   double      nPassed;        // 测试通过的案例数
 };
@@ -162,7 +162,7 @@ EXPECT_TRUE  验证条件: Condition 为 true
 EXPECT_FALSE 验证条件: Condition 为 false
 
 Example:
-bool isPrime(int n);         一个判断素数的函数
+bool isPrime(s32 n);         一个判断素数的函数
 EXPECT_TRUE(isPrime(2));     通过
 EXPECT_FALSE(isPrime(4));    通过
 EXPECT_TRUE(isPrime(6));     失败
@@ -387,9 +387,9 @@ EXPECT_PTR_RANGE_*(Expect, Actual, len)的格式，
 长度为 len 的区间，请确保区间长度有效
 
 Example:
-int a[] = {1,2,3,4,5};
-int b[] = {1,2,3,4,6};
-int *p1 = a, *p2 = b;
+s32 a[] = {1,2,3,4,5};
+s32 b[] = {1,2,3,4,6};
+s32 *p1 = a, *p2 = b;
 EXPECT_PTR_EQ(p1, p2);                      通过
 p1 = a + 4, p2 = b + 4;
 EXPECT_PTR_EQ(p1, p2);                      失败
@@ -456,9 +456,9 @@ Note:
 3. EXPECT_CON_EQ 测试失败时，会打印首次不相等的两个值
 
 Example:
-int arr[] = {1,2,3};
-std::vector<int> v1{1, 2, 3};
-std::vector<int> v2{2, 3, 4};
+s32 arr[] = {1,2,3};
+std::vector<s32> v1{1, 2, 3};
+std::vector<s32> v2{2, 3, 4};
 dwt_stl::vector<long> v3(arr, arr + 3);
 EXPECT_CON_NE(v1, v2)   ok
 EXPECT_CON_EQ(arr, v1)  ok
@@ -580,7 +580,7 @@ void test_len(size_t len1, size_t len2, size_t len3, size_t wide)
 
 // 常用测试性能的宏
 #define FUN_TEST_FORMAT1(mode, fun, arg, count) do {         \
-  srand((int)time(0));                                       \
+  srand((s32)time(0));                                       \
   clock_t start, end;                                        \
   mode c;                                                    \
   char buf[10];                                              \
@@ -588,7 +588,7 @@ void test_len(size_t len1, size_t len2, size_t len3, size_t wide)
   for (size_t i = 0; i < count; ++i)                         \
     c.fun(arg);                                              \
   end = clock();                                             \
-  int n = static_cast<int>(static_cast<double>(end - start)  \
+  s32 n = static_cast<s32>(static_cast<double>(end - start)  \
       / CLOCKS_PER_SEC * 1000);                              \
   std::snprintf(buf, sizeof(buf), "%d", n);                  \
   std::string t = buf;                                       \
@@ -597,7 +597,7 @@ void test_len(size_t len1, size_t len2, size_t len3, size_t wide)
 } while(0)
 
 #define FUN_TEST_FORMAT2(mode, fun, arg1, arg2, count) do {  \
-  srand((int)time(0));                                       \
+  srand((s32)time(0));                                       \
   clock_t start, end;                                        \
   mode c;                                                    \
   char buf[10];                                              \
@@ -605,7 +605,7 @@ void test_len(size_t len1, size_t len2, size_t len3, size_t wide)
   for (size_t i = 0; i < count; ++i)                         \
     c.fun(c.arg1(), arg2);                                   \
   end = clock();                                             \
-  int n = static_cast<int>(static_cast<double>(end - start)  \
+  s32 n = static_cast<s32>(static_cast<double>(end - start)  \
       / CLOCKS_PER_SEC * 1000);                              \
   std::snprintf(buf, sizeof(buf), "%d", n);                  \
   std::string t = buf;                                       \
@@ -614,16 +614,16 @@ void test_len(size_t len1, size_t len2, size_t len3, size_t wide)
 } while(0)
 
 #define LIST_SORT_DO_TEST(mode, count) do {                  \
-  srand((int)time(0));                                       \
+  srand((s32)time(0));                                       \
   clock_t start, end;                                        \
-  mode::list<int> l;                                         \
+  mode::list<s32> l;                                         \
   char buf[10];                                              \
   for (size_t i = 0; i < count; ++i)                         \
     l.insert(l.end(), rand());                               \
   start = clock();                                           \
   l.sort();                                                  \
   end = clock();                                             \
-  int n = static_cast<int>(static_cast<double>(end - start)  \
+  s32 n = static_cast<s32>(static_cast<double>(end - start)  \
       / CLOCKS_PER_SEC * 1000);                              \
   std::snprintf(buf, sizeof(buf), "%d", n);                  \
   std::string t = buf;                                       \
@@ -632,15 +632,15 @@ void test_len(size_t len1, size_t len2, size_t len3, size_t wide)
 } while(0)
 
 #define MAP_EMPLACE_DO_TEST(mode, con, count) do {           \
-  srand((int)time(0));                                       \
+  srand((s32)time(0));                                       \
   clock_t start, end;                                        \
-  mode::con<int, int> c;                                     \
+  mode::con<s32, s32> c;                                     \
   char buf[10];                                              \
   start = clock();                                           \
   for (size_t i = 0; i < count; ++i)                         \
     c.emplace(mode::make_pair(rand(), rand()));              \
   end = clock();                                             \
-  int n = static_cast<int>(static_cast<double>(end - start)  \
+  s32 n = static_cast<s32>(static_cast<double>(end - start)  \
       / CLOCKS_PER_SEC * 1000);                              \
   std::snprintf(buf, sizeof(buf), "%d", n);                  \
   std::string t = buf;                                       \

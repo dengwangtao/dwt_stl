@@ -82,7 +82,7 @@ public:
   { fill_init(n, value); }
 
   template <class Iter, typename std::enable_if<
-    dwt_stl::is_input_iterator<Iter>::value, int>::type = 0>
+    dwt_stl::is_input_iterator<Iter>::value, s32>::type = 0>
   vector(Iter first, Iter last)
   {
     dwt_stl_DEBUG(!(last < first));
@@ -221,7 +221,7 @@ public:
   { fill_assign(n, value); }
 
   template <class Iter, typename std::enable_if<
-    dwt_stl::is_input_iterator<Iter>::value, int>::type = 0>
+    dwt_stl::is_input_iterator<Iter>::value, s32>::type = 0>
   void assign(Iter first, Iter last)
   {
     dwt_stl_DEBUG(!(last < first));
@@ -260,7 +260,7 @@ public:
   }
 
   template <class Iter, typename std::enable_if<
-    dwt_stl::is_input_iterator<Iter>::value, int>::type = 0>
+    dwt_stl::is_input_iterator<Iter>::value, s32>::type = 0>
   void     insert(const_iterator pos, Iter first, Iter last)
   {
     dwt_stl_DEBUG(pos >= begin() && pos <= end() && !(last < first));

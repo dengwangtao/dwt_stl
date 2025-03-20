@@ -135,7 +135,7 @@ struct deque_iterator : public iterator<random_access_iterator_tag, T>
     }
     return *this;
   }
-  self operator++(int)
+  self operator++(s32)
   {
     self tmp = *this;
     ++*this;
@@ -152,7 +152,7 @@ struct deque_iterator : public iterator<random_access_iterator_tag, T>
     --cur;
     return *this;
   }
-  self operator--(int)
+  self operator--(s32)
   {
     self tmp = *this;
     --*this;
@@ -253,7 +253,7 @@ public:
   { fill_init(n, value); }
 
   template <class IIter, typename std::enable_if<
-    dwt_stl::is_input_iterator<IIter>::value, int>::type = 0>
+    dwt_stl::is_input_iterator<IIter>::value, s32>::type = 0>
   deque(IIter first, IIter last)
   { copy_init(first, last, iterator_category(first)); }
 
@@ -389,7 +389,7 @@ public:
   { fill_assign(n, value); }
 
   template <class IIter, typename std::enable_if<
-    dwt_stl::is_input_iterator<IIter>::value, int>::type = 0>
+    dwt_stl::is_input_iterator<IIter>::value, s32>::type = 0>
   void     assign(IIter first, IIter last)
   { copy_assign(first, last, iterator_category(first)); }
 
@@ -424,7 +424,7 @@ public:
   iterator insert(iterator position, value_type&& value);
   void     insert(iterator position, size_type n, const value_type& value);
   template <class IIter, typename std::enable_if<
-    dwt_stl::is_input_iterator<IIter>::value, int>::type = 0>
+    dwt_stl::is_input_iterator<IIter>::value, s32>::type = 0>
   void     insert(iterator position, IIter first, IIter last)
   { insert_dispatch(position, first, last, iterator_category(first)); }
 

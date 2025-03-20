@@ -20,19 +20,19 @@ void deque_test()
   std::cout << "[===============================================================]" << std::endl;
   std::cout << "[----------------- Run container test : deque ------------------]" << std::endl;
   std::cout << "[-------------------------- API test ---------------------------]" << std::endl;
-  int a[] = { 1,2,3,4,5 };
-  dwt_stl::deque<int> d1;
-  dwt_stl::deque<int> d2(5);
-  dwt_stl::deque<int> d3(5, 1);
-  dwt_stl::deque<int> d4(a, a + 5);
-  dwt_stl::deque<int> d5(d2);
-  dwt_stl::deque<int> d6(std::move(d2));
-  dwt_stl::deque<int> d7;
+  s32 a[] = { 1,2,3,4,5 };
+  dwt_stl::deque<s32> d1;
+  dwt_stl::deque<s32> d2(5);
+  dwt_stl::deque<s32> d3(5, 1);
+  dwt_stl::deque<s32> d4(a, a + 5);
+  dwt_stl::deque<s32> d5(d2);
+  dwt_stl::deque<s32> d6(std::move(d2));
+  dwt_stl::deque<s32> d7;
   d7 = d3;
-  dwt_stl::deque<int> d8;
+  dwt_stl::deque<s32> d8;
   d8 = std::move(d3);
-  dwt_stl::deque<int> d9{ 1,2,3,4,5,6,7,8,9 };
-  dwt_stl::deque<int> d10;
+  dwt_stl::deque<s32> d9{ 1,2,3,4,5,6,7,8,9 };
+  dwt_stl::deque<s32> d10;
   d10 = { 1,2,3,4,5,6,7,8,9 };
 
   FUN_AFTER(d1, d1.assign(5, 1));
@@ -76,17 +76,17 @@ void deque_test()
   std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;
   std::cout << "|     push_front      |";
 #if LARGER_TEST_DATA_ON
-  CON_TEST_P1(deque<int>, push_front, rand(), SCALE_LL(LEN1), SCALE_LL(LEN2), SCALE_LL(LEN3));
+  CON_TEST_P1(deque<s32>, push_front, rand(), SCALE_LL(LEN1), SCALE_LL(LEN2), SCALE_LL(LEN3));
 #else
-  CON_TEST_P1(deque<int>, push_front, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
+  CON_TEST_P1(deque<s32>, push_front, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
 #endif
   std::cout << std::endl;
   std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;
   std::cout << "|     push_back       |";
 #if LARGER_TEST_DATA_ON
-  CON_TEST_P1(deque<int>, push_back, rand(), SCALE_LL(LEN1), SCALE_LL(LEN2), SCALE_LL(LEN3));
+  CON_TEST_P1(deque<s32>, push_back, rand(), SCALE_LL(LEN1), SCALE_LL(LEN2), SCALE_LL(LEN3));
 #else
-  CON_TEST_P1(deque<int>, push_back, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
+  CON_TEST_P1(deque<s32>, push_back, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
 #endif
   std::cout << std::endl;
   std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;

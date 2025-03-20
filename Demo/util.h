@@ -19,10 +19,10 @@ DECL__V(has_iterator);
 template <typename T>
 struct is_string : dwt_stl::false_type {};
 
-template <typename T, typename C>
-struct is_string<dwt_stl::basic_string<T, C>> : dwt_stl::true_type {};
+template <typename... Args>
+struct is_string<dwt_stl::basic_string<Args...>> : dwt_stl::true_type {};
 
-DECL__V(is_string);
+template <class... Args> constexpr bool is_string_v = is_string<Args...>::value;
 
 template <typename T, class = void>
 struct PrintOne
@@ -109,7 +109,7 @@ struct PrintOne<T, std::enable_if_t<!is_string_v<T> && has_iterator_v<T>, void>>
         bool first = true;
         // std::cout << typeid(T).name() << " {";
         std::cout << "{";
-        for (const auto& i : val) {
+        for (const typename T::value_type& i : val) {
             if (!first) {
                 std::cout << ", ";
             }

@@ -15,7 +15,7 @@ namespace test
 namespace queue_test
 {
 
-void queue_print(dwt_stl::queue<int> q)
+void queue_print(dwt_stl::queue<s32> q)
 {
   while (!q.empty())
   {
@@ -25,7 +25,7 @@ void queue_print(dwt_stl::queue<int> q)
   std::cout << std::endl;
 }
 
-void p_queue_print(dwt_stl::priority_queue<int> p)
+void p_queue_print(dwt_stl::priority_queue<s32> p)
 {
   while (!p.empty())
   {
@@ -68,22 +68,22 @@ void queue_test()
   std::cout << "[===============================================================]" << std::endl;
   std::cout << "[----------------- Run container test : queue ------------------]" << std::endl;
   std::cout << "[-------------------------- API test ---------------------------]" << std::endl;
-  int a[] = { 1,2,3,4,5 };
-  dwt_stl::deque<int> d1(5);
-  dwt_stl::queue<int> q1;
-  dwt_stl::queue<int> q2(5);
-  dwt_stl::queue<int> q3(5, 1);
-  dwt_stl::queue<int> q4(a, a + 5);
-  dwt_stl::queue<int> q5(d1);
-  dwt_stl::queue<int> q6(std::move(d1));
-  dwt_stl::queue<int> q7(q2);
-  dwt_stl::queue<int> q8(std::move(q2));
-  dwt_stl::queue<int> q9;
+  s32 a[] = { 1,2,3,4,5 };
+  dwt_stl::deque<s32> d1(5);
+  dwt_stl::queue<s32> q1;
+  dwt_stl::queue<s32> q2(5);
+  dwt_stl::queue<s32> q3(5, 1);
+  dwt_stl::queue<s32> q4(a, a + 5);
+  dwt_stl::queue<s32> q5(d1);
+  dwt_stl::queue<s32> q6(std::move(d1));
+  dwt_stl::queue<s32> q7(q2);
+  dwt_stl::queue<s32> q8(std::move(q2));
+  dwt_stl::queue<s32> q9;
   q9 = q3;
-  dwt_stl::queue<int> q10;
+  dwt_stl::queue<s32> q10;
   q10 = std::move(q3);
-  dwt_stl::queue<int> q11{ 1,2,3,4,5 };
-  dwt_stl::queue<int> q12;
+  dwt_stl::queue<s32> q11{ 1,2,3,4,5 };
+  dwt_stl::queue<s32> q12;
   q12 = { 1,2,3,4,5 };
 
   QUEUE_FUN_AFTER(q1, q1.push(1));
@@ -110,9 +110,9 @@ void queue_test()
   std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;
   std::cout << "|         push        |";
 #if LARGER_TEST_DATA_ON
-  CON_TEST_P1(queue<int>, push, rand(), SCALE_LL(LEN1), SCALE_LL(LEN2), SCALE_LL(LEN3));
+  CON_TEST_P1(queue<s32>, push, rand(), SCALE_LL(LEN1), SCALE_LL(LEN2), SCALE_LL(LEN3));
 #else
-  CON_TEST_P1(queue<int>, push, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
+  CON_TEST_P1(queue<s32>, push, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
 #endif
   std::cout << std::endl;
   std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;
@@ -126,22 +126,22 @@ void priority_test()
   std::cout << "[===============================================================]" << std::endl;
   std::cout << "[------------- Run container test : priority_queue -------------]" << std::endl;
   std::cout << "[-------------------------- API test ---------------------------]" << std::endl;
-  int a[] = { 1,2,3,4,5 };
-  dwt_stl::vector<int> v1(5);
-  dwt_stl::priority_queue<int> p1;
-  dwt_stl::priority_queue<int> p2(5);
-  dwt_stl::priority_queue<int> p3(5, 1);
-  dwt_stl::priority_queue<int> p4(a, a + 5);
-  dwt_stl::priority_queue<int> p5(v1);
-  dwt_stl::priority_queue<int> p6(std::move(v1));
-  dwt_stl::priority_queue<int> p7(p2);
-  dwt_stl::priority_queue<int> p8(std::move(p2));
-  dwt_stl::priority_queue<int> p9;
+  s32 a[] = { 1,2,3,4,5 };
+  dwt_stl::vector<s32> v1(5);
+  dwt_stl::priority_queue<s32> p1;
+  dwt_stl::priority_queue<s32> p2(5);
+  dwt_stl::priority_queue<s32> p3(5, 1);
+  dwt_stl::priority_queue<s32> p4(a, a + 5);
+  dwt_stl::priority_queue<s32> p5(v1);
+  dwt_stl::priority_queue<s32> p6(std::move(v1));
+  dwt_stl::priority_queue<s32> p7(p2);
+  dwt_stl::priority_queue<s32> p8(std::move(p2));
+  dwt_stl::priority_queue<s32> p9;
   p9 = p3;
-  dwt_stl::priority_queue<int> p10;
+  dwt_stl::priority_queue<s32> p10;
   p10 = std::move(p3);
-  dwt_stl::priority_queue<int> p11{ 1,2,3,4,5 };
-  dwt_stl::priority_queue<int> p12;
+  dwt_stl::priority_queue<s32> p11{ 1,2,3,4,5 };
+  dwt_stl::priority_queue<s32> p12;
   p12 = { 1,2,3,4,5 };
 
   P_QUEUE_FUN_AFTER(p1, p1.push(1));
@@ -168,9 +168,9 @@ void priority_test()
   std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;
   std::cout << "|         push        |";
 #if LARGER_TEST_DATA_ON
-  CON_TEST_P1(priority_queue<int>, push, rand(), SCALE_LL(LEN1), SCALE_LL(LEN2), SCALE_LL(LEN3));
+  CON_TEST_P1(priority_queue<s32>, push, rand(), SCALE_LL(LEN1), SCALE_LL(LEN2), SCALE_LL(LEN3));
 #else
-  CON_TEST_P1(priority_queue<int>, push, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
+  CON_TEST_P1(priority_queue<s32>, push, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
 #endif
   std::cout << std::endl;
   std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;

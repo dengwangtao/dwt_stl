@@ -22,7 +22,7 @@
 #include "string_test.h"
 #include "iterator_test.h"
 
-int main()
+s32 main()
 {
   using namespace dwt_stl::test;
 

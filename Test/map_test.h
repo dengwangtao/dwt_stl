@@ -17,7 +17,7 @@ namespace map_test
 {
 
 // pair 的宏定义
-#define PAIR    dwt_stl::pair<int, int>
+#define PAIR    dwt_stl::pair<s32, s32>
 
 // map 的遍历输出
 #define MAP_COUT(m) do { \
@@ -48,23 +48,23 @@ void map_test()
   std::cout << "[------------------ Run container test : map -------------------]" << std::endl;
   std::cout << "[-------------------------- API test ---------------------------]" << std::endl;
   dwt_stl::vector<PAIR> v;
-  for (int i = 0; i < 5; ++i)
+  for (s32 i = 0; i < 5; ++i)
     v.push_back(PAIR(i, i));
-  dwt_stl::map<int, int> m1;
-  dwt_stl::map<int, int, dwt_stl::greater<int>> m2;
-  dwt_stl::map<int, int> m3(v.begin(), v.end());
-  dwt_stl::map<int, int> m4(v.begin(), v.end());
-  dwt_stl::map<int, int> m5(m3);
-  dwt_stl::map<int, int> m6(std::move(m3));
-  dwt_stl::map<int, int> m7;
+  dwt_stl::map<s32, s32> m1;
+  dwt_stl::map<s32, s32, dwt_stl::greater<s32>> m2;
+  dwt_stl::map<s32, s32> m3(v.begin(), v.end());
+  dwt_stl::map<s32, s32> m4(v.begin(), v.end());
+  dwt_stl::map<s32, s32> m5(m3);
+  dwt_stl::map<s32, s32> m6(std::move(m3));
+  dwt_stl::map<s32, s32> m7;
   m7 = m4;
-  dwt_stl::map<int, int> m8;
+  dwt_stl::map<s32, s32> m8;
   m8 = std::move(m4);
-  dwt_stl::map<int, int> m9{ PAIR(1,1),PAIR(3,2),PAIR(2,3) };
-  dwt_stl::map<int, int> m10;
+  dwt_stl::map<s32, s32> m9{ PAIR(1,1),PAIR(3,2),PAIR(2,3) };
+  dwt_stl::map<s32, s32> m10;
   m10 = { PAIR(1,1),PAIR(3,2),PAIR(2,3) };
 
-  for (int i = 5; i > 0; --i)
+  for (s32 i = 5; i > 0; --i)
   {
     MAP_FUN_AFTER(m1, m1.emplace(i, i));
   }
@@ -73,7 +73,7 @@ void map_test()
   MAP_FUN_AFTER(m1, m1.erase(0));
   MAP_FUN_AFTER(m1, m1.erase(1));
   MAP_FUN_AFTER(m1, m1.erase(m1.begin(), m1.end()));
-  for (int i = 0; i < 5; ++i)
+  for (s32 i = 0; i < 5; ++i)
   {
     MAP_FUN_AFTER(m1, m1.insert(PAIR(i, i)));
   }
@@ -125,23 +125,23 @@ void multimap_test()
   std::cout << "[---------------- Run container test : multimap ----------------]" << std::endl;
   std::cout << "[-------------------------- API test ---------------------------]" << std::endl;
   dwt_stl::vector<PAIR> v;
-  for (int i = 0; i < 5; ++i)
+  for (s32 i = 0; i < 5; ++i)
     v.push_back(PAIR(i, i));
-  dwt_stl::multimap<int, int> m1;
-  dwt_stl::multimap<int, int, dwt_stl::greater<int>> m2;
-  dwt_stl::multimap<int, int> m3(v.begin(), v.end());
-  dwt_stl::multimap<int, int> m4(v.begin(), v.end());
-  dwt_stl::multimap<int, int> m5(m3);
-  dwt_stl::multimap<int, int> m6(std::move(m3));
-  dwt_stl::multimap<int, int> m7;
+  dwt_stl::multimap<s32, s32> m1;
+  dwt_stl::multimap<s32, s32, dwt_stl::greater<s32>> m2;
+  dwt_stl::multimap<s32, s32> m3(v.begin(), v.end());
+  dwt_stl::multimap<s32, s32> m4(v.begin(), v.end());
+  dwt_stl::multimap<s32, s32> m5(m3);
+  dwt_stl::multimap<s32, s32> m6(std::move(m3));
+  dwt_stl::multimap<s32, s32> m7;
   m7 = m4;
-  dwt_stl::multimap<int, int> m8;
+  dwt_stl::multimap<s32, s32> m8;
   m8 = std::move(m4);
-  dwt_stl::multimap<int, int> m9{ PAIR(1,1),PAIR(3,2),PAIR(2,3) };
-  dwt_stl::multimap<int, int> m10;
+  dwt_stl::multimap<s32, s32> m9{ PAIR(1,1),PAIR(3,2),PAIR(2,3) };
+  dwt_stl::multimap<s32, s32> m10;
   m10 = { PAIR(1,1),PAIR(3,2),PAIR(2,3) };
 
-  for (int i = 5; i > 0; --i)
+  for (s32 i = 5; i > 0; --i)
   {
     MAP_FUN_AFTER(m1, m1.emplace(i, i));
   }
@@ -150,7 +150,7 @@ void multimap_test()
   MAP_FUN_AFTER(m1, m1.erase(0));
   MAP_FUN_AFTER(m1, m1.erase(1));
   MAP_FUN_AFTER(m1, m1.erase(m1.begin(), m1.end()));
-  for (int i = 0; i < 5; ++i)
+  for (s32 i = 0; i < 5; ++i)
   {
     MAP_FUN_AFTER(m1, m1.insert(dwt_stl::make_pair(i, i)));
   }

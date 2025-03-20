@@ -216,21 +216,21 @@ dwt_stl_TRIVIAL_HASH_FCN(char16_t)
 
 dwt_stl_TRIVIAL_HASH_FCN(char32_t)
 
-dwt_stl_TRIVIAL_HASH_FCN(short)
+dwt_stl_TRIVIAL_HASH_FCN(s16)
 
-dwt_stl_TRIVIAL_HASH_FCN(unsigned short)
+dwt_stl_TRIVIAL_HASH_FCN(u16)
 
-dwt_stl_TRIVIAL_HASH_FCN(int)
+dwt_stl_TRIVIAL_HASH_FCN(s32)
 
-dwt_stl_TRIVIAL_HASH_FCN(unsigned int)
+dwt_stl_TRIVIAL_HASH_FCN(u32)
 
 dwt_stl_TRIVIAL_HASH_FCN(long)
 
 dwt_stl_TRIVIAL_HASH_FCN(unsigned long)
 
-dwt_stl_TRIVIAL_HASH_FCN(long long)
+dwt_stl_TRIVIAL_HASH_FCN(s64)
 
-dwt_stl_TRIVIAL_HASH_FCN(unsigned long long)
+dwt_stl_TRIVIAL_HASH_FCN(u64)
 
 #undef dwt_stl_TRIVIAL_HASH_FCN
 

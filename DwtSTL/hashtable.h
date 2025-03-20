@@ -212,7 +212,7 @@ struct ht_iterator :public ht_iterator_base<T, Hash, KeyEqual>
     }
     return *this;
   }
-  iterator operator++(int)
+  iterator operator++(s32)
   {
     iterator tmp = *this;
     ++*this;
@@ -292,7 +292,7 @@ struct ht_const_iterator :public ht_iterator_base<T, Hash, KeyEqual>
     }
     return *this;
   }
-  const_iterator operator++(int)
+  const_iterator operator++(s32)
   {
     const_iterator tmp = *this;
     ++*this;
@@ -339,7 +339,7 @@ struct ht_local_iterator :public dwt_stl::iterator<dwt_stl::forward_iterator_tag
     return *this;
   }
   
-  self operator++(int)
+  self operator++(s32)
   {
     self tmp(*this);
     ++*this;
@@ -389,7 +389,7 @@ struct ht_const_local_iterator :public dwt_stl::iterator<dwt_stl::forward_iterat
     return *this;
   }
 
-  self operator++(int)
+  self operator++(s32)
   {
     self tmp(*this);
     ++*this;
@@ -563,7 +563,7 @@ public:
   }
 
   template <class Iter, typename std::enable_if<
-    dwt_stl::is_input_iterator<Iter>::value, int>::type = 0>
+    dwt_stl::is_input_iterator<Iter>::value, s32>::type = 0>
     hashtable(Iter first, Iter last,
               size_type bucket_count,
               const Hash& hash = Hash(),

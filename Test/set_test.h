@@ -20,22 +20,22 @@ void set_test()
   std::cout << "[===============================================================]" << std::endl;
   std::cout << "[------------------ Run container test : set -------------------]" << std::endl;
   std::cout << "[-------------------------- API test ---------------------------]" << std::endl;
-  int a[] = { 5,4,3,2,1 };
-  dwt_stl::set<int> s1;
-  dwt_stl::set<int, dwt_stl::greater<int>> s2;
-  dwt_stl::set<int> s3(a, a + 5);
-  dwt_stl::set<int> s4(a, a + 5);
-  dwt_stl::set<int> s5(s3);
-  dwt_stl::set<int> s6(std::move(s3));
-  dwt_stl::set<int> s7;
+  s32 a[] = { 5,4,3,2,1 };
+  dwt_stl::set<s32> s1;
+  dwt_stl::set<s32, dwt_stl::greater<s32>> s2;
+  dwt_stl::set<s32> s3(a, a + 5);
+  dwt_stl::set<s32> s4(a, a + 5);
+  dwt_stl::set<s32> s5(s3);
+  dwt_stl::set<s32> s6(std::move(s3));
+  dwt_stl::set<s32> s7;
   s7 = s4;
-  dwt_stl::set<int> s8;
+  dwt_stl::set<s32> s8;
   s8 = std::move(s4);
-  dwt_stl::set<int> s9{ 1,2,3,4,5 };
-  dwt_stl::set<int> s10;
+  dwt_stl::set<s32> s9{ 1,2,3,4,5 };
+  dwt_stl::set<s32> s10;
   s10 = { 1,2,3,4,5 };
 
-  for (int i = 5; i > 0; --i)
+  for (s32 i = 5; i > 0; --i)
   {
     FUN_AFTER(s1, s1.emplace(i));
   }
@@ -44,7 +44,7 @@ void set_test()
   FUN_AFTER(s1, s1.erase(0));
   FUN_AFTER(s1, s1.erase(1));
   FUN_AFTER(s1, s1.erase(s1.begin(), s1.end()));
-  for (int i = 0; i < 5; ++i)
+  for (s32 i = 0; i < 5; ++i)
   {
     FUN_AFTER(s1, s1.insert(i));
   }
@@ -76,9 +76,9 @@ void set_test()
   std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;
   std::cout << "|       emplace       |";
 #if LARGER_TEST_DATA_ON
-  CON_TEST_P1(set<int>, emplace, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
+  CON_TEST_P1(set<s32>, emplace, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
 #else
-  CON_TEST_P1(set<int>, emplace, rand(), SCALE_M(LEN1), SCALE_M(LEN2), SCALE_M(LEN3));
+  CON_TEST_P1(set<s32>, emplace, rand(), SCALE_M(LEN1), SCALE_M(LEN2), SCALE_M(LEN3));
 #endif
   std::cout << std::endl;
   std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;
@@ -92,22 +92,22 @@ void multiset_test()
   std::cout << "[===============================================================]" << std::endl;
   std::cout << "[---------------- Run container test : multiset ----------------]" << std::endl;
   std::cout << "[-------------------------- API test ---------------------------]" << std::endl;
-  int a[] = { 5,4,3,2,1 };
-  dwt_stl::multiset<int> s1;
-  dwt_stl::multiset<int, dwt_stl::greater<int>> s2;
-  dwt_stl::multiset<int> s3(a, a + 5);
-  dwt_stl::multiset<int> s4(a, a + 5);
-  dwt_stl::multiset<int> s5(s3);
-  dwt_stl::multiset<int> s6(std::move(s3));
-  dwt_stl::multiset<int> s7;
+  s32 a[] = { 5,4,3,2,1 };
+  dwt_stl::multiset<s32> s1;
+  dwt_stl::multiset<s32, dwt_stl::greater<s32>> s2;
+  dwt_stl::multiset<s32> s3(a, a + 5);
+  dwt_stl::multiset<s32> s4(a, a + 5);
+  dwt_stl::multiset<s32> s5(s3);
+  dwt_stl::multiset<s32> s6(std::move(s3));
+  dwt_stl::multiset<s32> s7;
   s7 = s4;
-  dwt_stl::multiset<int> s8;
+  dwt_stl::multiset<s32> s8;
   s8 = std::move(s4);
-  dwt_stl::multiset<int> s9{ 1,2,3,4,5 };
-  dwt_stl::multiset<int> s10;
+  dwt_stl::multiset<s32> s9{ 1,2,3,4,5 };
+  dwt_stl::multiset<s32> s10;
   s10 = { 1,2,3,4,5 };
 
-  for (int i = 5; i > 0; --i)
+  for (s32 i = 5; i > 0; --i)
   {
     FUN_AFTER(s1, s1.emplace(i));
   }
@@ -116,7 +116,7 @@ void multiset_test()
   FUN_AFTER(s1, s1.erase(0));
   FUN_AFTER(s1, s1.erase(1));
   FUN_AFTER(s1, s1.erase(s1.begin(), s1.end()));
-  for (int i = 0; i < 5; ++i)
+  for (s32 i = 0; i < 5; ++i)
   {
     FUN_AFTER(s1, s1.insert(i));
   }
@@ -148,9 +148,9 @@ void multiset_test()
   std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;
   std::cout << "|       emplace       |";
 #if LARGER_TEST_DATA_ON
-  CON_TEST_P1(multiset<int>, emplace, rand(), SCALE_M(LEN1), SCALE_M(LEN2), SCALE_M(LEN3));
+  CON_TEST_P1(multiset<s32>, emplace, rand(), SCALE_M(LEN1), SCALE_M(LEN2), SCALE_M(LEN3));
 #else
-  CON_TEST_P1(multiset<int>, emplace, rand(), SCALE_S(LEN1), SCALE_S(LEN2), SCALE_S(LEN3));
+  CON_TEST_P1(multiset<s32>, emplace, rand(), SCALE_S(LEN1), SCALE_S(LEN2), SCALE_S(LEN3));
 #endif
   std::cout << std::endl;
   std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;

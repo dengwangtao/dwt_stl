@@ -277,7 +277,7 @@ struct rb_tree_iterator :public rb_tree_iterator_base<T>
     this->inc();
     return *this;
   }
-  self operator++(int)
+  self operator++(s32)
   {
     self tmp(*this);
     this->inc();
@@ -288,7 +288,7 @@ struct rb_tree_iterator :public rb_tree_iterator_base<T>
     this->dec();
     return *this;
   }
-  self operator--(int)
+  self operator--(s32)
   {
     self tmp(*this);
     this->dec();
@@ -329,7 +329,7 @@ struct rb_tree_const_iterator :public rb_tree_iterator_base<T>
     this->inc();
     return *this;
   }
-  self operator++(int)
+  self operator++(s32)
   {
     self tmp(*this);
     this->inc();
@@ -340,7 +340,7 @@ struct rb_tree_const_iterator :public rb_tree_iterator_base<T>
     this->dec();
     return *this;
   }
-  self operator--(int)
+  self operator--(s32)
   {
     self tmp(*this);
     this->dec();

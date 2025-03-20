@@ -22,24 +22,24 @@ void unordered_map_test()
   std::cout << "[-------------- Run container test : unordered_map -------------]" << std::endl;
   std::cout << "[-------------------------- API test ---------------------------]" << std::endl;
   dwt_stl::vector<PAIR> v;
-  for (int i = 0; i < 5; ++i)
+  for (s32 i = 0; i < 5; ++i)
     v.push_back(PAIR(5 - i, 5 - i));
-  dwt_stl::unordered_map<int, int> um1;
-  dwt_stl::unordered_map<int, int> um2(520);
-  dwt_stl::unordered_map<int, int> um3(520, dwt_stl::hash<int>());
-  dwt_stl::unordered_map<int, int> um4(520, dwt_stl::hash<int>(), dwt_stl::equal_to<int>());
-  dwt_stl::unordered_map<int, int> um5(v.begin(), v.end());
-  dwt_stl::unordered_map<int, int> um6(v.begin(), v.end(), 100);
-  dwt_stl::unordered_map<int, int> um7(v.begin(), v.end(), 100, dwt_stl::hash<int>());
-  dwt_stl::unordered_map<int, int> um8(v.begin(), v.end(), 100, dwt_stl::hash<int>(), dwt_stl::equal_to<int>());
-  dwt_stl::unordered_map<int, int> um9(um5);
-  dwt_stl::unordered_map<int, int> um10(std::move(um5));
-  dwt_stl::unordered_map<int, int> um11;
+  dwt_stl::unordered_map<s32, s32> um1;
+  dwt_stl::unordered_map<s32, s32> um2(520);
+  dwt_stl::unordered_map<s32, s32> um3(520, dwt_stl::hash<s32>());
+  dwt_stl::unordered_map<s32, s32> um4(520, dwt_stl::hash<s32>(), dwt_stl::equal_to<s32>());
+  dwt_stl::unordered_map<s32, s32> um5(v.begin(), v.end());
+  dwt_stl::unordered_map<s32, s32> um6(v.begin(), v.end(), 100);
+  dwt_stl::unordered_map<s32, s32> um7(v.begin(), v.end(), 100, dwt_stl::hash<s32>());
+  dwt_stl::unordered_map<s32, s32> um8(v.begin(), v.end(), 100, dwt_stl::hash<s32>(), dwt_stl::equal_to<s32>());
+  dwt_stl::unordered_map<s32, s32> um9(um5);
+  dwt_stl::unordered_map<s32, s32> um10(std::move(um5));
+  dwt_stl::unordered_map<s32, s32> um11;
   um11 = um6;
-  dwt_stl::unordered_map<int, int> um12;
+  dwt_stl::unordered_map<s32, s32> um12;
   um12 = std::move(um6);
-  dwt_stl::unordered_map<int, int> um13{ PAIR(1,1),PAIR(2,3),PAIR(3,3) };
-  dwt_stl::unordered_map<int, int> um14;
+  dwt_stl::unordered_map<s32, s32> um13{ PAIR(1,1),PAIR(2,3),PAIR(3,3) };
+  dwt_stl::unordered_map<s32, s32> um14;
   um14 = { PAIR(1,1),PAIR(2,3),PAIR(3,3) };
 
   MAP_FUN_AFTER(um1, um1.emplace(1, 1));
@@ -113,24 +113,24 @@ void unordered_multimap_test()
   std::cout << "[----------- Run container test : unordered_multimap -----------]" << std::endl;
   std::cout << "[-------------------------- API test ---------------------------]" << std::endl;
   dwt_stl::vector<PAIR> v;
-  for (int i = 0; i < 5; ++i)
+  for (s32 i = 0; i < 5; ++i)
     v.push_back(PAIR(5 - i, 5 - i));
-  dwt_stl::unordered_multimap<int, int> um1;
-  dwt_stl::unordered_multimap<int, int> um2(520);
-  dwt_stl::unordered_multimap<int, int> um3(520, dwt_stl::hash<int>());
-  dwt_stl::unordered_multimap<int, int> um4(520, dwt_stl::hash<int>(), dwt_stl::equal_to<int>());
-  dwt_stl::unordered_multimap<int, int> um5(v.begin(), v.end());
-  dwt_stl::unordered_multimap<int, int> um6(v.begin(), v.end(), 100);
-  dwt_stl::unordered_multimap<int, int> um7(v.begin(), v.end(), 100, dwt_stl::hash<int>());
-  dwt_stl::unordered_multimap<int, int> um8(v.begin(), v.end(), 100, dwt_stl::hash<int>(), dwt_stl::equal_to<int>());
-  dwt_stl::unordered_multimap<int, int> um9(um5);
-  dwt_stl::unordered_multimap<int, int> um10(std::move(um5));
-  dwt_stl::unordered_multimap<int, int> um11;
+  dwt_stl::unordered_multimap<s32, s32> um1;
+  dwt_stl::unordered_multimap<s32, s32> um2(520);
+  dwt_stl::unordered_multimap<s32, s32> um3(520, dwt_stl::hash<s32>());
+  dwt_stl::unordered_multimap<s32, s32> um4(520, dwt_stl::hash<s32>(), dwt_stl::equal_to<s32>());
+  dwt_stl::unordered_multimap<s32, s32> um5(v.begin(), v.end());
+  dwt_stl::unordered_multimap<s32, s32> um6(v.begin(), v.end(), 100);
+  dwt_stl::unordered_multimap<s32, s32> um7(v.begin(), v.end(), 100, dwt_stl::hash<s32>());
+  dwt_stl::unordered_multimap<s32, s32> um8(v.begin(), v.end(), 100, dwt_stl::hash<s32>(), dwt_stl::equal_to<s32>());
+  dwt_stl::unordered_multimap<s32, s32> um9(um5);
+  dwt_stl::unordered_multimap<s32, s32> um10(std::move(um5));
+  dwt_stl::unordered_multimap<s32, s32> um11;
   um11 = um6;
-  dwt_stl::unordered_multimap<int, int> um12;
+  dwt_stl::unordered_multimap<s32, s32> um12;
   um12 = std::move(um6);
-  dwt_stl::unordered_multimap<int, int> um13{ PAIR(1,1),PAIR(2,3),PAIR(3,3) };
-  dwt_stl::unordered_multimap<int, int> um14;
+  dwt_stl::unordered_multimap<s32, s32> um13{ PAIR(1,1),PAIR(2,3),PAIR(3,3) };
+  dwt_stl::unordered_multimap<s32, s32> um14;
   um14 = { PAIR(1,1),PAIR(2,3),PAIR(3,3) };
 
   MAP_FUN_AFTER(um1, um1.emplace(1, 1));

@@ -21,23 +21,23 @@ void unordered_set_test()
   std::cout << "[===============================================================]" << std::endl;
   std::cout << "[-------------- Run container test : unordered_set -------------]" << std::endl;
   std::cout << "[-------------------------- API test ---------------------------]" << std::endl;
-  int a[] = { 5,4,3,2,1 };
-  dwt_stl::unordered_set<int> us1;
-  dwt_stl::unordered_set<int> us2(520);
-  dwt_stl::unordered_set<int> us3(520, dwt_stl::hash<int>());
-  dwt_stl::unordered_set<int> us4(520, dwt_stl::hash<int>(), dwt_stl::equal_to<int>());
-  dwt_stl::unordered_set<int> us5(a, a + 5);
-  dwt_stl::unordered_set<int> us6(a, a + 5, 100);
-  dwt_stl::unordered_set<int> us7(a, a + 5, 100, dwt_stl::hash<int>());
-  dwt_stl::unordered_set<int> us8(a, a + 5, 100, dwt_stl::hash<int>(), dwt_stl::equal_to<int>());
-  dwt_stl::unordered_set<int> us9(us5);
-  dwt_stl::unordered_set<int> us10(std::move(us5));
-  dwt_stl::unordered_set<int> us11;
+  s32 a[] = { 5,4,3,2,1 };
+  dwt_stl::unordered_set<s32> us1;
+  dwt_stl::unordered_set<s32> us2(520);
+  dwt_stl::unordered_set<s32> us3(520, dwt_stl::hash<s32>());
+  dwt_stl::unordered_set<s32> us4(520, dwt_stl::hash<s32>(), dwt_stl::equal_to<s32>());
+  dwt_stl::unordered_set<s32> us5(a, a + 5);
+  dwt_stl::unordered_set<s32> us6(a, a + 5, 100);
+  dwt_stl::unordered_set<s32> us7(a, a + 5, 100, dwt_stl::hash<s32>());
+  dwt_stl::unordered_set<s32> us8(a, a + 5, 100, dwt_stl::hash<s32>(), dwt_stl::equal_to<s32>());
+  dwt_stl::unordered_set<s32> us9(us5);
+  dwt_stl::unordered_set<s32> us10(std::move(us5));
+  dwt_stl::unordered_set<s32> us11;
   us11 = us6;
-  dwt_stl::unordered_set<int> us12;
+  dwt_stl::unordered_set<s32> us12;
   us12 = std::move(us6);
-  dwt_stl::unordered_set<int> us13{ 1,2,3,4,5 };
-  dwt_stl::unordered_set<int> us14;
+  dwt_stl::unordered_set<s32> us13{ 1,2,3,4,5 };
+  dwt_stl::unordered_set<s32> us14;
   us13 = { 1,2,3,4,5 };
 
   FUN_AFTER(us1, us1.emplace(1));
@@ -89,9 +89,9 @@ void unordered_set_test()
   std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;
   std::cout << "|       emplace       |";
 #if LARGER_TEST_DATA_ON
-  CON_TEST_P1(unordered_set<int>, emplace, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
+  CON_TEST_P1(unordered_set<s32>, emplace, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
 #else
-  CON_TEST_P1(unordered_set<int>, emplace, rand(), SCALE_M(LEN1), SCALE_M(LEN2), SCALE_M(LEN3));
+  CON_TEST_P1(unordered_set<s32>, emplace, rand(), SCALE_M(LEN1), SCALE_M(LEN2), SCALE_M(LEN3));
 #endif
   std::cout << std::endl;
   std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;
@@ -105,23 +105,23 @@ void unordered_multiset_test()
   std::cout << "[===============================================================]" << std::endl;
   std::cout << "[------------ Run container test : unordered_multiset ----------]" << std::endl;
   std::cout << "[-------------------------- API test ---------------------------]" << std::endl;
-  int a[] = { 5,4,3,2,1 };
-  dwt_stl::unordered_multiset<int> us1;
-  dwt_stl::unordered_multiset<int> us2(520);
-  dwt_stl::unordered_multiset<int> us3(520, dwt_stl::hash<int>());
-  dwt_stl::unordered_multiset<int> us4(520, dwt_stl::hash<int>(), dwt_stl::equal_to<int>());
-  dwt_stl::unordered_multiset<int> us5(a, a + 5);
-  dwt_stl::unordered_multiset<int> us6(a, a + 5, 100);
-  dwt_stl::unordered_multiset<int> us7(a, a + 5, 100, dwt_stl::hash<int>());
-  dwt_stl::unordered_multiset<int> us8(a, a + 5, 100, dwt_stl::hash<int>(), dwt_stl::equal_to<int>());
-  dwt_stl::unordered_multiset<int> us9(us5);
-  dwt_stl::unordered_multiset<int> us10(std::move(us5));
-  dwt_stl::unordered_multiset<int> us11;
+  s32 a[] = { 5,4,3,2,1 };
+  dwt_stl::unordered_multiset<s32> us1;
+  dwt_stl::unordered_multiset<s32> us2(520);
+  dwt_stl::unordered_multiset<s32> us3(520, dwt_stl::hash<s32>());
+  dwt_stl::unordered_multiset<s32> us4(520, dwt_stl::hash<s32>(), dwt_stl::equal_to<s32>());
+  dwt_stl::unordered_multiset<s32> us5(a, a + 5);
+  dwt_stl::unordered_multiset<s32> us6(a, a + 5, 100);
+  dwt_stl::unordered_multiset<s32> us7(a, a + 5, 100, dwt_stl::hash<s32>());
+  dwt_stl::unordered_multiset<s32> us8(a, a + 5, 100, dwt_stl::hash<s32>(), dwt_stl::equal_to<s32>());
+  dwt_stl::unordered_multiset<s32> us9(us5);
+  dwt_stl::unordered_multiset<s32> us10(std::move(us5));
+  dwt_stl::unordered_multiset<s32> us11;
   us11 = us6;
-  dwt_stl::unordered_multiset<int> us12;
+  dwt_stl::unordered_multiset<s32> us12;
   us12 = std::move(us6);
-  dwt_stl::unordered_multiset<int> us13{ 1,2,3,4,5 };
-  dwt_stl::unordered_multiset<int> us14;
+  dwt_stl::unordered_multiset<s32> us13{ 1,2,3,4,5 };
+  dwt_stl::unordered_multiset<s32> us14;
   us14 = { 1,2,3,4,5 };
 
   FUN_AFTER(us1, us1.emplace(1));
@@ -173,9 +173,9 @@ void unordered_multiset_test()
   std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;
   std::cout << "|       emplace       |";
 #if LARGER_TEST_DATA_ON
-  CON_TEST_P1(unordered_multiset<int>, emplace, rand(), SCALE_M(LEN1), SCALE_M(LEN2), SCALE_M(LEN3));
+  CON_TEST_P1(unordered_multiset<s32>, emplace, rand(), SCALE_M(LEN1), SCALE_M(LEN2), SCALE_M(LEN3));
 #else
-  CON_TEST_P1(unordered_multiset<int>, emplace, rand(), SCALE_S(LEN1), SCALE_S(LEN2), SCALE_S(LEN3));
+  CON_TEST_P1(unordered_multiset<s32>, emplace, rand(), SCALE_S(LEN1), SCALE_S(LEN2), SCALE_S(LEN3));
 #endif
   std::cout << std::endl;
   std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;
