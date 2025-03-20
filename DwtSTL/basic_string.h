@@ -19,7 +19,7 @@ namespace dwt_stl
 template <class CharType>
 struct char_traits
 {
-  typedef CharType char_type;
+  using char_type = CharType;
   
   static size_t length(const char_type* str)
   {
@@ -29,7 +29,7 @@ struct char_traits
     return len;
   }
 
-  static int compare(const char_type* s1, const char_type* s2, size_t n)
+  static s32 compare(const char_type* s1, const char_type* s2, size_t n)
   {
     for (; n != 0; --n, ++s1, ++s2)
     {
@@ -86,7 +86,7 @@ struct char_traits<char>
   static size_t length(const char_type* str) noexcept
   { return std::strlen(str); }
 
-  static int compare(const char_type* s1, const char_type* s2, size_t n) noexcept
+  static s32 compare(const char_type* s1, const char_type* s2, size_t n) noexcept
   { return std::memcmp(s1, s2, n); }
 
   static char_type* copy(char_type* dst, const char_type* src, size_t n) noexcept
@@ -117,7 +117,7 @@ struct char_traits<wchar_t>
     return std::wcslen(str);
   }
 
-  static int compare(const char_type* s1, const char_type* s2, size_t n) noexcept
+  static s32 compare(const char_type* s1, const char_type* s2, size_t n) noexcept
   {
     return std::wmemcmp(s1, s2, n);
   }
@@ -153,7 +153,7 @@ struct char_traits<char16_t>
     return len;
   }
 
-  static int compare(const char_type* s1, const char_type* s2, size_t n) noexcept
+  static s32 compare(const char_type* s1, const char_type* s2, size_t n) noexcept
   {
     for (; n != 0; --n, ++s1, ++s2)
     {
@@ -215,7 +215,7 @@ struct char_traits<char32_t>
     return len;
   }
 
-  static int compare(const char_type* s1, const char_type* s2, size_t n) noexcept
+  static s32 compare(const char_type* s1, const char_type* s2, size_t n) noexcept
   {
     for (; n != 0; --n, ++s1, ++s2)
     {
@@ -342,7 +342,7 @@ public:
   }
 
   template <class Iter, typename std::enable_if<
-    dwt_stl::is_input_iterator_v<Iter>, int>::type = 0>
+    dwt_stl::is_input_iterator_v<Iter>, s32>::type = 0>
   basic_string(Iter first, Iter last)
   { copy_init(first, last, iterator_category(first)); }
 
@@ -501,7 +501,7 @@ public:
   basic_string& append(const_pointer s, size_type count);
 
   template <class Iter, typename std::enable_if<
-    dwt_stl::is_input_iterator<Iter>::value, int>::type = 0>
+    dwt_stl::is_input_iterator<Iter>::value, s32>::type = 0>
   basic_string& append(Iter first, Iter last)
   { return append_range(first, last); }
 
@@ -520,13 +520,13 @@ public:
   // basic_string 相关操作
 
   // compare
-  int compare(const basic_string& other) const;
-  int compare(size_type pos1, size_type count1, const basic_string& other) const;
-  int compare(size_type pos1, size_type count1, const basic_string& other,
+  s32 compare(const basic_string& other) const;
+  s32 compare(size_type pos1, size_type count1, const basic_string& other) const;
+  s32 compare(size_type pos1, size_type count1, const basic_string& other,
               size_type pos2, size_type count2 = npos) const;
-  int compare(const_pointer s) const;
-  int compare(size_type pos1, size_type count1, const_pointer s) const;
-  int compare(size_type pos1, size_type count1, const_pointer s, size_type count2) const;
+  s32 compare(const_pointer s) const;
+  s32 compare(size_type pos1, size_type count1, const_pointer s) const;
+  s32 compare(size_type pos1, size_type count1, const_pointer s, size_type count2) const;
 
   // substr
   basic_string substr(size_type index, size_type count = npos)
@@ -590,7 +590,7 @@ public:
   }
 
   template <class Iter, typename std::enable_if<
-    dwt_stl::is_input_iterator<Iter>::value, int>::type = 0>
+    dwt_stl::is_input_iterator<Iter>::value, s32>::type = 0>
   basic_string& replace(const_iterator first, const_iterator last, Iter first2, Iter last2)
   {
     dwt_stl_DEBUG(begin() <= first && last <= end() && first <= last);
@@ -700,7 +700,7 @@ private:
   basic_string& append_range(Iter first, Iter last);
 
   // compare
-  int compare_cstr(const_pointer s1, size_type n1, const_pointer s2, size_type n2) const;
+  s32 compare_cstr(const_pointer s1, size_type n1, const_pointer s2, size_type n2) const;
 
   // replace
   basic_string& replace_cstr(const_iterator first, size_type count1, const_pointer str, size_type count2);
@@ -980,7 +980,7 @@ resize(size_type count, value_type ch)
 
 // 比较两个 basic_string，小于返回 -1，大于返回 1，等于返回 0
 template <class CharType, class CharTraits>
-int basic_string<CharType, CharTraits>::
+s32 basic_string<CharType, CharTraits>::
 compare(const basic_string& other) const
 {
   return compare_cstr(buffer_, size_, other.buffer_, other.size_);
@@ -988,7 +988,7 @@ compare(const basic_string& other) const
 
 // 从 pos1 下标开始的 count1 个字符跟另一个 basic_string 比较
 template <class CharType, class CharTraits>
-int basic_string<CharType, CharTraits>::
+s32 basic_string<CharType, CharTraits>::
 compare(size_type pos1, size_type count1, const basic_string& other) const
 {
   auto n1 = dwt_stl::min(count1, size_ - pos1);
@@ -997,7 +997,7 @@ compare(size_type pos1, size_type count1, const basic_string& other) const
 
 // 从 pos1 下标开始的 count1 个字符跟另一个 basic_string 下标 pos2 开始的 count2 个字符比较
 template <class CharType, class CharTraits>
-int basic_string<CharType, CharTraits>::
+s32 basic_string<CharType, CharTraits>::
 compare(size_type pos1, size_type count1, const basic_string& other,
         size_type pos2, size_type count2) const
 {
@@ -1008,7 +1008,7 @@ compare(size_type pos1, size_type count1, const basic_string& other,
 
 // 跟一个字符串比较
 template <class CharType, class CharTraits>
-int basic_string<CharType, CharTraits>::
+s32 basic_string<CharType, CharTraits>::
 compare(const_pointer s) const
 {
   auto n2 = char_traits::length(s);
@@ -1017,7 +1017,7 @@ compare(const_pointer s) const
 
 // 从下标 pos1 开始的 count1 个字符跟另一个字符串比较
 template <class CharType, class CharTraits>
-int basic_string<CharType, CharTraits>::
+s32 basic_string<CharType, CharTraits>::
 compare(size_type pos1, size_type count1, const_pointer s) const
 {
   auto n1 = dwt_stl::min(count1, size_ - pos1);
@@ -1027,7 +1027,7 @@ compare(size_type pos1, size_type count1, const_pointer s) const
 
 // 从下标 pos1 开始的 count1 个字符跟另一个字符串的前 count2 个字符比较
 template <class CharType, class CharTraits>
-int basic_string<CharType, CharTraits>::
+s32 basic_string<CharType, CharTraits>::
 compare(size_type pos1, size_type count1, const_pointer s, size_type count2) const
 {
   auto n1 = dwt_stl::min(count1, size_ - pos1);
@@ -1726,7 +1726,7 @@ append_range(Iter first, Iter last)
 }
 
 template <class CharType, class CharTraits>
-int basic_string<CharType, CharTraits>::
+s32 basic_string<CharType, CharTraits>::
 compare_cstr(const_pointer s1, size_type n1, const_pointer s2, size_type n2) const
 {
   auto rlen = dwt_stl::min(n1, n2);
