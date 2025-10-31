@@ -82,7 +82,8 @@ struct is_convertible_iterator : false_type {};
 
 template<class T>
 struct is_convertible_iterator<T,
-  std::enable_if_t<std::is_convertible_v<typename T::iterator_category, input_iterator_tag> || std::is_convertible_v<typename T::iterator_category, output_iterator_tag>, void> >
+  std::enable_if_t<std::is_convertible_v<typename T::iterator_category, input_iterator_tag> ||
+                   std::is_convertible_v<typename T::iterator_category, output_iterator_tag>, void> >
     : true_type
 {};
 
@@ -113,21 +114,21 @@ struct iterator_traits : public iterator_traits_impl<Iterator> {};
 template <class T>
 struct iterator_traits<T*>
 {
-  typedef random_access_iterator_tag           iterator_category;
-  typedef T                                    value_type;
-  typedef T*                                   pointer;
-  typedef T&                                   reference;
-  typedef ptrdiff_t                            difference_type;
+  using iterator_category   = random_access_iterator_tag;
+  using value_type          = T;
+  using pointer             = T*;
+  using reference           = T&;
+  using difference_type     = ptrdiff_t;
 };
 
 template <class T>
 struct iterator_traits<const T*>
 {
-  typedef random_access_iterator_tag           iterator_category;
-  typedef T                                    value_type;
-  typedef const T*                             pointer;
-  typedef const T&                             reference;
-  typedef ptrdiff_t                            difference_type;
+  using iterator_category   = random_access_iterator_tag;
+  using value_type          = T;
+  using pointer             = const T*;
+  using reference           = const T&;
+  using difference_type     = ptrdiff_t;
 };
 
 
@@ -146,8 +147,18 @@ struct has_iterator_cat_of<T, U,
 DECL__V2(has_iterator_cat_of);
 
 
+// template <class Iter>
+// struct is_exactly_input_iterator : public dwt_stl::bool_constant<has_iterator_cat_of_v<Iter, input_iterator_tag> && !has_iterator_cat_of_v<Iter, forward_iterator_tag>> {};
+
+template <class Iter, class=void>
+struct is_exactly_input_iterator : dwt_stl::false_type {};
+
+
 template <class Iter>
-struct is_exactly_input_iterator : public dwt_stl::bool_constant<has_iterator_cat_of_v<Iter, input_iterator_tag> && !has_iterator_cat_of_v<Iter, forward_iterator_tag>> {};
+struct is_exactly_input_iterator<Iter,
+    std::enable_if_t<has_iterator_cat_of_v<Iter, input_iterator_tag> && !has_iterator_cat_of_v<Iter, forward_iterator_tag>, void>
+  > : dwt_stl::true_type {};
+
 
 template <class Iter>
 struct is_input_iterator : public has_iterator_cat_of<Iter, input_iterator_tag> {};
