@@ -295,6 +295,7 @@ typename iterator_traits<InputIterator>::difference_type distance(InputIterator 
 template <class InputIterator, class Distance>
 void advance_dispatch(InputIterator& i, Distance n, input_iterator_tag)
 {
+  assert(n >= 0);
   while (n--) 
     ++i;
 }
