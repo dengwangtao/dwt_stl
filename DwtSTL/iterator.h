@@ -66,7 +66,7 @@ public:
 };
 */
 
-// 再换一种写法:
+// 再换一种写法: 判断类型T是否有iterator_category类型成员
 template <class T, class = void>
 struct has_iterator_cat : false_type {};
 
@@ -76,7 +76,7 @@ struct has_iterator_cat<T, std::void_t<typename T::iterator_category>> : true_ty
 DECL__V(has_iterator_cat);
 
 
-// 判断一个迭代器是否可以隐式转换到 input_iterator_tag 或 output_iterator_tag
+// 判断一个迭代器 T::iterator_category 是否可以隐式转换到 input_iterator_tag 或 output_iterator_tag
 template<class T, class = void>
 struct is_convertible_iterator : false_type {};
 
@@ -88,6 +88,7 @@ struct is_convertible_iterator<T,
 {};
 
 DECL__V(is_convertible_iterator);
+
 
 template <class Iterator, class = void>
 struct iterator_traits_impl {};
@@ -105,10 +106,9 @@ struct iterator_traits_impl<Iterator,
 };
 
 
-// 萃取迭代器的特性
+// 萃取迭代器的特性(因为要兼容原生的指针， 这里包了一层，然后再进行特化)
 template <class Iterator>
 struct iterator_traits : public iterator_traits_impl<Iterator> {};
-
 
 // 针对原生指针的偏特化版本
 template <class T>
@@ -194,7 +194,7 @@ struct is_iterator :
 template <class Iterator>
 typename iterator_traits<Iterator>::iterator_category iterator_category(const Iterator&)
 {
-   typedef typename iterator_traits<Iterator>::iterator_category Category;
+   using Category = typename iterator_traits<Iterator>::iterator_category;
    return Category();
 }
 
@@ -202,16 +202,20 @@ typename iterator_traits<Iterator>::iterator_category iterator_category(const It
 template <class Iterator>
 typename iterator_traits<Iterator>::difference_type* distance_type(const Iterator&)
 {
-   return static_cast<typename iterator_traits<Iterator>::difference_type*>(0);
+  using DiffType = typename iterator_traits<Iterator>::difference_type*;
+  return static_cast<DiffType>(0);
 }
 
 // 萃取某个迭代器的 value_type
 template <class Iterator>
 typename iterator_traits<Iterator>::value_type* value_type(const Iterator&)
 {
-  return static_cast<typename iterator_traits<Iterator>::value_type*>(0);
+  using ValueType = typename iterator_traits<Iterator>::value_type*;
+  return static_cast<ValueType>(0);
 }
 
+
+#if 0
 // 以下函数用于计算迭代器间的距离
 
 // distance 的 input_iterator_tag 的版本
@@ -241,6 +245,49 @@ typename iterator_traits<InputIterator>::difference_type distance(InputIterator 
 {
   return distance_dispatch(first, last, iterator_category(first));
 }
+#else
+
+template<class Iter, class=void>
+struct distance_dispatch;
+
+template<class Iter>
+struct distance_dispatch< Iter, std::enable_if_t<is_random_access_iterator_v<Iter>, void> >
+{
+  template<class InputIterator>
+  static typename iterator_traits<InputIterator>::difference_type distance(InputIterator first, InputIterator last)
+  {
+    return last - first;
+  }
+};
+
+
+// 随机访问迭代器一定是输入迭代器,会同时匹配，这里要排除一下
+template<class Iter>
+struct distance_dispatch< Iter, std::enable_if_t<is_input_iterator_v<Iter> && !is_random_access_iterator_v<Iter>, void> >
+{
+  template<class InputIterator>
+  static typename iterator_traits<InputIterator>::difference_type distance(InputIterator first, InputIterator last)
+  {
+    typename iterator_traits<InputIterator>::difference_type n = 0;
+    while (first != last)
+    {
+      ++first;
+      ++n;
+    }
+    return n;
+  }
+};
+
+
+// 外部调用该函数distance
+template <class InputIterator>
+typename iterator_traits<InputIterator>::difference_type distance(InputIterator first, InputIterator last)
+{
+  return distance_dispatch<InputIterator>::distance(first, last);
+}
+
+#endif
+
 
 // 以下函数用于让迭代器前进 n 个距离
 
