@@ -328,101 +328,60 @@ void advance(InputIterator& i, Distance n)
 // 模板类 : reverse_iterator
 // 代表反向迭代器，使前进为后退，后退为前进
 template <class Iterator>
-class reverse_iterator
-{
+class reverse_iterator {
 private:
-  Iterator current;  // 记录对应的正向迭代器
+  Iterator current;
 
 public:
-  // 反向迭代器的五种相应型别
-  using iterator_category =  typename iterator_traits<Iterator>::iterator_category ;
-  using value_type        =  typename iterator_traits<Iterator>::value_type        ;
-  using difference_type   =  typename iterator_traits<Iterator>::difference_type   ;
-  using pointer           =  typename iterator_traits<Iterator>::pointer           ;
-  using reference         =  typename iterator_traits<Iterator>::reference         ;
+  using iterator_category = typename iterator_traits<Iterator>::iterator_category;
+  using value_type        = typename iterator_traits<Iterator>::value_type;
+  using difference_type   = typename iterator_traits<Iterator>::difference_type;
+  using pointer           = typename iterator_traits<Iterator>::pointer;
+  using reference         = typename iterator_traits<Iterator>::reference;
 
   using iterator_type     = Iterator;
   using self              = reverse_iterator<Iterator>;
 
 public:
-  // 构造函数
-  reverse_iterator() {}
-  explicit reverse_iterator(iterator_type i) :current(i) {}
-  reverse_iterator(const self& rhs) :current(rhs.current) {}
+  constexpr reverse_iterator() noexcept = default;
+  constexpr explicit reverse_iterator(iterator_type i) noexcept : current(i) {}
+  constexpr reverse_iterator(const self& rhs) noexcept = default;
 
-public:
-  // 取出对应的正向迭代器
-  iterator_type base() const 
-  { return current; }
+  constexpr iterator_type base() const noexcept { return current; }
 
-  // 重载操作符
+  // 解引用
   reference operator*() const
-  { // 实际对应正向迭代器的前一个位置
-    auto tmp = current;
-    return *--tmp;
-  }
-  pointer operator->() const
   {
-    return &(operator*());
+      Iterator tmp = current;
+      --tmp;
+      return *tmp;
   }
 
-  // 前进(++)变为后退(--)
-  self& operator++()
-  {
-    --current;
-    return *this;
-  }
-  self operator++(s32)
-  {
-    self tmp = *this;
-    --current;
-    return tmp;
-  }
-  // 后退(--)变为前进(++)
-  self& operator--()
-  {
-    ++current;
-    return *this;
-  }
-  self operator--(s32)
-  {
-    self tmp = *this;
-    ++current;
-    return tmp;
-  }
+  pointer operator->() const { return &(operator*()); }
 
-  self& operator+=(difference_type n)
-  {
-    current -= n;
-    return *this;
-  }
-  self operator+(difference_type n) const
-  {
-    return self(current - n);
-  }
-  self& operator-=(difference_type n)
-  {
-    current += n;
-    return *this;
-  }
-  self operator-(difference_type n) const
-  {
-    return self(current + n);
-  }
+  // ++/-- 反向
+  self& operator++()    { --current; return *this; }
+  self  operator++(int) { self tmp = *this; --current; return tmp; }
 
-  reference operator[](difference_type n) const
-  {
-    return *(*this + n);
-  }
+  self& operator--()    { ++current; return *this; }
+  self  operator--(int) { self tmp = *this; ++current; return tmp; }
 
-  difference_type operator-(const self& other) { return other.base() - base(); }
+  self& operator+=(difference_type n) { current -= n; return *this; }
+  self  operator+(difference_type n) const { return self(current - n); }
 
-  bool operator<(const self& other)   { return base() > other.base(); }
-  bool operator==(const self& other)  { return base() == other.base(); }
-  bool operator!=(const self& other)  { return !(*this == other); }
-  bool operator>(const self& other)   { return other.base() < base(); }
-  bool operator>=(const self& other)   { return !(*this < other.base()); }
-  bool operator<=(const self& other)   { return !(*this > other.base()); }
+  self& operator-=(difference_type n) { current += n; return *this; }
+  self  operator-(difference_type n) const { return self(current + n); }
+
+  reference operator[](difference_type n) const { return *(*this + n); }
+
+  difference_type operator-(const self& other) const { return other.base() - base(); }
+
+  bool operator==(const self& other) const { return base() == other.base(); }
+  bool operator!=(const self& other) const { return !(*this == other); }
+  bool operator<(const self& other) const  { return base() > other.base(); }
+  bool operator>(const self& other) const  { return base() < other.base(); }
+  bool operator<=(const self& other) const { return !(*this > other); }
+  bool operator>=(const self& other) const { return !(*this < other); }
 };
 
 /*
