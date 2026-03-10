@@ -13,45 +13,45 @@ template <class RandomIter, class T, class Distance,
 void adjust_heap(RandomIter first, Distance holeIndex, Distance len, T value,
                  Compared comp = Compared())
 {
-  // 直接将 value 放置到顶部, down一遍
-  *(first + holeIndex) = value;
-  auto topIndex = holeIndex;
-  while (topIndex < len)
-  {
-    auto oldTopIndex = topIndex;
-    auto lchild = 2 * topIndex + 1;
-    auto rchild = 2 * topIndex + 2;
-    if (lchild < len && comp(*(first + topIndex), *(first + lchild)) )
+    // 直接将 value 放置到顶部, down一遍
+    *(first + holeIndex) = value;
+    auto topIndex = holeIndex;
+    while (topIndex < len)
     {
-      topIndex = lchild;
+        auto oldTopIndex = topIndex;
+        auto lchild = 2 * topIndex + 1;
+        auto rchild = 2 * topIndex + 2;
+        if (lchild < len && comp(*(first + topIndex), *(first + lchild)))
+        {
+            topIndex = lchild;
+        }
+        if (rchild < len && comp(*(first + topIndex), *(first + rchild)))
+        {
+            topIndex = rchild;
+        }
+        if (topIndex == oldTopIndex)
+        {
+            break;
+        }
+        // 交换父节点和子节点
+        dwt_stl::swap(*(first + oldTopIndex), *(first + topIndex));
     }
-    if (rchild < len && comp(*(first + topIndex), *(first + rchild)) )
-    {
-      topIndex = rchild;
-    }
-    if (topIndex == oldTopIndex)
-    {
-      break;
-    }
-    // 交换父节点和子节点
-    dwt_stl::swap(*(first + oldTopIndex), *(first + topIndex));
-  }
 }
 
 // 从 holeIndex 开始向上调整
 template <class RandomIter, class T, class Distance,
           class Compared = std::less<typename iterator_traits<RandomIter>::value_type>>
 void adjust_heap_to_up(RandomIter first, Distance holeIndex, Distance topIndex, T value,
-                 Compared comp = Compared())
+                       Compared comp = Compared())
 {
-  auto parent = (holeIndex - 1) / 2;
-  while (holeIndex > topIndex && comp(*(first + parent), value))
-  {
-    *(first + holeIndex) = *(first + parent);
-    holeIndex = parent;
-    parent = (holeIndex - 1) / 2;
-  }
-  *(first + holeIndex) = value;
+    auto parent = (holeIndex - 1) / 2;
+    while (holeIndex > topIndex && comp(*(first + parent), value))
+    {
+        *(first + holeIndex) = *(first + parent);
+        holeIndex = parent;
+        parent = (holeIndex - 1) / 2;
+    }
+    *(first + holeIndex) = value;
 }
 
 /*****************************************************************************************/
@@ -61,17 +61,17 @@ void adjust_heap_to_up(RandomIter first, Distance holeIndex, Distance topIndex, 
 
 template <class RandomIter, class T, class Distance, class Compared>
 void push_heap_aux(RandomIter first, RandomIter last,
-                  T value, Distance*, Compared comp)
+                   T value, Distance*, Compared comp)
 {
-  dwt_stl::adjust_heap_to_up(first, last - first - 1, static_cast<Distance>(0), value, comp);
+    dwt_stl::adjust_heap_to_up(first, last - first - 1, static_cast<Distance>(0), value, comp);
 }
 
 template <class RandomIter,
           class Compared = std::less<typename iterator_traits<RandomIter>::value_type>>
 void push_heap(RandomIter first, RandomIter last, Compared comp = Compared())
 {
-  // 新加入的元素在尾部
-  dwt_stl::push_heap_aux(first, last, *(last - 1), distance_type(first), comp);
+    // 新加入的元素在尾部
+    dwt_stl::push_heap_aux(first, last, *(last - 1), distance_type(first), comp);
 }
 
 /*****************************************************************************************/
@@ -80,18 +80,18 @@ void push_heap(RandomIter first, RandomIter last, Compared comp = Compared())
 /*****************************************************************************************/
 
 template <class RandomIter, class T, class Distance, class Compared = std::less<typename iterator_traits<RandomIter>::value_type>>
-void pop_heap_aux(RandomIter first, RandomIter last, RandomIter result, 
+void pop_heap_aux(RandomIter first, RandomIter last, RandomIter result,
                   T value, Distance*, Compared comp = Compared())
 {
-  *result = *first;  // 先将尾指设置成首值，即尾指为欲求结果
-  dwt_stl::adjust_heap(first, static_cast<Distance>(0), last - first, value, comp);
+    *result = *first;  // 先将尾指设置成首值，即尾指为欲求结果
+    dwt_stl::adjust_heap(first, static_cast<Distance>(0), last - first, value, comp);
 }
 
 template <class RandomIter, class Compared = std::less<typename iterator_traits<RandomIter>::value_type>>
 void pop_heap(RandomIter first, RandomIter last, Compared comp = Compared())
 {
-  dwt_stl::pop_heap_aux(first, last - 1, last - 1, *(last - 1),
-                      distance_type(first), comp);
+    dwt_stl::pop_heap_aux(first, last - 1, last - 1, *(last - 1),
+                          distance_type(first), comp);
 }
 
 /*****************************************************************************************/
@@ -101,10 +101,10 @@ void pop_heap(RandomIter first, RandomIter last, Compared comp = Compared())
 template <class RandomIter, class Compared = std::less<typename iterator_traits<RandomIter>::value_type>>
 void sort_heap(RandomIter first, RandomIter last, Compared comp = Compared())
 {
-  while (last - first > 1)
-  {
-    dwt_stl::pop_heap(first, last--, comp);
-  }
+    while (last - first > 1)
+    {
+        dwt_stl::pop_heap(first, last--, comp);
+    }
 }
 
 /*****************************************************************************************/
@@ -114,30 +114,29 @@ void sort_heap(RandomIter first, RandomIter last, Compared comp = Compared())
 template <class RandomIter, class Distance, class Compared>
 void make_heap_aux(RandomIter first, RandomIter last, Distance*, Compared comp)
 {
-  if (last - first < 2)
-  {
-    return;
-  }
-  auto len = last - first;
-  auto holeIndex = (len - 2) / 2;
-  while (true)
-  {
-    // 重排以 holeIndex 为首的子树
-    dwt_stl::adjust_heap(first, holeIndex, len, *(first + holeIndex), comp);
-    if (holeIndex == 0)
+    if (last - first < 2)
     {
-      return;
+        return;
     }
-    holeIndex--;
-  }
+    auto len = last - first;
+    auto holeIndex = (len - 2) / 2;
+    while (true)
+    {
+        // 重排以 holeIndex 为首的子树
+        dwt_stl::adjust_heap(first, holeIndex, len, *(first + holeIndex), comp);
+        if (holeIndex == 0)
+        {
+            return;
+        }
+        holeIndex--;
+    }
 }
 
 template <class RandomIter, class Compared = std::less<typename iterator_traits<RandomIter>::value_type>>
 void make_heap(RandomIter first, RandomIter last, Compared comp = Compared())
 {
-  dwt_stl::make_heap_aux(first, last, distance_type(first), comp);
+    dwt_stl::make_heap_aux(first, last, distance_type(first), comp);
 }
 
-} // namespace dwt_stl
-#endif // !MYTINYSTL_HEAP_ALGO_H_
-
+}  // namespace dwt_stl
+#endif  // !MYTINYSTL_HEAP_ALGO_H_

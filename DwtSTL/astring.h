@@ -8,11 +8,10 @@
 namespace dwt_stl
 {
 
-using string    = dwt_stl::basic_string<char>;
-using wstring   = dwt_stl::basic_string<wchar_t>;
+using string = dwt_stl::basic_string<char>;
+using wstring = dwt_stl::basic_string<wchar_t>;
 using u16string = dwt_stl::basic_string<char16_t>;
 using u32string = dwt_stl::basic_string<char32_t>;
 
-}
-#endif // !MYTINYSTL_ASTRING_H_
-
+}  // namespace dwt_stl
+#endif  // !MYTINYSTL_ASTRING_H_

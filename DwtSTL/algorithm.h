@@ -12,7 +12,6 @@
 namespace dwt_stl
 {
 
-} // namespace dwt_stl
+}  // namespace dwt_stl
 
-#endif // !MYTINYSTL_ALGORITHM_H_
-
+#endif  // !MYTINYSTL_ALGORITHM_H_

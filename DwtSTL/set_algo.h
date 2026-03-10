@@ -16,61 +16,61 @@ namespace dwt_stl
 /*****************************************************************************************/
 template <class InputIter1, class InputIter2, class OutputIter>
 OutputIter set_union(InputIter1 first1, InputIter1 last1,
-                     InputIter2 first2, InputIter2 last2, 
+                     InputIter2 first2, InputIter2 last2,
                      OutputIter result)
 {
-  while (first1 != last1 && first2 != last2)
-  {
-    if (*first1 < *first2)
+    while (first1 != last1 && first2 != last2)
     {
-      *result = *first1;
-      ++first1;
+        if (*first1 < *first2)
+        {
+            *result = *first1;
+            ++first1;
+        }
+        else if (*first2 < *first1)
+        {
+            *result = *first2;
+            ++first2;
+        }
+        else
+        {
+            *result = *first1;
+            ++first1;
+            ++first2;
+        }
+        ++result;
     }
-    else if (*first2 < *first1)
-    {
-      *result = *first2;
-      ++first2;
-    }
-    else
-    {
-      *result = *first1;
-      ++first1;
-      ++first2;
-    }
-    ++result;
-  }
-  // 将剩余元素拷贝到 result
-  return dwt_stl::copy(first2, last2, dwt_stl::copy(first1, last1, result));
+    // 将剩余元素拷贝到 result
+    return dwt_stl::copy(first2, last2, dwt_stl::copy(first1, last1, result));
 }
 
 // 重载版本使用函数对象 comp 代替比较操作
 template <class InputIter1, class InputIter2, class OutputIter, class Compared>
 OutputIter set_union(InputIter1 first1, InputIter1 last1,
-                     InputIter2 first2, InputIter2 last2, 
+                     InputIter2 first2, InputIter2 last2,
                      OutputIter result, Compared comp)
 {
-  while (first1 != last1 && first2 != last2)
-  {
-    if (comp(*first1, *first2))
+    while (first1 != last1 && first2 != last2)
     {
-      *result = *first1;
-      ++first1;
+        if (comp(*first1, *first2))
+        {
+            *result = *first1;
+            ++first1;
+        }
+        else if (comp(*first2, *first1))
+        {
+            *result = *first2;
+            ++first2;
+        }
+        else
+        {
+            *result = *first1;
+            ++first1;
+            ++first2;
+        }
+        ++result;
     }
-    else if (comp(*first2, *first1))
-    {
-      *result = *first2;
-      ++first2;
-    }
-    else
-    {
-      *result = *first1;
-      ++first1;
-      ++first2;
-    }
-    ++result;
-  }
-  // 将剩余元素拷贝到 result
-  return dwt_stl::copy(first2, last2, dwt_stl::copy(first1, last1, result));
+    // 将剩余元素拷贝到 result
+    return dwt_stl::copy(first2, last2, dwt_stl::copy(first1, last1, result));
 }
 
 /*****************************************************************************************/
@@ -79,28 +79,28 @@ OutputIter set_union(InputIter1 first1, InputIter1 last1,
 /*****************************************************************************************/
 template <class InputIter1, class InputIter2, class OutputIter>
 OutputIter set_intersection(InputIter1 first1, InputIter1 last1,
-                            InputIter2 first2, InputIter2 last2, 
+                            InputIter2 first2, InputIter2 last2,
                             OutputIter result)
 {
-  while (first1 != last1 && first2 != last2)
-  {
-    if (*first1 < *first2)
+    while (first1 != last1 && first2 != last2)
     {
-      ++first1;
+        if (*first1 < *first2)
+        {
+            ++first1;
+        }
+        else if (*first2 < *first1)
+        {
+            ++first2;
+        }
+        else
+        {
+            *result = *first1;
+            ++first1;
+            ++first2;
+            ++result;
+        }
     }
-    else if (*first2 < *first1)
-    {
-      ++first2;
-    }
-    else
-    {
-      *result = *first1;
-      ++first1;
-      ++first2;
-      ++result;
-    }
-  }
-  return result;
+    return result;
 }
 
 // 重载版本使用函数对象 comp 代替比较操作
@@ -109,25 +109,25 @@ OutputIter set_intersection(InputIter1 first1, InputIter1 last1,
                             InputIter2 first2, InputIter2 last2,
                             OutputIter result, Compared comp)
 {
-  while (first1 != last1 && first2 != last2)
-  {
-    if (comp(*first1, *first2))
+    while (first1 != last1 && first2 != last2)
     {
-      ++first1;
+        if (comp(*first1, *first2))
+        {
+            ++first1;
+        }
+        else if (comp(*first2, *first1))
+        {
+            ++first2;
+        }
+        else
+        {
+            *result = *first1;
+            ++first1;
+            ++first2;
+            ++result;
+        }
     }
-    else if (comp(*first2, *first1))
-    {
-      ++first2;
-    }
-    else
-    {
-      *result = *first1;
-      ++first1;
-      ++first2;
-      ++result;
-    }
-  }
-  return result;
+    return result;
 }
 
 /*****************************************************************************************/
@@ -139,52 +139,52 @@ OutputIter set_difference(InputIter1 first1, InputIter1 last1,
                           InputIter2 first2, InputIter2 last2,
                           OutputIter result)
 {
-  while (first1 != last1 && first2 != last2)
-  {
-    if (*first1 < *first2)
+    while (first1 != last1 && first2 != last2)
     {
-      *result = *first1;
-      ++first1;
-      ++result;
+        if (*first1 < *first2)
+        {
+            *result = *first1;
+            ++first1;
+            ++result;
+        }
+        else if (*first2 < *first1)
+        {
+            ++first2;
+        }
+        else
+        {
+            ++first1;
+            ++first2;
+        }
     }
-    else if (*first2 < *first1)
-    {
-      ++first2;
-    }
-    else
-    {
-      ++first1;
-      ++first2;
-    }
-  }
-  return dwt_stl::copy(first1, last1, result);
+    return dwt_stl::copy(first1, last1, result);
 }
 
 // 重载版本使用函数对象 comp 代替比较操作
 template <class InputIter1, class InputIter2, class OutputIter, class Compared>
 OutputIter set_difference(InputIter1 first1, InputIter1 last1,
-                          InputIter2 first2, InputIter2 last2, 
+                          InputIter2 first2, InputIter2 last2,
                           OutputIter result, Compared comp)
 {
-  while (first1 != last1 && first2 != last2)
-  {
-    if (comp(*first1, *first2))
+    while (first1 != last1 && first2 != last2)
     {
-      *result = *first1;
-      ++first1;
-      ++result;
+        if (comp(*first1, *first2))
+        {
+            *result = *first1;
+            ++first1;
+            ++result;
+        }
+        else if (comp(*first2, *first1))
+        {
+            ++first2;
+        }
+        else
+        {
+            ++first1;
+            ++first2;
+        }
     }
-    else if (comp(*first2, *first1))
-    {
-      ++first2;
-    }
-    else
-    {
-      ++first1;
-      ++first2;
-    }
-  }
-  return dwt_stl::copy(first1, last1, result);
+    return dwt_stl::copy(first1, last1, result);
 }
 
 /*****************************************************************************************/
@@ -193,30 +193,30 @@ OutputIter set_difference(InputIter1 first1, InputIter1 last1,
 /*****************************************************************************************/
 template <class InputIter1, class InputIter2, class OutputIter>
 OutputIter set_symmetric_difference(InputIter1 first1, InputIter1 last1,
-                                    InputIter2 first2, InputIter2 last2, 
+                                    InputIter2 first2, InputIter2 last2,
                                     OutputIter result)
 {
-  while (first1 != last1 && first2 != last2)
-  {
-    if (*first1 < *first2)
+    while (first1 != last1 && first2 != last2)
     {
-      *result = *first1;
-      ++first1;
-      ++result;
+        if (*first1 < *first2)
+        {
+            *result = *first1;
+            ++first1;
+            ++result;
+        }
+        else if (*first2 < *first1)
+        {
+            *result = *first2;
+            ++first2;
+            ++result;
+        }
+        else
+        {
+            ++first1;
+            ++first2;
+        }
     }
-    else if (*first2 < *first1)
-    {
-      *result = *first2;
-      ++first2;
-      ++result;
-    }
-    else
-    {
-      ++first1;
-      ++first2;
-    }
-  }
-  return dwt_stl::copy(first2, last2, dwt_stl::copy(first1, last1, result));
+    return dwt_stl::copy(first2, last2, dwt_stl::copy(first1, last1, result));
 }
 
 // 重载版本使用函数对象 comp 代替比较操作
@@ -225,29 +225,28 @@ OutputIter set_symmetric_difference(InputIter1 first1, InputIter1 last1,
                                     InputIter2 first2, InputIter2 last2,
                                     OutputIter result, Compared comp)
 {
-  while (first1 != last1 && first2 != last2)
-  {
-    if (comp(*first1, *first2))
+    while (first1 != last1 && first2 != last2)
     {
-      *result = *first1;
-      ++first1;
-      ++result;
+        if (comp(*first1, *first2))
+        {
+            *result = *first1;
+            ++first1;
+            ++result;
+        }
+        else if (comp(*first2, *first1))
+        {
+            *result = *first2;
+            ++first2;
+            ++result;
+        }
+        else
+        {
+            ++first1;
+            ++first2;
+        }
     }
-    else if (comp(*first2, *first1))
-    {
-      *result = *first2;
-      ++first2;
-      ++result;
-    }
-    else
-    {
-      ++first1;
-      ++first2;
-    }
-  }
-  return dwt_stl::copy(first2, last2, dwt_stl::copy(first1, last1, result));
+    return dwt_stl::copy(first2, last2, dwt_stl::copy(first1, last1, result));
 }
 
-} // namespace dwt_stl
-#endif // !MYTINYSTL_SET_ALGO_H_
-
+}  // namespace dwt_stl
+#endif  // !MYTINYSTL_SET_ALGO_H_

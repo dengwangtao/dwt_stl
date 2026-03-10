@@ -17,37 +17,37 @@ namespace dwt_stl
 // 把 [first, last) 上的内容复制到以 result 为起始处的空间，返回复制结束的位置
 /*****************************************************************************************/
 template <class InputIter, class ForwardIter>
-ForwardIter 
+ForwardIter
 unchecked_uninit_copy(InputIter first, InputIter last, ForwardIter result, std::true_type)
 {
-  return dwt_stl::copy(first, last, result);
+    return dwt_stl::copy(first, last, result);
 }
 
 template <class InputIter, class ForwardIter>
 ForwardIter
 unchecked_uninit_copy(InputIter first, InputIter last, ForwardIter result, std::false_type)
 {
-  auto cur = result;
-  try
-  {
-    for (; first != last; ++first, ++cur)
+    auto cur = result;
+    try
     {
-      dwt_stl::construct(address_of(*cur), *first);
+        for (; first != last; ++first, ++cur)
+        {
+            dwt_stl::construct(address_of(*cur), *first);
+        }
     }
-  }
-  catch (...)
-  {
-    for (; result != cur; --cur)
-      dwt_stl::destroy(address_of(*cur));
-  }
-  return cur;
+    catch (...)
+    {
+        for (; result != cur; --cur)
+            dwt_stl::destroy(address_of(*cur));
+    }
+    return cur;
 }
 
 template <class InputIter, class ForwardIter>
 ForwardIter uninitialized_copy(InputIter first, InputIter last, ForwardIter result)
 {
-  return dwt_stl::unchecked_uninit_copy(first, last, result, 
-        std::is_trivially_copy_assignable<typename iterator_traits<ForwardIter>::value_type>{});
+    return dwt_stl::unchecked_uninit_copy(first, last, result,
+                                          std::is_trivially_copy_assignable<typename iterator_traits<ForwardIter>::value_type>{});
 }
 
 /*****************************************************************************************/
@@ -55,37 +55,37 @@ ForwardIter uninitialized_copy(InputIter first, InputIter last, ForwardIter resu
 // 把 [first, first + n) 上的内容复制到以 result 为起始处的空间，返回复制结束的位置
 /*****************************************************************************************/
 template <class InputIter, class Size, class ForwardIter>
-ForwardIter 
+ForwardIter
 unchecked_uninit_copy_n(InputIter first, Size n, ForwardIter result, std::true_type)
 {
-  return dwt_stl::copy_n(first, n, result).second;
+    return dwt_stl::copy_n(first, n, result).second;
 }
 
 template <class InputIter, class Size, class ForwardIter>
 ForwardIter
 unchecked_uninit_copy_n(InputIter first, Size n, ForwardIter result, std::false_type)
 {
-  auto cur = result;
-  try
-  {
-    for (; n > 0; --n, ++cur, ++first)
+    auto cur = result;
+    try
     {
-      dwt_stl::construct(&*cur, *first);
+        for (; n > 0; --n, ++cur, ++first)
+        {
+            dwt_stl::construct(&*cur, *first);
+        }
     }
-  }
-  catch (...)
-  {
-    for (; result != cur; --cur)
-      dwt_stl::destroy(&*cur);
-  }
-  return cur;
+    catch (...)
+    {
+        for (; result != cur; --cur)
+            dwt_stl::destroy(&*cur);
+    }
+    return cur;
 }
 
 template <class InputIter, class Size, class ForwardIter>
 ForwardIter uninitialized_copy_n(InputIter first, Size n, ForwardIter result)
 {
-  return dwt_stl::unchecked_uninit_copy_n(first, n, result,
-      std::is_trivially_copy_assignable<typename iterator_traits<InputIter>::value_type>{});
+    return dwt_stl::unchecked_uninit_copy_n(first, n, result,
+                                            std::is_trivially_copy_assignable<typename iterator_traits<InputIter>::value_type>{});
 }
 
 /*****************************************************************************************/
@@ -93,36 +93,34 @@ ForwardIter uninitialized_copy_n(InputIter first, Size n, ForwardIter result)
 // 在 [first, last) 区间内填充元素值
 /*****************************************************************************************/
 template <class ForwardIter, class T>
-void 
-unchecked_uninit_fill(ForwardIter first, ForwardIter last, const T& value, std::true_type)
+void unchecked_uninit_fill(ForwardIter first, ForwardIter last, const T& value, std::true_type)
 {
-  dwt_stl::fill(first, last, value);
+    dwt_stl::fill(first, last, value);
 }
 
 template <class ForwardIter, class T>
-void 
-unchecked_uninit_fill(ForwardIter first, ForwardIter last, const T& value, std::false_type)
+void unchecked_uninit_fill(ForwardIter first, ForwardIter last, const T& value, std::false_type)
 {
-  auto cur = first;
-  try
-  {
-    for (; cur != last; ++cur)
+    auto cur = first;
+    try
     {
-      dwt_stl::construct(&*cur, value);
+        for (; cur != last; ++cur)
+        {
+            dwt_stl::construct(&*cur, value);
+        }
     }
-  }
-  catch (...)
-  {
-    for (;first != cur; ++first)
-      dwt_stl::destroy(&*first);
-  }
+    catch (...)
+    {
+        for (; first != cur; ++first)
+            dwt_stl::destroy(&*first);
+    }
 }
 
 template <class ForwardIter, class T>
-void  uninitialized_fill(ForwardIter first, ForwardIter last, const T& value)
+void uninitialized_fill(ForwardIter first, ForwardIter last, const T& value)
 {
-  dwt_stl::unchecked_uninit_fill(first, last, value, 
-      std::is_trivially_copy_assignable<typename iterator_traits<ForwardIter>::value_type>{});
+    dwt_stl::unchecked_uninit_fill(first, last, value,
+                                   std::is_trivially_copy_assignable<typename iterator_traits<ForwardIter>::value_type>{});
 }
 
 /*****************************************************************************************/
@@ -130,37 +128,37 @@ void  uninitialized_fill(ForwardIter first, ForwardIter last, const T& value)
 // 从 first 位置开始，填充 n 个元素值，返回填充结束的位置
 /*****************************************************************************************/
 template <class ForwardIter, class Size, class T>
-ForwardIter 
+ForwardIter
 unchecked_uninit_fill_n(ForwardIter first, Size n, const T& value, std::true_type)
 {
-  return dwt_stl::fill_n(first, n, value);
+    return dwt_stl::fill_n(first, n, value);
 }
 
 template <class ForwardIter, class Size, class T>
-ForwardIter 
+ForwardIter
 unchecked_uninit_fill_n(ForwardIter first, Size n, const T& value, std::false_type)
 {
-  auto cur = first;
-  try
-  {
-    for (; n > 0; --n, ++cur)
+    auto cur = first;
+    try
     {
-      dwt_stl::construct(&*cur, value);
+        for (; n > 0; --n, ++cur)
+        {
+            dwt_stl::construct(&*cur, value);
+        }
     }
-  }
-  catch (...)
-  {
-    for (; first != cur; ++first)
-      dwt_stl::destroy(&*first);
-  }
-  return cur;
+    catch (...)
+    {
+        for (; first != cur; ++first)
+            dwt_stl::destroy(&*first);
+    }
+    return cur;
 }
 
 template <class ForwardIter, class Size, class T>
 ForwardIter uninitialized_fill_n(ForwardIter first, Size n, const T& value)
 {
-  return dwt_stl::unchecked_uninit_fill_n(first, n, value, 
-      std::is_trivially_copy_assignable<typename iterator_traits<ForwardIter>::value_type>{});
+    return dwt_stl::unchecked_uninit_fill_n(first, n, value,
+                                            std::is_trivially_copy_assignable<typename iterator_traits<ForwardIter>::value_type>{});
 }
 
 /*****************************************************************************************/
@@ -168,36 +166,36 @@ ForwardIter uninitialized_fill_n(ForwardIter first, Size n, const T& value)
 // 把[first, last)上的内容移动到以 result 为起始处的空间，返回移动结束的位置
 /*****************************************************************************************/
 template <class InputIter, class ForwardIter>
-ForwardIter 
+ForwardIter
 unchecked_uninit_move(InputIter first, InputIter last, ForwardIter result, std::true_type)
 {
-  return dwt_stl::move(first, last, result);
+    return dwt_stl::move(first, last, result);
 }
 
 template <class InputIter, class ForwardIter>
-ForwardIter 
+ForwardIter
 unchecked_uninit_move(InputIter first, InputIter last, ForwardIter result, std::false_type)
 {
-  ForwardIter cur = result;
-  try
-  {
-    for (; first != last; ++first, ++cur)
+    ForwardIter cur = result;
+    try
     {
-      dwt_stl::construct(&*cur, dwt_stl::move(*first));
+        for (; first != last; ++first, ++cur)
+        {
+            dwt_stl::construct(&*cur, dwt_stl::move(*first));
+        }
     }
-  }
-  catch (...)
-  {
-    dwt_stl::destroy(result, cur);
-  }
-  return cur;
+    catch (...)
+    {
+        dwt_stl::destroy(result, cur);
+    }
+    return cur;
 }
 
 template <class InputIter, class ForwardIter>
 ForwardIter uninitialized_move(InputIter first, InputIter last, ForwardIter result)
 {
-  return dwt_stl::unchecked_uninit_move(first, last, result,
-      std::is_trivially_move_assignable<typename iterator_traits<InputIter>::value_type>{});
+    return dwt_stl::unchecked_uninit_move(first, last, result,
+                                          std::is_trivially_move_assignable<typename iterator_traits<InputIter>::value_type>{});
 }
 
 /*****************************************************************************************/
@@ -205,40 +203,39 @@ ForwardIter uninitialized_move(InputIter first, InputIter last, ForwardIter resu
 // 把[first, first + n)上的内容移动到以 result 为起始处的空间，返回移动结束的位置
 /*****************************************************************************************/
 template <class InputIter, class Size, class ForwardIter>
-ForwardIter 
+ForwardIter
 unchecked_uninit_move_n(InputIter first, Size n, ForwardIter result, std::true_type)
 {
-  return dwt_stl::move(first, first + n, result);
+    return dwt_stl::move(first, first + n, result);
 }
 
 template <class InputIter, class Size, class ForwardIter>
 ForwardIter
 unchecked_uninit_move_n(InputIter first, Size n, ForwardIter result, std::false_type)
 {
-  auto cur = result;
-  try
-  {
-    for (; n > 0; --n, ++first, ++cur)
+    auto cur = result;
+    try
     {
-      dwt_stl::construct(&*cur, dwt_stl::move(*first));
+        for (; n > 0; --n, ++first, ++cur)
+        {
+            dwt_stl::construct(&*cur, dwt_stl::move(*first));
+        }
     }
-  }
-  catch (...)
-  {
-    for (; result != cur; ++result)
-      dwt_stl::destroy(&*result);
-    throw;
-  }
-  return cur;
+    catch (...)
+    {
+        for (; result != cur; ++result)
+            dwt_stl::destroy(&*result);
+        throw;
+    }
+    return cur;
 }
 
 template <class InputIter, class Size, class ForwardIter>
 ForwardIter uninitialized_move_n(InputIter first, Size n, ForwardIter result)
 {
-  return dwt_stl::unchecked_uninit_move_n(first, n, result,
-    std::is_trivially_move_assignable<typename iterator_traits<InputIter>::value_type>{});
+    return dwt_stl::unchecked_uninit_move_n(first, n, result,
+                                            std::is_trivially_move_assignable<typename iterator_traits<InputIter>::value_type>{});
 }
 
-} // namespace dwt_stl
-#endif // !MYTINYSTL_UNINITIALIZED_H_
-
+}  // namespace dwt_stl
+#endif  // !MYTINYSTL_UNINITIALIZED_H_

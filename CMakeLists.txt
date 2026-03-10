@@ -32,5 +32,21 @@ endif()
 
 message(STATUS "The cmake_cxx_flags is: ${CMAKE_CXX_FLAGS}")
 
+# format files
+find_program(CLANG_FORMAT_EXE NAMES clang-format)
+message(STATUS "The clang-format executable is: ${CLANG_FORMAT_EXE} CMAKE_SOURCE_DIR=${CMAKE_SOURCE_DIR}")
+file(GLOB_RECURSE ALL_CXX_SOURCE_FILES
+    ${CMAKE_SOURCE_DIR}/*.h
+    ${CMAKE_SOURCE_DIR}/*.hpp
+    ${CMAKE_SOURCE_DIR}/*.c
+    ${CMAKE_SOURCE_DIR}/*.cc
+    ${CMAKE_SOURCE_DIR}/*.cpp
+)
+add_custom_target(format
+    COMMAND ${CLANG_FORMAT_EXE} -i ${ALL_CXX_SOURCE_FILES}
+	COMMENT "Running clang-format on all source files: ${ALL_CXX_SOURCE_FILES}"
+)
+# format files end
+
 add_subdirectory(${PROJECT_SOURCE_DIR}/Test)
 add_subdirectory(${PROJECT_SOURCE_DIR}/Demo)

@@ -5,136 +5,148 @@
 #include <iostream>
 #include "astring.h"
 
-
-
-
 template <typename T, class = void>
-struct has_iterator : std::false_type {};
+struct has_iterator : std::false_type
+{
+};
 
 template <typename T>
-struct has_iterator<T, std::void_t<typename T::iterator>> : std::true_type {};
+struct has_iterator<T, std::void_t<typename T::iterator>> : std::true_type
+{
+};
 
 DECL__V(has_iterator);
 
 template <typename T>
-struct is_string : dwt_stl::false_type {};
+struct is_string : dwt_stl::false_type
+{
+};
 
 template <typename... Args>
-struct is_string<dwt_stl::basic_string<Args...>> : dwt_stl::true_type {};
+struct is_string<dwt_stl::basic_string<Args...>> : dwt_stl::true_type
+{
+};
 
-template <class... Args> constexpr bool is_string_v = is_string<Args...>::value;
+template <class... Args>
+constexpr bool is_string_v = is_string<Args...>::value;
 
 template <typename T, class = void>
 struct PrintOne
 {
-    void operator()(const T&) const {
-        std::cout << "unknown type";
-    }
+        void operator()(const T&) const
+        {
+            std::cout << "unknown type";
+        }
 };
 
 template <typename T>
 struct PrintOne<T, std::enable_if_t<std::is_trivial<T>::value && !std::is_array_v<T>, void>>
 {
-    void operator()(const T& val) const {
-        std::cout << val;
-    }
+        void operator()(const T& val) const
+        {
+            std::cout << val;
+        }
 };
-
 
 // char* 特化
 template <typename T>
 struct PrintOne<T, std::enable_if_t<std::is_same_v<std::remove_cv<T>, char*>, void>>
 {
-    void operator()(const T& val) const {
-        std::cout << "\"" << val << "\"";
-    }
+        void operator()(const T& val) const
+        {
+            std::cout << "\"" << val << "\"";
+        }
 };
-
-
 
 // 或者针对传统数组语法
 template <typename T, std::size_t N>
-struct PrintOne<T[N], void> {
-    void operator()(const T(&arr)[N]) const {
-        // if constexpr (std::is_same_v<T, char>)
-        // {
-        //     std::cout << "\"" << arr << "\"";
-        //     return;
-        // }
-        std::cout << "[";
-        bool first = true;
-        for (std::size_t i = 0; i < N; ++i) {
-            if (!first) std::cout << ", ";
-            first = false;
-            PrintOne<T>()(arr[i]);
+struct PrintOne<T[N], void>
+{
+        void operator()(const T (&arr)[N]) const
+        {
+            // if constexpr (std::is_same_v<T, char>)
+            // {
+            //     std::cout << "\"" << arr << "\"";
+            //     return;
+            // }
+            std::cout << "[";
+            bool first = true;
+            for (std::size_t i = 0; i < N; ++i)
+            {
+                if (!first) std::cout << ", ";
+                first = false;
+                PrintOne<T>()(arr[i]);
+            }
+            std::cout << "]";
         }
-        std::cout << "]";
-    }
 };
 
 template <std::size_t N>
-struct PrintOne<char[N], void> {
-    void operator()(const char(&arr)[N]) const {
-        std::cout << "\"" << arr << "\"";
-    }
+struct PrintOne<char[N], void>
+{
+        void operator()(const char (&arr)[N]) const
+        {
+            std::cout << "\"" << arr << "\"";
+        }
 };
 
 // string 特化
 template <typename T>
 struct PrintOne<T, std::enable_if_t<is_string_v<T>, void>>
 {
-    void operator()(const T& val) const {
-        std::cout << "\"" << val << "\"";
-    }
+        void operator()(const T& val) const
+        {
+            std::cout << "\"" << val << "\"";
+        }
 };
 
 // pair 特化
 template <typename T>
 struct PrintOne<T, std::enable_if_t<dwt_stl::is_pair_v<T>, void>>
 {
-    void operator()(const T& val) const {
-        std::cout << "(";
-        PrintOne<typename T::first_type>()(val.first);
-        std::cout << ", ";
-        PrintOne<typename T::second_type>()(val.second);
-        std::cout << ")";
-    }
+        void operator()(const T& val) const
+        {
+            std::cout << "(";
+            PrintOne<typename T::first_type>()(val.first);
+            std::cout << ", ";
+            PrintOne<typename T::second_type>()(val.second);
+            std::cout << ")";
+        }
 };
 
 // 可迭代容器 特化
 template <typename T>
 struct PrintOne<T, std::enable_if_t<!is_string_v<T> && has_iterator_v<T>, void>>
 {
-    void operator()(const T& val) const {
-        bool first = true;
-        // std::cout << typeid(T).name() << " {";
-        std::cout << "{";
-        for (const typename T::value_type& i : val) {
-            if (!first) {
-                std::cout << ", ";
+        void operator()(const T& val) const
+        {
+            bool first = true;
+            // std::cout << typeid(T).name() << " {";
+            std::cout << "{";
+            for (const typename T::value_type& i : val)
+            {
+                if (!first)
+                {
+                    std::cout << ", ";
+                }
+                first = false;
+                PrintOne<typename T::value_type>()(i);
             }
-            first = false;
-            PrintOne<typename T::value_type>()(i);
+            std::cout << "}";
         }
-        std::cout << "}";
-    }
 };
 
-
-void print() {
+void print()
+{
     std::cout << std::endl;
 }
 
-
 template <typename T, typename... Args>
-void print(const T& val, Args... args) {
+void print(const T& val, Args... args)
+{
     PrintOne<T>()(val);
-    
+
     print(args...);
 }
 
-
-
-
-
-#endif // DEMO_UTIL_H_
+#endif  // DEMO_UTIL_H_

@@ -23,259 +23,259 @@ namespace dwt_stl
 template <class Key, class T, class Hash = dwt_stl::hash<Key>, class KeyEqual = dwt_stl::equal_to<Key>>
 class unordered_map
 {
-private:
-  // 使用 hashtable 作为底层机制
-  typedef hashtable<dwt_stl::pair<const Key, T>, Hash, KeyEqual> base_type;
-  base_type ht_;
+    private:
+        // 使用 hashtable 作为底层机制
+        typedef hashtable<dwt_stl::pair<const Key, T>, Hash, KeyEqual> base_type;
+        base_type ht_;
 
-public:
-  // 使用 hashtable 的型别  
+    public:
+        // 使用 hashtable 的型别
 
-  typedef typename base_type::allocator_type       allocator_type;
-  typedef typename base_type::key_type             key_type;
-  typedef typename base_type::mapped_type          mapped_type;
-  typedef typename base_type::value_type           value_type;
-  typedef typename base_type::hasher               hasher;
-  typedef typename base_type::key_equal            key_equal;
+        typedef typename base_type::allocator_type allocator_type;
+        typedef typename base_type::key_type key_type;
+        typedef typename base_type::mapped_type mapped_type;
+        typedef typename base_type::value_type value_type;
+        typedef typename base_type::hasher hasher;
+        typedef typename base_type::key_equal key_equal;
 
-  typedef typename base_type::size_type            size_type;
-  typedef typename base_type::difference_type      difference_type;
-  typedef typename base_type::pointer              pointer;
-  typedef typename base_type::const_pointer        const_pointer;
-  typedef typename base_type::reference            reference;
-  typedef typename base_type::const_reference      const_reference;
+        typedef typename base_type::size_type size_type;
+        typedef typename base_type::difference_type difference_type;
+        typedef typename base_type::pointer pointer;
+        typedef typename base_type::const_pointer const_pointer;
+        typedef typename base_type::reference reference;
+        typedef typename base_type::const_reference const_reference;
 
-  typedef typename base_type::iterator             iterator;
-  typedef typename base_type::const_iterator       const_iterator;
-  typedef typename base_type::local_iterator       local_iterator;
-  typedef typename base_type::const_local_iterator const_local_iterator;
+        typedef typename base_type::iterator iterator;
+        typedef typename base_type::const_iterator const_iterator;
+        typedef typename base_type::local_iterator local_iterator;
+        typedef typename base_type::const_local_iterator const_local_iterator;
 
-  allocator_type get_allocator() const { return ht_.get_allocator(); }
+        allocator_type get_allocator() const { return ht_.get_allocator(); }
 
-public:
-  // 构造、复制、移动、析构函数
+    public:
+        // 构造、复制、移动、析构函数
 
-  unordered_map()
-    :ht_(100, Hash(), KeyEqual())
-  {
-  }
+        unordered_map()
+            : ht_(100, Hash(), KeyEqual())
+        {
+        }
 
-  explicit unordered_map(size_type bucket_count,
-                         const Hash& hash = Hash(),
-                         const KeyEqual& equal = KeyEqual())
-    :ht_(bucket_count, hash, equal)
-  {
-  }
+        explicit unordered_map(size_type bucket_count,
+                               const Hash& hash = Hash(),
+                               const KeyEqual& equal = KeyEqual())
+            : ht_(bucket_count, hash, equal)
+        {
+        }
 
-  template <class InputIterator>
-  unordered_map(InputIterator first, InputIterator last,
-                const size_type bucket_count = 100,
-                const Hash& hash = Hash(),
-                const KeyEqual& equal = KeyEqual())
-    : ht_(dwt_stl::max(bucket_count, static_cast<size_type>(dwt_stl::distance(first, last))), hash, equal)
-  {
-    for (; first != last; ++first)
-      ht_.insert_unique_noresize(*first);
-  }
+        template <class InputIterator>
+        unordered_map(InputIterator first, InputIterator last,
+                      const size_type bucket_count = 100,
+                      const Hash& hash = Hash(),
+                      const KeyEqual& equal = KeyEqual())
+            : ht_(dwt_stl::max(bucket_count, static_cast<size_type>(dwt_stl::distance(first, last))), hash, equal)
+        {
+            for (; first != last; ++first)
+                ht_.insert_unique_noresize(*first);
+        }
 
-  unordered_map(std::initializer_list<value_type> ilist,
-                const size_type bucket_count = 100,
-                const Hash& hash = Hash(),
-                const KeyEqual& equal = KeyEqual())
-    :ht_(dwt_stl::max(bucket_count, static_cast<size_type>(ilist.size())), hash, equal)
-  {
-    for (auto first = ilist.begin(), last = ilist.end(); first != last; ++first)
-      ht_.insert_unique_noresize(*first);
-  }
+        unordered_map(std::initializer_list<value_type> ilist,
+                      const size_type bucket_count = 100,
+                      const Hash& hash = Hash(),
+                      const KeyEqual& equal = KeyEqual())
+            : ht_(dwt_stl::max(bucket_count, static_cast<size_type>(ilist.size())), hash, equal)
+        {
+            for (auto first = ilist.begin(), last = ilist.end(); first != last; ++first)
+                ht_.insert_unique_noresize(*first);
+        }
 
-  unordered_map(const unordered_map& rhs) 
-    :ht_(rhs.ht_) 
-  {
-  }
-  unordered_map(unordered_map&& rhs) noexcept
-    :ht_(dwt_stl::move(rhs.ht_)) 
-  {
-  }
+        unordered_map(const unordered_map& rhs)
+            : ht_(rhs.ht_)
+        {
+        }
+        unordered_map(unordered_map&& rhs) noexcept
+            : ht_(dwt_stl::move(rhs.ht_))
+        {
+        }
 
-  unordered_map& operator=(const unordered_map& rhs) 
-  { 
-    ht_ = rhs.ht_;
-    return *this; 
-  }
-  unordered_map& operator=(unordered_map&& rhs) 
-  { 
-    ht_ = dwt_stl::move(rhs.ht_);
-    return *this;
-  }
+        unordered_map& operator=(const unordered_map& rhs)
+        {
+            ht_ = rhs.ht_;
+            return *this;
+        }
+        unordered_map& operator=(unordered_map&& rhs)
+        {
+            ht_ = dwt_stl::move(rhs.ht_);
+            return *this;
+        }
 
-  unordered_map& operator=(std::initializer_list<value_type> ilist)
-  {
-    ht_.clear();
-    ht_.reserve(ilist.size());
-    for (auto first = ilist.begin(), last = ilist.end(); first != last; ++first)
-      ht_.insert_unique_noresize(*first);
-    return *this;
-  }
+        unordered_map& operator=(std::initializer_list<value_type> ilist)
+        {
+            ht_.clear();
+            ht_.reserve(ilist.size());
+            for (auto first = ilist.begin(), last = ilist.end(); first != last; ++first)
+                ht_.insert_unique_noresize(*first);
+            return *this;
+        }
 
-  ~unordered_map() = default;
+        ~unordered_map() = default;
 
-  // 迭代器相关
+        // 迭代器相关
 
-  iterator       begin()        noexcept
-  { return ht_.begin(); }
-  const_iterator begin()  const noexcept
-  { return ht_.begin(); }
-  iterator       end()          noexcept
-  { return ht_.end(); }
-  const_iterator end()    const noexcept
-  { return ht_.end(); }
+        iterator begin() noexcept
+        { return ht_.begin(); }
+        const_iterator begin() const noexcept
+        { return ht_.begin(); }
+        iterator end() noexcept
+        { return ht_.end(); }
+        const_iterator end() const noexcept
+        { return ht_.end(); }
 
-  const_iterator cbegin() const noexcept
-  { return ht_.cbegin(); }
-  const_iterator cend()   const noexcept
-  { return ht_.cend(); }
+        const_iterator cbegin() const noexcept
+        { return ht_.cbegin(); }
+        const_iterator cend() const noexcept
+        { return ht_.cend(); }
 
-  // 容量相关
+        // 容量相关
 
-  bool      empty()    const noexcept { return ht_.empty(); }
-  size_type size()     const noexcept { return ht_.size(); }
-  size_type max_size() const noexcept { return ht_.max_size(); }
+        bool empty() const noexcept { return ht_.empty(); }
+        size_type size() const noexcept { return ht_.size(); }
+        size_type max_size() const noexcept { return ht_.max_size(); }
 
-  // 修改容器操作
+        // 修改容器操作
 
-  // empalce / empalce_hint
+        // empalce / empalce_hint
 
-  template <class ...Args>
-  pair<iterator, bool> emplace(Args&& ...args)
-  { return ht_.emplace_unique(dwt_stl::forward<Args>(args)...); }
+        template <class... Args>
+        pair<iterator, bool> emplace(Args&&... args)
+        { return ht_.emplace_unique(dwt_stl::forward<Args>(args)...); }
 
-  template <class ...Args>
-  iterator emplace_hint(const_iterator hint, Args&& ...args)
-  { return ht_.emplace_unique_use_hint(hint, dwt_stl::forward<Args>(args)...); }
+        template <class... Args>
+        iterator emplace_hint(const_iterator hint, Args&&... args)
+        { return ht_.emplace_unique_use_hint(hint, dwt_stl::forward<Args>(args)...); }
 
-  // insert
+        // insert
 
-  pair<iterator, bool> insert(const value_type& value)
-  { return ht_.insert_unique(value); }
-  pair<iterator, bool> insert(value_type&& value)
-  { return ht_.emplace_unique(dwt_stl::move(value)); }
+        pair<iterator, bool> insert(const value_type& value)
+        { return ht_.insert_unique(value); }
+        pair<iterator, bool> insert(value_type&& value)
+        { return ht_.emplace_unique(dwt_stl::move(value)); }
 
-  iterator insert(const_iterator hint, const value_type& value)
-  { return ht_.insert_unique_use_hint(hint, value); }
-  iterator insert(const_iterator hint, value_type&& value)
-  { return ht_.emplace_unique_use_hint(hint, dwt_stl::move(value)); }
+        iterator insert(const_iterator hint, const value_type& value)
+        { return ht_.insert_unique_use_hint(hint, value); }
+        iterator insert(const_iterator hint, value_type&& value)
+        { return ht_.emplace_unique_use_hint(hint, dwt_stl::move(value)); }
 
-  template <class InputIterator>
-  void insert(InputIterator first, InputIterator last)
-  { ht_.insert_unique(first, last); }
+        template <class InputIterator>
+        void insert(InputIterator first, InputIterator last)
+        { ht_.insert_unique(first, last); }
 
-  // erase / clear
+        // erase / clear
 
-  void      erase(iterator it)
-  { ht_.erase(it); }
-  void      erase(iterator first, iterator last)
-  { ht_.erase(first, last); }
+        void erase(iterator it)
+        { ht_.erase(it); }
+        void erase(iterator first, iterator last)
+        { ht_.erase(first, last); }
 
-  size_type erase(const key_type& key)
-  { return ht_.erase_unique(key); }
+        size_type erase(const key_type& key)
+        { return ht_.erase_unique(key); }
 
-  void      clear()
-  { ht_.clear(); }
+        void clear()
+        { ht_.clear(); }
 
-  void      swap(unordered_map& other) noexcept
-  { ht_.swap(other.ht_); }
+        void swap(unordered_map& other) noexcept
+        { ht_.swap(other.ht_); }
 
-  // 查找相关
+        // 查找相关
 
-  mapped_type& at(const key_type& key)
-  {
-    iterator it = ht_.find(key);
-    THROW_OUT_OF_RANGE_IF(it.node == nullptr, "unordered_map<Key, T> no such element exists");
-    return it->second;
-  }
-  const mapped_type& at(const key_type& key) const
-  {
-    iterator it = ht_.find(key);
-    THROW_OUT_OF_RANGE_IF(it.node == nullptr, "unordered_map<Key, T> no such element exists");
-    return it->second;
-  }
+        mapped_type& at(const key_type& key)
+        {
+            iterator it = ht_.find(key);
+            THROW_OUT_OF_RANGE_IF(it.node == nullptr, "unordered_map<Key, T> no such element exists");
+            return it->second;
+        }
+        const mapped_type& at(const key_type& key) const
+        {
+            iterator it = ht_.find(key);
+            THROW_OUT_OF_RANGE_IF(it.node == nullptr, "unordered_map<Key, T> no such element exists");
+            return it->second;
+        }
 
-  mapped_type& operator[](const key_type& key)
-  {
-    iterator it = ht_.find(key);
-    if (it.node == nullptr)
-      it = ht_.emplace_unique(key, T{}).first;
-    return it->second;
-  }
-  mapped_type& operator[](key_type&& key)
-  {
-    iterator it = ht_.find(key);
-    if (it.node == nullptr)
-      it = ht_.emplace_unique(dwt_stl::move(key), T{}).first;
-    return it->second;
-  }
+        mapped_type& operator[](const key_type& key)
+        {
+            iterator it = ht_.find(key);
+            if (it.node == nullptr)
+                it = ht_.emplace_unique(key, T{}).first;
+            return it->second;
+        }
+        mapped_type& operator[](key_type&& key)
+        {
+            iterator it = ht_.find(key);
+            if (it.node == nullptr)
+                it = ht_.emplace_unique(dwt_stl::move(key), T{}).first;
+            return it->second;
+        }
 
-  size_type      count(const key_type& key) const 
-  { return ht_.count(key); }
+        size_type count(const key_type& key) const
+        { return ht_.count(key); }
 
-  iterator       find(const key_type& key)        
-  { return ht_.find(key); }
-  const_iterator find(const key_type& key)  const 
-  { return ht_.find(key); }
+        iterator find(const key_type& key)
+        { return ht_.find(key); }
+        const_iterator find(const key_type& key) const
+        { return ht_.find(key); }
 
-  pair<iterator, iterator> equal_range(const key_type& key)
-  { return ht_.equal_range_unique(key); }
-  pair<const_iterator, const_iterator> equal_range(const key_type& key) const
-  { return ht_.equal_range_unique(key); }
+        pair<iterator, iterator> equal_range(const key_type& key)
+        { return ht_.equal_range_unique(key); }
+        pair<const_iterator, const_iterator> equal_range(const key_type& key) const
+        { return ht_.equal_range_unique(key); }
 
-  // bucket interface
+        // bucket interface
 
-  local_iterator       begin(size_type n)        noexcept
-  { return ht_.begin(n); }
-  const_local_iterator begin(size_type n)  const noexcept
-  { return ht_.begin(n); }
-  const_local_iterator cbegin(size_type n) const noexcept
-  { return ht_.cbegin(n); }
+        local_iterator begin(size_type n) noexcept
+        { return ht_.begin(n); }
+        const_local_iterator begin(size_type n) const noexcept
+        { return ht_.begin(n); }
+        const_local_iterator cbegin(size_type n) const noexcept
+        { return ht_.cbegin(n); }
 
-  local_iterator       end(size_type n)          noexcept
-  { return ht_.end(n); }
-  const_local_iterator end(size_type n)    const noexcept
-  { return ht_.end(n); }
-  const_local_iterator cend(size_type n)   const noexcept
-  { return ht_.cend(n); }
+        local_iterator end(size_type n) noexcept
+        { return ht_.end(n); }
+        const_local_iterator end(size_type n) const noexcept
+        { return ht_.end(n); }
+        const_local_iterator cend(size_type n) const noexcept
+        { return ht_.cend(n); }
 
-  size_type bucket_count()                 const noexcept
-  { return ht_.bucket_count(); }
-  size_type max_bucket_count()             const noexcept
-  { return ht_.max_bucket_count(); }
+        size_type bucket_count() const noexcept
+        { return ht_.bucket_count(); }
+        size_type max_bucket_count() const noexcept
+        { return ht_.max_bucket_count(); }
 
-  size_type bucket_size(size_type n)       const noexcept
-  { return ht_.bucket_size(n); }
-  size_type bucket(const key_type& key)    const
-  { return ht_.bucket(key); }
+        size_type bucket_size(size_type n) const noexcept
+        { return ht_.bucket_size(n); }
+        size_type bucket(const key_type& key) const
+        { return ht_.bucket(key); }
 
-  // hash policy
+        // hash policy
 
-  float     load_factor()            const noexcept { return ht_.load_factor(); }
+        float load_factor() const noexcept { return ht_.load_factor(); }
 
-  float     max_load_factor()        const noexcept { return ht_.max_load_factor(); }
-  void      max_load_factor(float ml)               { ht_.max_load_factor(ml); }
+        float max_load_factor() const noexcept { return ht_.max_load_factor(); }
+        void max_load_factor(float ml) { ht_.max_load_factor(ml); }
 
-  void      rehash(size_type count)                 { ht_.rehash(count); }
-  void      reserve(size_type count)                { ht_.reserve(count); }
+        void rehash(size_type count) { ht_.rehash(count); }
+        void reserve(size_type count) { ht_.reserve(count); }
 
-  hasher    hash_fcn()               const          { return ht_.hash_fcn(); }
-  key_equal key_eq()                 const          { return ht_.key_eq(); }
+        hasher hash_fcn() const { return ht_.hash_fcn(); }
+        key_equal key_eq() const { return ht_.key_eq(); }
 
-public:
-  friend bool operator==(const unordered_map& lhs, const unordered_map& rhs)
-  {
-    return lhs.ht_.equal_range_unique(rhs.ht_);
-  }
-  friend bool operator!=(const unordered_map& lhs, const unordered_map& rhs)
-  {
-    return !lhs.ht_.equal_range_unique(rhs.ht_);
-  }
+    public:
+        friend bool operator==(const unordered_map& lhs, const unordered_map& rhs)
+        {
+            return lhs.ht_.equal_range_unique(rhs.ht_);
+        }
+        friend bool operator!=(const unordered_map& lhs, const unordered_map& rhs)
+        {
+            return !lhs.ht_.equal_range_unique(rhs.ht_);
+        }
 };
 
 // 重载比较操作符
@@ -283,14 +283,14 @@ template <class Key, class T, class Hash, class KeyEqual>
 bool operator==(const unordered_map<Key, T, Hash, KeyEqual>& lhs,
                 const unordered_map<Key, T, Hash, KeyEqual>& rhs)
 {
-  return lhs == rhs;
+    return lhs == rhs;
 }
 
 template <class Key, class T, class Hash, class KeyEqual>
 bool operator!=(const unordered_map<Key, T, Hash, KeyEqual>& lhs,
                 const unordered_map<Key, T, Hash, KeyEqual>& rhs)
 {
-  return lhs != rhs;
+    return lhs != rhs;
 }
 
 // 重载 dwt_stl 的 swap
@@ -298,7 +298,7 @@ template <class Key, class T, class Hash, class KeyEqual>
 void swap(unordered_map<Key, T, Hash, KeyEqual>& lhs,
           unordered_map<Key, T, Hash, KeyEqual>& rhs)
 {
-  lhs.swap(rhs);
+    lhs.swap(rhs);
 }
 
 /*****************************************************************************************/
@@ -309,230 +309,230 @@ void swap(unordered_map<Key, T, Hash, KeyEqual>& lhs,
 template <class Key, class T, class Hash = dwt_stl::hash<Key>, class KeyEqual = dwt_stl::equal_to<Key>>
 class unordered_multimap
 {
-private:
-  // 使用 hashtable 作为底层机制
-  typedef hashtable<pair<const Key, T>, Hash, KeyEqual> base_type;
-  base_type ht_;
+    private:
+        // 使用 hashtable 作为底层机制
+        typedef hashtable<pair<const Key, T>, Hash, KeyEqual> base_type;
+        base_type ht_;
 
-public:
-  // 使用 hashtable 的型别
-  typedef typename base_type::allocator_type       allocator_type;
-  typedef typename base_type::key_type             key_type;
-  typedef typename base_type::mapped_type          mapped_type;
-  typedef typename base_type::value_type           value_type;
-  typedef typename base_type::hasher               hasher;
-  typedef typename base_type::key_equal            key_equal;
+    public:
+        // 使用 hashtable 的型别
+        typedef typename base_type::allocator_type allocator_type;
+        typedef typename base_type::key_type key_type;
+        typedef typename base_type::mapped_type mapped_type;
+        typedef typename base_type::value_type value_type;
+        typedef typename base_type::hasher hasher;
+        typedef typename base_type::key_equal key_equal;
 
-  typedef typename base_type::size_type            size_type;
-  typedef typename base_type::difference_type      difference_type;
-  typedef typename base_type::pointer              pointer;
-  typedef typename base_type::const_pointer        const_pointer;
-  typedef typename base_type::reference            reference;
-  typedef typename base_type::const_reference      const_reference;
+        typedef typename base_type::size_type size_type;
+        typedef typename base_type::difference_type difference_type;
+        typedef typename base_type::pointer pointer;
+        typedef typename base_type::const_pointer const_pointer;
+        typedef typename base_type::reference reference;
+        typedef typename base_type::const_reference const_reference;
 
-  typedef typename base_type::iterator             iterator;
-  typedef typename base_type::const_iterator       const_iterator;
-  typedef typename base_type::local_iterator       local_iterator;
-  typedef typename base_type::const_local_iterator const_local_iterator;
+        typedef typename base_type::iterator iterator;
+        typedef typename base_type::const_iterator const_iterator;
+        typedef typename base_type::local_iterator local_iterator;
+        typedef typename base_type::const_local_iterator const_local_iterator;
 
-  allocator_type get_allocator() const { return ht_.get_allocator(); }
+        allocator_type get_allocator() const { return ht_.get_allocator(); }
 
-public:
-  // 构造、复制、移动函数
+    public:
+        // 构造、复制、移动函数
 
-  unordered_multimap() 
-    :ht_(100, Hash(), KeyEqual())
-  {
-  }
+        unordered_multimap()
+            : ht_(100, Hash(), KeyEqual())
+        {
+        }
 
-  explicit unordered_multimap(size_type bucket_count,
-                              const Hash& hash = Hash(),
-                              const KeyEqual& equal = KeyEqual())
-    :ht_(bucket_count, hash, equal) 
-  {
-  }
+        explicit unordered_multimap(size_type bucket_count,
+                                    const Hash& hash = Hash(),
+                                    const KeyEqual& equal = KeyEqual())
+            : ht_(bucket_count, hash, equal)
+        {
+        }
 
-  template <class InputIterator>
-  unordered_multimap(InputIterator first, InputIterator last,
-                     const size_type bucket_count = 100,
-                     const Hash& hash = Hash(),
-                     const KeyEqual& equal = KeyEqual())
-    :ht_(dwt_stl::max(bucket_count, static_cast<size_type>(dwt_stl::distance(first, last))), hash, equal)
-  {
-    for (; first != last; ++first)
-      ht_.insert_multi_noresize(*first);
-  }
+        template <class InputIterator>
+        unordered_multimap(InputIterator first, InputIterator last,
+                           const size_type bucket_count = 100,
+                           const Hash& hash = Hash(),
+                           const KeyEqual& equal = KeyEqual())
+            : ht_(dwt_stl::max(bucket_count, static_cast<size_type>(dwt_stl::distance(first, last))), hash, equal)
+        {
+            for (; first != last; ++first)
+                ht_.insert_multi_noresize(*first);
+        }
 
-  unordered_multimap(std::initializer_list<value_type> ilist,
-                     const size_type bucket_count = 100,
-                     const Hash& hash = Hash(),
-                     const KeyEqual& equal = KeyEqual())
-    :ht_(dwt_stl::max(bucket_count, static_cast<size_type>(ilist.size())), hash, equal)
-  {
-    for (auto first = ilist.begin(), last = ilist.end(); first != last; ++first)
-      ht_.insert_multi_noresize(*first);
-  }
+        unordered_multimap(std::initializer_list<value_type> ilist,
+                           const size_type bucket_count = 100,
+                           const Hash& hash = Hash(),
+                           const KeyEqual& equal = KeyEqual())
+            : ht_(dwt_stl::max(bucket_count, static_cast<size_type>(ilist.size())), hash, equal)
+        {
+            for (auto first = ilist.begin(), last = ilist.end(); first != last; ++first)
+                ht_.insert_multi_noresize(*first);
+        }
 
-  unordered_multimap(const unordered_multimap& rhs) 
-    :ht_(rhs.ht_) 
-  {
-  }
-  unordered_multimap(unordered_multimap&& rhs) noexcept
-    :ht_(dwt_stl::move(rhs.ht_))
-  {
-  }
+        unordered_multimap(const unordered_multimap& rhs)
+            : ht_(rhs.ht_)
+        {
+        }
+        unordered_multimap(unordered_multimap&& rhs) noexcept
+            : ht_(dwt_stl::move(rhs.ht_))
+        {
+        }
 
-  unordered_multimap& operator=(const unordered_multimap& rhs)
-  { 
-    ht_ = rhs.ht_; 
-    return *this;
-  }
-  unordered_multimap& operator=(unordered_multimap&& rhs)
-  { 
-    ht_ = dwt_stl::move(rhs.ht_); 
-    return *this;
-  }
+        unordered_multimap& operator=(const unordered_multimap& rhs)
+        {
+            ht_ = rhs.ht_;
+            return *this;
+        }
+        unordered_multimap& operator=(unordered_multimap&& rhs)
+        {
+            ht_ = dwt_stl::move(rhs.ht_);
+            return *this;
+        }
 
-  unordered_multimap& operator=(std::initializer_list<value_type> ilist)
-  {
-    ht_.clear();
-    ht_.reserve(ilist.size());
-    for (auto first = ilist.begin(), last = ilist.end(); first != last; ++first)
-      ht_.insert_multi_noresize(*first);
-    return *this;
-  }
+        unordered_multimap& operator=(std::initializer_list<value_type> ilist)
+        {
+            ht_.clear();
+            ht_.reserve(ilist.size());
+            for (auto first = ilist.begin(), last = ilist.end(); first != last; ++first)
+                ht_.insert_multi_noresize(*first);
+            return *this;
+        }
 
-  ~unordered_multimap() = default;
+        ~unordered_multimap() = default;
 
-  // 迭代器相关
+        // 迭代器相关
 
-  iterator       begin()        noexcept
-  { return ht_.begin(); }
-  const_iterator begin()  const noexcept
-  { return ht_.begin(); }
-  iterator       end()          noexcept
-  { return ht_.end(); }
-  const_iterator end()    const noexcept
-  { return ht_.end(); }
+        iterator begin() noexcept
+        { return ht_.begin(); }
+        const_iterator begin() const noexcept
+        { return ht_.begin(); }
+        iterator end() noexcept
+        { return ht_.end(); }
+        const_iterator end() const noexcept
+        { return ht_.end(); }
 
-  const_iterator cbegin() const noexcept
-  { return ht_.cbegin(); }
-  const_iterator cend()   const noexcept
-  { return ht_.cend(); }
+        const_iterator cbegin() const noexcept
+        { return ht_.cbegin(); }
+        const_iterator cend() const noexcept
+        { return ht_.cend(); }
 
-  // 容量相关
+        // 容量相关
 
-  bool      empty()    const noexcept { return ht_.empty(); }
-  size_type size()     const noexcept { return ht_.size(); }
-  size_type max_size() const noexcept { return ht_.max_size(); }
+        bool empty() const noexcept { return ht_.empty(); }
+        size_type size() const noexcept { return ht_.size(); }
+        size_type max_size() const noexcept { return ht_.max_size(); }
 
-  // 修改容器相关
+        // 修改容器相关
 
-  // emplace / emplace_hint
+        // emplace / emplace_hint
 
-  template <class ...Args>
-  iterator emplace(Args&& ...args)
-  { return ht_.emplace_multi(dwt_stl::forward<Args>(args)...); }
+        template <class... Args>
+        iterator emplace(Args&&... args)
+        { return ht_.emplace_multi(dwt_stl::forward<Args>(args)...); }
 
-  template <class ...Args>
-  iterator emplace_hint(const_iterator hint, Args&& ...args)
-  { return ht_.emplace_multi_use_hint(hint, dwt_stl::forward<Args>(args)...); }
+        template <class... Args>
+        iterator emplace_hint(const_iterator hint, Args&&... args)
+        { return ht_.emplace_multi_use_hint(hint, dwt_stl::forward<Args>(args)...); }
 
-  // insert
+        // insert
 
-  iterator insert(const value_type& value) 
-  { return ht_.insert_multi(value); }
-  iterator insert(value_type&& value)
-  { return ht_.emplace_multi(dwt_stl::move(value)); }
+        iterator insert(const value_type& value)
+        { return ht_.insert_multi(value); }
+        iterator insert(value_type&& value)
+        { return ht_.emplace_multi(dwt_stl::move(value)); }
 
-  iterator insert(const_iterator hint, const value_type& value)
-  { return ht_.insert_multi_use_hint(hint, value); }
-  iterator insert(const_iterator hint, value_type&& value)
-  { return ht_.emplace_multi_use_hint(hint, dwt_stl::move(value)); }
+        iterator insert(const_iterator hint, const value_type& value)
+        { return ht_.insert_multi_use_hint(hint, value); }
+        iterator insert(const_iterator hint, value_type&& value)
+        { return ht_.emplace_multi_use_hint(hint, dwt_stl::move(value)); }
 
-  template <class InputIterator>
-  void     insert(InputIterator first, InputIterator last) 
-  { ht_.insert_multi(first, last); }
-  
-  // erase / clear
+        template <class InputIterator>
+        void insert(InputIterator first, InputIterator last)
+        { ht_.insert_multi(first, last); }
 
-  void      erase(iterator it)
-  { ht_.erase(it); }
-  void      erase(iterator first, iterator last)
-  { ht_.erase(first, last); }
+        // erase / clear
 
-  size_type erase(const key_type& key) 
-  { return ht_.erase_multi(key); }
+        void erase(iterator it)
+        { ht_.erase(it); }
+        void erase(iterator first, iterator last)
+        { ht_.erase(first, last); }
 
-  void      clear()
-  { ht_.clear(); }
+        size_type erase(const key_type& key)
+        { return ht_.erase_multi(key); }
 
-  void      swap(unordered_multimap& other) noexcept 
-  { ht_.swap(other.ht_); }
+        void clear()
+        { ht_.clear(); }
 
-  // 查找相关
+        void swap(unordered_multimap& other) noexcept
+        { ht_.swap(other.ht_); }
 
-  size_type      count(const key_type& key) const 
-  { return ht_.count(key); }
+        // 查找相关
 
-  iterator       find(const key_type& key)        
-  { return ht_.find(key); }
-  const_iterator find(const key_type& key)  const 
-  { return ht_.find(key); }
+        size_type count(const key_type& key) const
+        { return ht_.count(key); }
 
-  pair<iterator, iterator> equal_range(const key_type& key) 
-  { return ht_.equal_range_multi(key); }
-  pair<const_iterator, const_iterator> equal_range(const key_type& key) const 
-  { return ht_.equal_range_multi(key); }
+        iterator find(const key_type& key)
+        { return ht_.find(key); }
+        const_iterator find(const key_type& key) const
+        { return ht_.find(key); }
 
-  // bucket interface
+        pair<iterator, iterator> equal_range(const key_type& key)
+        { return ht_.equal_range_multi(key); }
+        pair<const_iterator, const_iterator> equal_range(const key_type& key) const
+        { return ht_.equal_range_multi(key); }
 
-  local_iterator       begin(size_type n)        noexcept
-  { return ht_.begin(n); }
-  const_local_iterator begin(size_type n)  const noexcept
-  { return ht_.begin(n); }
-  const_local_iterator cbegin(size_type n) const noexcept
-  { return ht_.cbegin(n); }
+        // bucket interface
 
-  local_iterator       end(size_type n)          noexcept
-  { return ht_.end(n); }
-  const_local_iterator end(size_type n)    const noexcept
-  { return ht_.end(n); }
-  const_local_iterator cend(size_type n)   const noexcept
-  { return ht_.cend(n); }
+        local_iterator begin(size_type n) noexcept
+        { return ht_.begin(n); }
+        const_local_iterator begin(size_type n) const noexcept
+        { return ht_.begin(n); }
+        const_local_iterator cbegin(size_type n) const noexcept
+        { return ht_.cbegin(n); }
 
-  size_type bucket_count()                 const noexcept
-  { return ht_.bucket_count(); }
-  size_type max_bucket_count()             const noexcept
-  { return ht_.max_bucket_count(); }
+        local_iterator end(size_type n) noexcept
+        { return ht_.end(n); }
+        const_local_iterator end(size_type n) const noexcept
+        { return ht_.end(n); }
+        const_local_iterator cend(size_type n) const noexcept
+        { return ht_.cend(n); }
 
-  size_type bucket_size(size_type n)       const noexcept
-  { return ht_.bucket_size(n); }
-  size_type bucket(const key_type& key)    const
-  { return ht_.bucket(key); }
+        size_type bucket_count() const noexcept
+        { return ht_.bucket_count(); }
+        size_type max_bucket_count() const noexcept
+        { return ht_.max_bucket_count(); }
 
-  // hash policy
+        size_type bucket_size(size_type n) const noexcept
+        { return ht_.bucket_size(n); }
+        size_type bucket(const key_type& key) const
+        { return ht_.bucket(key); }
 
-  float     load_factor()            const noexcept { return ht_.load_factor(); }
+        // hash policy
 
-  float     max_load_factor()        const noexcept { return ht_.max_load_factor(); }
-  void      max_load_factor(float ml)               { ht_.max_load_factor(ml); }
+        float load_factor() const noexcept { return ht_.load_factor(); }
 
-  void      rehash(size_type count)                 { ht_.rehash(count); }
-  void      reserve(size_type count)                { ht_.reserve(count); }
+        float max_load_factor() const noexcept { return ht_.max_load_factor(); }
+        void max_load_factor(float ml) { ht_.max_load_factor(ml); }
 
-  hasher    hash_fcn()               const          { return ht_.hash_fcn(); }
-  key_equal key_eq()                 const          { return ht_.key_eq(); }
+        void rehash(size_type count) { ht_.rehash(count); }
+        void reserve(size_type count) { ht_.reserve(count); }
 
-public:
-  friend bool operator==(const unordered_multimap& lhs, const unordered_multimap& rhs)
-  {
-    return lhs.ht_.equal_range_multi(rhs.ht_);
-  }
-  friend bool operator!=(const unordered_multimap& lhs, const unordered_multimap& rhs)
-  {
-    return !lhs.ht_.equal_range_multi(rhs.ht_);
-  }
+        hasher hash_fcn() const { return ht_.hash_fcn(); }
+        key_equal key_eq() const { return ht_.key_eq(); }
+
+    public:
+        friend bool operator==(const unordered_multimap& lhs, const unordered_multimap& rhs)
+        {
+            return lhs.ht_.equal_range_multi(rhs.ht_);
+        }
+        friend bool operator!=(const unordered_multimap& lhs, const unordered_multimap& rhs)
+        {
+            return !lhs.ht_.equal_range_multi(rhs.ht_);
+        }
 };
 
 // 重载比较操作符
@@ -540,14 +540,14 @@ template <class Key, class T, class Hash, class KeyEqual>
 bool operator==(const unordered_multimap<Key, T, Hash, KeyEqual>& lhs,
                 const unordered_multimap<Key, T, Hash, KeyEqual>& rhs)
 {
-  return lhs == rhs;
+    return lhs == rhs;
 }
 
 template <class Key, class T, class Hash, class KeyEqual>
 bool operator!=(const unordered_multimap<Key, T, Hash, KeyEqual>& lhs,
                 const unordered_multimap<Key, T, Hash, KeyEqual>& rhs)
 {
-  return lhs != rhs;
+    return lhs != rhs;
 }
 
 // 重载 dwt_stl 的 swap
@@ -555,9 +555,8 @@ template <class Key, class T, class Hash, class KeyEqual>
 void swap(unordered_multimap<Key, T, Hash, KeyEqual>& lhs,
           unordered_multimap<Key, T, Hash, KeyEqual>& rhs)
 {
-  lhs.swap(rhs);
+    lhs.swap(rhs);
 }
 
-} // namespace dwt_stl
-#endif // !MYTINYSTL_UNORDERED_MAP_H_
-
+}  // namespace dwt_stl
+#endif  // !MYTINYSTL_UNORDERED_MAP_H_

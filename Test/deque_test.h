@@ -17,86 +17,85 @@ namespace deque_test
 
 void deque_test()
 {
-  std::cout << "[===============================================================]" << std::endl;
-  std::cout << "[----------------- Run container test : deque ------------------]" << std::endl;
-  std::cout << "[-------------------------- API test ---------------------------]" << std::endl;
-  s32 a[] = { 1,2,3,4,5 };
-  dwt_stl::deque<s32> d1;
-  dwt_stl::deque<s32> d2(5);
-  dwt_stl::deque<s32> d3(5, 1);
-  dwt_stl::deque<s32> d4(a, a + 5);
-  dwt_stl::deque<s32> d5(d2);
-  dwt_stl::deque<s32> d6(std::move(d2));
-  dwt_stl::deque<s32> d7;
-  d7 = d3;
-  dwt_stl::deque<s32> d8;
-  d8 = std::move(d3);
-  dwt_stl::deque<s32> d9{ 1,2,3,4,5,6,7,8,9 };
-  dwt_stl::deque<s32> d10;
-  d10 = { 1,2,3,4,5,6,7,8,9 };
+    std::cout << "[===============================================================]" << std::endl;
+    std::cout << "[----------------- Run container test : deque ------------------]" << std::endl;
+    std::cout << "[-------------------------- API test ---------------------------]" << std::endl;
+    s32 a[] = {1, 2, 3, 4, 5};
+    dwt_stl::deque<s32> d1;
+    dwt_stl::deque<s32> d2(5);
+    dwt_stl::deque<s32> d3(5, 1);
+    dwt_stl::deque<s32> d4(a, a + 5);
+    dwt_stl::deque<s32> d5(d2);
+    dwt_stl::deque<s32> d6(std::move(d2));
+    dwt_stl::deque<s32> d7;
+    d7 = d3;
+    dwt_stl::deque<s32> d8;
+    d8 = std::move(d3);
+    dwt_stl::deque<s32> d9{1, 2, 3, 4, 5, 6, 7, 8, 9};
+    dwt_stl::deque<s32> d10;
+    d10 = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-  FUN_AFTER(d1, d1.assign(5, 1));
-  FUN_AFTER(d1, d1.assign(8, 8));
-  FUN_AFTER(d1, d1.assign(a, a + 5));
-  FUN_AFTER(d1, d1.assign({ 1,2,3,4,5 }));
-  FUN_AFTER(d1, d1.insert(d1.end(), 6));
-  FUN_AFTER(d1, d1.insert(d1.end() - 1, 2, 7));
-  FUN_AFTER(d1, d1.insert(d1.begin(), a, a + 5));
-  FUN_AFTER(d1, d1.erase(d1.begin()));
-  FUN_AFTER(d1, d1.erase(d1.begin(), d1.begin() + 4));
-  FUN_AFTER(d1, d1.emplace_back(8));
-  FUN_AFTER(d1, d1.emplace_front(8));
-  FUN_AFTER(d1, d1.emplace(d1.begin() + 1, 9));
-  FUN_AFTER(d1, d1.push_front(1));
-  FUN_AFTER(d1, d1.push_back(2));
-  FUN_AFTER(d1, d1.pop_back());
-  FUN_AFTER(d1, d1.pop_front());
-  FUN_AFTER(d1, d1.shrink_to_fit());
-  FUN_AFTER(d1, d1.resize(5));
-  FUN_AFTER(d1, d1.resize(8, 8));
-  FUN_AFTER(d1, d1.clear());
-  FUN_AFTER(d1, d1.shrink_to_fit());
-  FUN_AFTER(d1, d1.swap(d4));
-  FUN_VALUE(*(d1.begin()));
-  FUN_VALUE(*(d1.end() - 1));
-  FUN_VALUE(*(d1.rbegin()));
-  FUN_VALUE(*(d1.rend() - 1));
-  FUN_VALUE(d1.front());
-  FUN_VALUE(d1.back());
-  FUN_VALUE(d1.at(1));
-  FUN_VALUE(d1[2]);
-  std::cout << std::boolalpha;
-  FUN_VALUE(d1.empty());
-  std::cout << std::noboolalpha;
-  FUN_VALUE(d1.size());
-  FUN_VALUE(d1.max_size());
-  PASSED;
+    FUN_AFTER(d1, d1.assign(5, 1));
+    FUN_AFTER(d1, d1.assign(8, 8));
+    FUN_AFTER(d1, d1.assign(a, a + 5));
+    FUN_AFTER(d1, d1.assign({1, 2, 3, 4, 5}));
+    FUN_AFTER(d1, d1.insert(d1.end(), 6));
+    FUN_AFTER(d1, d1.insert(d1.end() - 1, 2, 7));
+    FUN_AFTER(d1, d1.insert(d1.begin(), a, a + 5));
+    FUN_AFTER(d1, d1.erase(d1.begin()));
+    FUN_AFTER(d1, d1.erase(d1.begin(), d1.begin() + 4));
+    FUN_AFTER(d1, d1.emplace_back(8));
+    FUN_AFTER(d1, d1.emplace_front(8));
+    FUN_AFTER(d1, d1.emplace(d1.begin() + 1, 9));
+    FUN_AFTER(d1, d1.push_front(1));
+    FUN_AFTER(d1, d1.push_back(2));
+    FUN_AFTER(d1, d1.pop_back());
+    FUN_AFTER(d1, d1.pop_front());
+    FUN_AFTER(d1, d1.shrink_to_fit());
+    FUN_AFTER(d1, d1.resize(5));
+    FUN_AFTER(d1, d1.resize(8, 8));
+    FUN_AFTER(d1, d1.clear());
+    FUN_AFTER(d1, d1.shrink_to_fit());
+    FUN_AFTER(d1, d1.swap(d4));
+    FUN_VALUE(*(d1.begin()));
+    FUN_VALUE(*(d1.end() - 1));
+    FUN_VALUE(*(d1.rbegin()));
+    FUN_VALUE(*(d1.rend() - 1));
+    FUN_VALUE(d1.front());
+    FUN_VALUE(d1.back());
+    FUN_VALUE(d1.at(1));
+    FUN_VALUE(d1[2]);
+    std::cout << std::boolalpha;
+    FUN_VALUE(d1.empty());
+    std::cout << std::noboolalpha;
+    FUN_VALUE(d1.size());
+    FUN_VALUE(d1.max_size());
+    PASSED;
 #if PERFORMANCE_TEST_ON
-  std::cout << "[--------------------- Performance Testing ---------------------]" << std::endl;
-  std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;
-  std::cout << "|     push_front      |";
+    std::cout << "[--------------------- Performance Testing ---------------------]" << std::endl;
+    std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;
+    std::cout << "|     push_front      |";
 #if LARGER_TEST_DATA_ON
-  CON_TEST_P1(deque<s32>, push_front, rand(), SCALE_LL(LEN1), SCALE_LL(LEN2), SCALE_LL(LEN3));
+    CON_TEST_P1(deque<s32>, push_front, rand(), SCALE_LL(LEN1), SCALE_LL(LEN2), SCALE_LL(LEN3));
 #else
-  CON_TEST_P1(deque<s32>, push_front, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
+    CON_TEST_P1(deque<s32>, push_front, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
 #endif
-  std::cout << std::endl;
-  std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;
-  std::cout << "|     push_back       |";
+    std::cout << std::endl;
+    std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;
+    std::cout << "|     push_back       |";
 #if LARGER_TEST_DATA_ON
-  CON_TEST_P1(deque<s32>, push_back, rand(), SCALE_LL(LEN1), SCALE_LL(LEN2), SCALE_LL(LEN3));
+    CON_TEST_P1(deque<s32>, push_back, rand(), SCALE_LL(LEN1), SCALE_LL(LEN2), SCALE_LL(LEN3));
 #else
-  CON_TEST_P1(deque<s32>, push_back, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
+    CON_TEST_P1(deque<s32>, push_back, rand(), SCALE_L(LEN1), SCALE_L(LEN2), SCALE_L(LEN3));
 #endif
-  std::cout << std::endl;
-  std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;
-  PASSED;
+    std::cout << std::endl;
+    std::cout << "|---------------------|-------------|-------------|-------------|" << std::endl;
+    PASSED;
 #endif
-  std::cout << "[----------------- End container test : deque ------------------]" << std::endl;
+    std::cout << "[----------------- End container test : deque ------------------]" << std::endl;
 }
 
-} // namespace deque_test
-} // namespace test
-} // namespace dwt_stl
-#endif // !MYTINYSTL_DEQUE_TEST_H_
-
+}  // namespace deque_test
+}  // namespace test
+}  // namespace dwt_stl
+#endif  // !MYTINYSTL_DEQUE_TEST_H_

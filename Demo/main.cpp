@@ -98,21 +98,21 @@ s32 main()
 
     {
         print("Test: sort");
-        dwt_stl::vector<s32> v {1, 7, 3, 4, 5, 6, 2, 9, 0, 8};
+        dwt_stl::vector<s32> v{1, 7, 3, 4, 5, 6, 2, 9, 0, 8};
         dwt_stl::sort(v.begin(), v.end());
         print(v);
     }
 
     {
         print("Test: make_heap");
-        dwt_stl::vector<s32> v {1, 7, 3, 4, 5, 6, 2, 9, 0, 8};
+        dwt_stl::vector<s32> v{1, 7, 3, 4, 5, 6, 2, 9, 0, 8};
         dwt_stl::make_heap(v.begin(), v.end());
         print(v);
     }
 
     {
         print("Test: sort_heap");
-        dwt_stl::vector<s32> v {1, 7, 3, 4, 5, 6, 2, 9, 0, 8};
+        dwt_stl::vector<s32> v{1, 7, 3, 4, 5, 6, 2, 9, 0, 8};
         dwt_stl::make_heap(v.begin(), v.end());
         dwt_stl::sort_heap(v.begin(), v.end());
         print(v);

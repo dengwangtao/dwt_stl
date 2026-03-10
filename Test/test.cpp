@@ -3,10 +3,10 @@
 #endif
 
 #if defined(_MSC_VER) && defined(_DEBUG)
-#define _CRTDBG_MAP_ALLOC 
+#define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
-#endif // check memory leaks
+#endif  // check memory leaks
 
 #include "algorithm_performance_test.h"
 #include "algorithm_test.h"
@@ -24,31 +24,30 @@
 
 s32 main()
 {
-  using namespace dwt_stl::test;
+    using namespace dwt_stl::test;
 
-  std::cout.sync_with_stdio(false);
+    std::cout.sync_with_stdio(false);
 
-  RUN_ALL_TESTS();
-  algorithm_performance_test::algorithm_performance_test();
-  iterator_test::stream_iterator_test();
-  vector_test::vector_test();
-  list_test::list_test();
-  deque_test::deque_test();
-  queue_test::queue_test();
-  queue_test::priority_test();
-  stack_test::stack_test();
-  map_test::map_test();
-  map_test::multimap_test();
-  set_test::set_test();
-  set_test::multiset_test();
-  unordered_map_test::unordered_map_test();
-  unordered_map_test::unordered_multimap_test();
-  unordered_set_test::unordered_set_test();
-  unordered_set_test::unordered_multiset_test();
-  string_test::string_test();
+    RUN_ALL_TESTS();
+    algorithm_performance_test::algorithm_performance_test();
+    iterator_test::stream_iterator_test();
+    vector_test::vector_test();
+    list_test::list_test();
+    deque_test::deque_test();
+    queue_test::queue_test();
+    queue_test::priority_test();
+    stack_test::stack_test();
+    map_test::map_test();
+    map_test::multimap_test();
+    set_test::set_test();
+    set_test::multiset_test();
+    unordered_map_test::unordered_map_test();
+    unordered_map_test::unordered_multimap_test();
+    unordered_set_test::unordered_set_test();
+    unordered_set_test::unordered_multiset_test();
+    string_test::string_test();
 
 #if defined(_MSC_VER) && defined(_DEBUG)
-  _CrtDumpMemoryLeaks();
-#endif // check memory leaks
-
+    _CrtDumpMemoryLeaks();
+#endif  // check memory leaks
 }

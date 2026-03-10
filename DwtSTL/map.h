@@ -23,280 +23,282 @@ namespace dwt_stl
 template <class Key, class T, class Compare = dwt_stl::less<Key>>
 class map
 {
-public:
-  // map 的嵌套型别定义
-  typedef Key                        key_type;
-  typedef T                          mapped_type;
-  typedef dwt_stl::pair<const Key, T>  value_type;
-  typedef Compare                    key_compare;
+    public:
+        // map 的嵌套型别定义
+        typedef Key key_type;
+        typedef T mapped_type;
+        typedef dwt_stl::pair<const Key, T> value_type;
+        typedef Compare key_compare;
 
-  // 定义一个 functor，用来进行元素比较
-  class value_compare : public binary_function <value_type, value_type, bool>
-  {
-    friend class map<Key, T, Compare>;
-  private:
-    Compare comp;
-    value_compare(Compare c) : comp(c) {}
-  public:
-    bool operator()(const value_type& lhs, const value_type& rhs) const
-    {
-      return comp(lhs.first, rhs.first);  // 比较键值的大小
-    }
-  };
+        // 定义一个 functor，用来进行元素比较
+        class value_compare : public binary_function<value_type, value_type, bool>
+        {
+                friend class map<Key, T, Compare>;
 
-private:
-  // 以 dwt_stl::rb_tree 作为底层机制
-  typedef dwt_stl::rb_tree<value_type, key_compare>  base_type;
-  base_type tree_;
+            private:
+                Compare comp;
+                value_compare(Compare c) : comp(c) {}
 
-public:
-  // 使用 rb_tree 的型别
-  typedef typename base_type::node_type              node_type;
-  typedef typename base_type::pointer                pointer;
-  typedef typename base_type::const_pointer          const_pointer;
-  typedef typename base_type::reference              reference;
-  typedef typename base_type::const_reference        const_reference;
-  typedef typename base_type::iterator               iterator;
-  typedef typename base_type::const_iterator         const_iterator;
-  typedef typename base_type::reverse_iterator       reverse_iterator;
-  typedef typename base_type::const_reverse_iterator const_reverse_iterator;
-  typedef typename base_type::size_type              size_type;
-  typedef typename base_type::difference_type        difference_type;
-  typedef typename base_type::allocator_type         allocator_type;
+            public:
+                bool operator()(const value_type& lhs, const value_type& rhs) const
+                {
+                    return comp(lhs.first, rhs.first);  // 比较键值的大小
+                }
+        };
 
-public:
-  // 构造、复制、移动、赋值函数
+    private:
+        // 以 dwt_stl::rb_tree 作为底层机制
+        typedef dwt_stl::rb_tree<value_type, key_compare> base_type;
+        base_type tree_;
 
-  map() = default;
+    public:
+        // 使用 rb_tree 的型别
+        typedef typename base_type::node_type node_type;
+        typedef typename base_type::pointer pointer;
+        typedef typename base_type::const_pointer const_pointer;
+        typedef typename base_type::reference reference;
+        typedef typename base_type::const_reference const_reference;
+        typedef typename base_type::iterator iterator;
+        typedef typename base_type::const_iterator const_iterator;
+        typedef typename base_type::reverse_iterator reverse_iterator;
+        typedef typename base_type::const_reverse_iterator const_reverse_iterator;
+        typedef typename base_type::size_type size_type;
+        typedef typename base_type::difference_type difference_type;
+        typedef typename base_type::allocator_type allocator_type;
 
-  template <class InputIterator>
-  map(InputIterator first, InputIterator last)
-    :tree_()
-  { tree_.insert_unique(first, last); }
+    public:
+        // 构造、复制、移动、赋值函数
 
-  map(std::initializer_list<value_type> ilist) 
-    :tree_()
-  { tree_.insert_unique(ilist.begin(), ilist.end()); }
+        map() = default;
 
-  map(const map& rhs) 
-    :tree_(rhs.tree_) 
-  {
-  }
-  map(map&& rhs) noexcept
-    :tree_(dwt_stl::move(rhs.tree_))
-  {
-  }
+        template <class InputIterator>
+        map(InputIterator first, InputIterator last)
+            : tree_()
+        { tree_.insert_unique(first, last); }
 
-  map& operator=(const map& rhs)
-  { 
-    tree_ = rhs.tree_; 
-    return *this;
-  }
-  map& operator=(map&& rhs)
-  { 
-    tree_ = dwt_stl::move(rhs.tree_);
-    return *this;
-  }
+        map(std::initializer_list<value_type> ilist)
+            : tree_()
+        { tree_.insert_unique(ilist.begin(), ilist.end()); }
 
-  map& operator=(std::initializer_list<value_type> ilist)
-  {
-    tree_.clear();
-    tree_.insert_unique(ilist.begin(), ilist.end());
-    return *this;
-  }
+        map(const map& rhs)
+            : tree_(rhs.tree_)
+        {
+        }
+        map(map&& rhs) noexcept
+            : tree_(dwt_stl::move(rhs.tree_))
+        {
+        }
 
-  // 相关接口
+        map& operator=(const map& rhs)
+        {
+            tree_ = rhs.tree_;
+            return *this;
+        }
+        map& operator=(map&& rhs)
+        {
+            tree_ = dwt_stl::move(rhs.tree_);
+            return *this;
+        }
 
-  key_compare            key_comp()      const { return tree_.key_comp(); }
-  value_compare          value_comp()    const { return value_compare(tree_.key_comp()); }
-  allocator_type         get_allocator() const { return tree_.get_allocator(); }
+        map& operator=(std::initializer_list<value_type> ilist)
+        {
+            tree_.clear();
+            tree_.insert_unique(ilist.begin(), ilist.end());
+            return *this;
+        }
 
-  // 迭代器相关
+        // 相关接口
 
-  iterator               begin()         noexcept
-  { return tree_.begin(); }
-  const_iterator         begin()   const noexcept
-  { return tree_.begin(); }
-  iterator               end()           noexcept
-  { return tree_.end(); }
-  const_iterator         end()     const noexcept
-  { return tree_.end(); }
+        key_compare key_comp() const { return tree_.key_comp(); }
+        value_compare value_comp() const { return value_compare(tree_.key_comp()); }
+        allocator_type get_allocator() const { return tree_.get_allocator(); }
 
-  reverse_iterator       rbegin()        noexcept
-  { return reverse_iterator(end()); }
-  const_reverse_iterator rbegin()  const noexcept
-  { return const_reverse_iterator(end()); }
-  reverse_iterator       rend()          noexcept
-  { return reverse_iterator(begin()); }
-  const_reverse_iterator rend()    const noexcept
-  { return const_reverse_iterator(begin()); }
+        // 迭代器相关
 
-  const_iterator         cbegin()  const noexcept
-  { return begin(); }
-  const_iterator         cend()    const noexcept
-  { return end(); }
-  const_reverse_iterator crbegin() const noexcept
-  { return rbegin(); }
-  const_reverse_iterator crend()   const noexcept
-  { return rend(); }
+        iterator begin() noexcept
+        { return tree_.begin(); }
+        const_iterator begin() const noexcept
+        { return tree_.begin(); }
+        iterator end() noexcept
+        { return tree_.end(); }
+        const_iterator end() const noexcept
+        { return tree_.end(); }
 
-  // 容量相关
-  bool                   empty()    const noexcept { return tree_.empty(); }
-  size_type              size()     const noexcept { return tree_.size(); }
-  size_type              max_size() const noexcept { return tree_.max_size(); }
+        reverse_iterator rbegin() noexcept
+        { return reverse_iterator(end()); }
+        const_reverse_iterator rbegin() const noexcept
+        { return const_reverse_iterator(end()); }
+        reverse_iterator rend() noexcept
+        { return reverse_iterator(begin()); }
+        const_reverse_iterator rend() const noexcept
+        { return const_reverse_iterator(begin()); }
 
-  // 访问元素相关
+        const_iterator cbegin() const noexcept
+        { return begin(); }
+        const_iterator cend() const noexcept
+        { return end(); }
+        const_reverse_iterator crbegin() const noexcept
+        { return rbegin(); }
+        const_reverse_iterator crend() const noexcept
+        { return rend(); }
 
-  // 若键值不存在，at 会抛出一个异常
-  mapped_type& at(const key_type& key)
-  {
-    iterator it = lower_bound(key);
-    // it->first >= key
-    THROW_OUT_OF_RANGE_IF(it == end() || key_comp()(it->first, key),
-                          "map<Key, T> no such element exists");
-    return it->second;
-  }
-  const mapped_type& at(const key_type& key) const
-  {
-    const_iterator it = lower_bound(key);
-    // it->first >= key
-    THROW_OUT_OF_RANGE_IF(it == end() || key_comp()(it->first, key),
-                          "map<Key, T> no such element exists");
-    return it->second;
-  }
+        // 容量相关
+        bool empty() const noexcept { return tree_.empty(); }
+        size_type size() const noexcept { return tree_.size(); }
+        size_type max_size() const noexcept { return tree_.max_size(); }
 
-  mapped_type& operator[](const key_type& key)
-  {
-    iterator it = lower_bound(key);
-    // it->first >= key
-    if (it == end() || key_comp()(key, it->first))
-      it = emplace_hint(it, key, T{});
-    return it->second;
-  }
-  mapped_type& operator[](key_type&& key)
-  {
-    iterator it = lower_bound(key);
-    // it->first >= key
-    if (it == end() || key_comp()(key, it->first))
-      it = emplace_hint(it, dwt_stl::move(key), T{});
-    return it->second;
-  }
+        // 访问元素相关
 
-  // 插入删除相关
+        // 若键值不存在，at 会抛出一个异常
+        mapped_type& at(const key_type& key)
+        {
+            iterator it = lower_bound(key);
+            // it->first >= key
+            THROW_OUT_OF_RANGE_IF(it == end() || key_comp()(it->first, key),
+                                  "map<Key, T> no such element exists");
+            return it->second;
+        }
+        const mapped_type& at(const key_type& key) const
+        {
+            const_iterator it = lower_bound(key);
+            // it->first >= key
+            THROW_OUT_OF_RANGE_IF(it == end() || key_comp()(it->first, key),
+                                  "map<Key, T> no such element exists");
+            return it->second;
+        }
 
-  template <class ...Args>
-  pair<iterator, bool> emplace(Args&& ...args)
-  {
-    return tree_.emplace_unique(dwt_stl::forward<Args>(args)...);
-  }
+        mapped_type& operator[](const key_type& key)
+        {
+            iterator it = lower_bound(key);
+            // it->first >= key
+            if (it == end() || key_comp()(key, it->first))
+                it = emplace_hint(it, key, T{});
+            return it->second;
+        }
+        mapped_type& operator[](key_type&& key)
+        {
+            iterator it = lower_bound(key);
+            // it->first >= key
+            if (it == end() || key_comp()(key, it->first))
+                it = emplace_hint(it, dwt_stl::move(key), T{});
+            return it->second;
+        }
 
-  template <class ...Args>
-  iterator emplace_hint(iterator hint, Args&& ...args)
-  {
-    return tree_.emplace_unique_use_hint(hint, dwt_stl::forward<Args>(args)...);
-  }
+        // 插入删除相关
 
-  pair<iterator, bool> insert(const value_type& value)
-  {
-    return tree_.insert_unique(value);
-  }
-  pair<iterator, bool> insert(value_type&& value)
-  {
-    return tree_.insert_unique(dwt_stl::move(value));
-  }
+        template <class... Args>
+        pair<iterator, bool> emplace(Args&&... args)
+        {
+            return tree_.emplace_unique(dwt_stl::forward<Args>(args)...);
+        }
 
-  iterator insert(iterator hint, const value_type& value)
-  {
-    return tree_.insert_unique(hint, value);
-  }
-  iterator insert(iterator hint, value_type&& value)
-  {
-    return tree_.insert_unique(hint, dwt_stl::move(value));
-  }
+        template <class... Args>
+        iterator emplace_hint(iterator hint, Args&&... args)
+        {
+            return tree_.emplace_unique_use_hint(hint, dwt_stl::forward<Args>(args)...);
+        }
 
-  template <class InputIterator>
-  void insert(InputIterator first, InputIterator last)
-  {
-    tree_.insert_unique(first, last);
-  }
+        pair<iterator, bool> insert(const value_type& value)
+        {
+            return tree_.insert_unique(value);
+        }
+        pair<iterator, bool> insert(value_type&& value)
+        {
+            return tree_.insert_unique(dwt_stl::move(value));
+        }
 
-  void      erase(iterator position)             { tree_.erase(position); }
-  size_type erase(const key_type& key)           { return tree_.erase_unique(key); }
-  void      erase(iterator first, iterator last) { tree_.erase(first, last); }
+        iterator insert(iterator hint, const value_type& value)
+        {
+            return tree_.insert_unique(hint, value);
+        }
+        iterator insert(iterator hint, value_type&& value)
+        {
+            return tree_.insert_unique(hint, dwt_stl::move(value));
+        }
 
-  void      clear()                              { tree_.clear(); }
+        template <class InputIterator>
+        void insert(InputIterator first, InputIterator last)
+        {
+            tree_.insert_unique(first, last);
+        }
 
-  // map 相关操作
+        void erase(iterator position) { tree_.erase(position); }
+        size_type erase(const key_type& key) { return tree_.erase_unique(key); }
+        void erase(iterator first, iterator last) { tree_.erase(first, last); }
 
-  iterator       find(const key_type& key)              { return tree_.find(key); }
-  const_iterator find(const key_type& key)        const { return tree_.find(key); }
+        void clear() { tree_.clear(); }
 
-  size_type      count(const key_type& key)       const { return tree_.count_unique(key); }
+        // map 相关操作
 
-  iterator       lower_bound(const key_type& key)       { return tree_.lower_bound(key); }
-  const_iterator lower_bound(const key_type& key) const { return tree_.lower_bound(key); }
+        iterator find(const key_type& key) { return tree_.find(key); }
+        const_iterator find(const key_type& key) const { return tree_.find(key); }
 
-  iterator       upper_bound(const key_type& key)       { return tree_.upper_bound(key); }
-  const_iterator upper_bound(const key_type& key) const { return tree_.upper_bound(key); }
+        size_type count(const key_type& key) const { return tree_.count_unique(key); }
 
-  pair<iterator, iterator>
-    equal_range(const key_type& key) 
-  { return tree_.equal_range_unique(key); }
+        iterator lower_bound(const key_type& key) { return tree_.lower_bound(key); }
+        const_iterator lower_bound(const key_type& key) const { return tree_.lower_bound(key); }
 
-  pair<const_iterator, const_iterator>
-    equal_range(const key_type& key) const 
-  { return tree_.equal_range_unique(key); }
+        iterator upper_bound(const key_type& key) { return tree_.upper_bound(key); }
+        const_iterator upper_bound(const key_type& key) const { return tree_.upper_bound(key); }
 
-  void           swap(map& rhs) noexcept
-  { tree_.swap(rhs.tree_); }
+        pair<iterator, iterator>
+        equal_range(const key_type& key)
+        { return tree_.equal_range_unique(key); }
 
-public:
-  friend bool operator==(const map& lhs, const map& rhs) { return lhs.tree_ == rhs.tree_; }
-  friend bool operator< (const map& lhs, const map& rhs) { return lhs.tree_ <  rhs.tree_; }
+        pair<const_iterator, const_iterator>
+        equal_range(const key_type& key) const
+        { return tree_.equal_range_unique(key); }
+
+        void swap(map& rhs) noexcept
+        { tree_.swap(rhs.tree_); }
+
+    public:
+        friend bool operator==(const map& lhs, const map& rhs) { return lhs.tree_ == rhs.tree_; }
+        friend bool operator<(const map& lhs, const map& rhs) { return lhs.tree_ < rhs.tree_; }
 };
 
 // 重载比较操作符
 template <class Key, class T, class Compare>
 bool operator==(const map<Key, T, Compare>& lhs, const map<Key, T, Compare>& rhs)
 {
-  return lhs == rhs;
+    return lhs == rhs;
 }
 
 template <class Key, class T, class Compare>
 bool operator<(const map<Key, T, Compare>& lhs, const map<Key, T, Compare>& rhs)
 {
-  return lhs < rhs;
+    return lhs < rhs;
 }
 
 template <class Key, class T, class Compare>
 bool operator!=(const map<Key, T, Compare>& lhs, const map<Key, T, Compare>& rhs)
 {
-  return !(lhs == rhs);
+    return !(lhs == rhs);
 }
 
 template <class Key, class T, class Compare>
 bool operator>(const map<Key, T, Compare>& lhs, const map<Key, T, Compare>& rhs)
 {
-  return rhs < lhs;
+    return rhs < lhs;
 }
 
 template <class Key, class T, class Compare>
 bool operator<=(const map<Key, T, Compare>& lhs, const map<Key, T, Compare>& rhs)
 {
-  return !(rhs < lhs);
+    return !(rhs < lhs);
 }
 
 template <class Key, class T, class Compare>
 bool operator>=(const map<Key, T, Compare>& lhs, const map<Key, T, Compare>& rhs)
 {
-  return !(lhs < rhs);
+    return !(lhs < rhs);
 }
 
 // 重载 dwt_stl 的 swap
 template <class Key, class T, class Compare>
 void swap(map<Key, T, Compare>& lhs, map<Key, T, Compare>& rhs) noexcept
 {
-  lhs.swap(rhs);
+    lhs.swap(rhs);
 }
 
 /*****************************************************************************************/
@@ -306,244 +308,245 @@ void swap(map<Key, T, Compare>& lhs, map<Key, T, Compare>& rhs) noexcept
 template <class Key, class T, class Compare = dwt_stl::less<Key>>
 class multimap
 {
-public:
-  // multimap 的型别定义
-  typedef Key                        key_type;
-  typedef T                          mapped_type;
-  typedef dwt_stl::pair<const Key, T>  value_type;
-  typedef Compare                    key_compare;
+    public:
+        // multimap 的型别定义
+        typedef Key key_type;
+        typedef T mapped_type;
+        typedef dwt_stl::pair<const Key, T> value_type;
+        typedef Compare key_compare;
 
-  // 定义一个 functor，用来进行元素比较
-  class value_compare : public binary_function <value_type, value_type, bool>
-  {
-    friend class multimap<Key, T, Compare>;
-  private:
-    Compare comp;
-    value_compare(Compare c) : comp(c) {}
-  public:
-    bool operator()(const value_type& lhs, const value_type& rhs) const
-    {
-      return comp(lhs.first, rhs.first);
-    }
-  };
+        // 定义一个 functor，用来进行元素比较
+        class value_compare : public binary_function<value_type, value_type, bool>
+        {
+                friend class multimap<Key, T, Compare>;
 
-private:
-  // 用 dwt_stl::rb_tree 作为底层机制
-  typedef dwt_stl::rb_tree<value_type, key_compare>  base_type;
-  base_type tree_;
+            private:
+                Compare comp;
+                value_compare(Compare c) : comp(c) {}
 
-public:
-  // 使用 rb_tree 的型别
-  typedef typename base_type::node_type              node_type;
-  typedef typename base_type::pointer                pointer;
-  typedef typename base_type::const_pointer          const_pointer;
-  typedef typename base_type::reference              reference;
-  typedef typename base_type::const_reference        const_reference;
-  typedef typename base_type::iterator               iterator;
-  typedef typename base_type::const_iterator         const_iterator;
-  typedef typename base_type::reverse_iterator       reverse_iterator;
-  typedef typename base_type::const_reverse_iterator const_reverse_iterator;
-  typedef typename base_type::size_type              size_type;
-  typedef typename base_type::difference_type        difference_type;
-  typedef typename base_type::allocator_type         allocator_type;
+            public:
+                bool operator()(const value_type& lhs, const value_type& rhs) const
+                {
+                    return comp(lhs.first, rhs.first);
+                }
+        };
 
-public:
-  // 构造、复制、移动函数
+    private:
+        // 用 dwt_stl::rb_tree 作为底层机制
+        typedef dwt_stl::rb_tree<value_type, key_compare> base_type;
+        base_type tree_;
 
-  multimap() = default;
+    public:
+        // 使用 rb_tree 的型别
+        typedef typename base_type::node_type node_type;
+        typedef typename base_type::pointer pointer;
+        typedef typename base_type::const_pointer const_pointer;
+        typedef typename base_type::reference reference;
+        typedef typename base_type::const_reference const_reference;
+        typedef typename base_type::iterator iterator;
+        typedef typename base_type::const_iterator const_iterator;
+        typedef typename base_type::reverse_iterator reverse_iterator;
+        typedef typename base_type::const_reverse_iterator const_reverse_iterator;
+        typedef typename base_type::size_type size_type;
+        typedef typename base_type::difference_type difference_type;
+        typedef typename base_type::allocator_type allocator_type;
 
-  template <class InputIterator>
-  multimap(InputIterator first, InputIterator last) 
-    :tree_() 
-  { tree_.insert_multi(first, last); }
-  multimap(std::initializer_list<value_type> ilist) 
-    :tree_() 
-  { tree_.insert_multi(ilist.begin(), ilist.end()); }
+    public:
+        // 构造、复制、移动函数
 
-  multimap(const multimap& rhs)
-    :tree_(rhs.tree_)
-  {
-  }
-  multimap(multimap&& rhs) noexcept
-    :tree_(dwt_stl::move(rhs.tree_))
-  {
-  }
+        multimap() = default;
 
-  multimap& operator=(const multimap& rhs) 
-  { 
-    tree_ = rhs.tree_; 
-    return *this; 
-  }
-  multimap& operator=(multimap&& rhs) 
-  { 
-    tree_ = dwt_stl::move(rhs.tree_);
-    return *this; 
-  }
+        template <class InputIterator>
+        multimap(InputIterator first, InputIterator last)
+            : tree_()
+        { tree_.insert_multi(first, last); }
+        multimap(std::initializer_list<value_type> ilist)
+            : tree_()
+        { tree_.insert_multi(ilist.begin(), ilist.end()); }
 
-  multimap& operator=(std::initializer_list<value_type> ilist)
-  {
-    tree_.clear();
-    tree_.insert_multi(ilist.begin(), ilist.end());
-    return *this;
-  }
+        multimap(const multimap& rhs)
+            : tree_(rhs.tree_)
+        {
+        }
+        multimap(multimap&& rhs) noexcept
+            : tree_(dwt_stl::move(rhs.tree_))
+        {
+        }
 
-  // 相关接口
+        multimap& operator=(const multimap& rhs)
+        {
+            tree_ = rhs.tree_;
+            return *this;
+        }
+        multimap& operator=(multimap&& rhs)
+        {
+            tree_ = dwt_stl::move(rhs.tree_);
+            return *this;
+        }
 
-  key_compare            key_comp()      const { return tree_.key_comp(); }
-  value_compare          value_comp()    const { return value_compare(tree_.key_comp()); }
-  allocator_type         get_allocator() const { return tree_.get_allocator(); }
+        multimap& operator=(std::initializer_list<value_type> ilist)
+        {
+            tree_.clear();
+            tree_.insert_multi(ilist.begin(), ilist.end());
+            return *this;
+        }
 
-  // 迭代器相关
+        // 相关接口
 
-  iterator               begin()         noexcept
-  { return tree_.begin(); }
-  const_iterator         begin()   const noexcept
-  { return tree_.begin(); }
-  iterator               end()           noexcept
-  { return tree_.end(); }
-  const_iterator         end()     const noexcept
-  { return tree_.end(); }
+        key_compare key_comp() const { return tree_.key_comp(); }
+        value_compare value_comp() const { return value_compare(tree_.key_comp()); }
+        allocator_type get_allocator() const { return tree_.get_allocator(); }
 
-  reverse_iterator       rbegin()        noexcept
-  { return reverse_iterator(end()); }
-  const_reverse_iterator rbegin()  const noexcept
-  { return const_reverse_iterator(end()); }
-  reverse_iterator       rend()          noexcept
-  { return reverse_iterator(begin()); }
-  const_reverse_iterator rend()    const noexcept
-  { return const_reverse_iterator(begin()); }
+        // 迭代器相关
 
-  const_iterator         cbegin()  const noexcept
-  { return begin(); }
-  const_iterator         cend()    const noexcept
-  { return end(); }
-  const_reverse_iterator crbegin() const noexcept
-  { return rbegin(); }
-  const_reverse_iterator crend()   const noexcept
-  { return rend(); }
+        iterator begin() noexcept
+        { return tree_.begin(); }
+        const_iterator begin() const noexcept
+        { return tree_.begin(); }
+        iterator end() noexcept
+        { return tree_.end(); }
+        const_iterator end() const noexcept
+        { return tree_.end(); }
 
-  // 容量相关
-  bool                   empty()    const noexcept { return tree_.empty(); }
-  size_type              size()     const noexcept { return tree_.size(); }
-  size_type              max_size() const noexcept { return tree_.max_size(); }
+        reverse_iterator rbegin() noexcept
+        { return reverse_iterator(end()); }
+        const_reverse_iterator rbegin() const noexcept
+        { return const_reverse_iterator(end()); }
+        reverse_iterator rend() noexcept
+        { return reverse_iterator(begin()); }
+        const_reverse_iterator rend() const noexcept
+        { return const_reverse_iterator(begin()); }
 
-  // 插入删除操作
+        const_iterator cbegin() const noexcept
+        { return begin(); }
+        const_iterator cend() const noexcept
+        { return end(); }
+        const_reverse_iterator crbegin() const noexcept
+        { return rbegin(); }
+        const_reverse_iterator crend() const noexcept
+        { return rend(); }
 
-  template <class ...Args>
-  iterator emplace(Args&& ...args)
-  {
-    return tree_.emplace_multi(dwt_stl::forward<Args>(args)...);
-  }
+        // 容量相关
+        bool empty() const noexcept { return tree_.empty(); }
+        size_type size() const noexcept { return tree_.size(); }
+        size_type max_size() const noexcept { return tree_.max_size(); }
 
-  template <class ...Args>
-  iterator emplace_hint(iterator hint, Args&& ...args)
-  {
-    return tree_.emplace_multi_use_hint(hint, dwt_stl::forward<Args>(args)...);
-  }
+        // 插入删除操作
 
-  iterator insert(const value_type& value)
-  {
-    return tree_.insert_multi(value);
-  }
-  iterator insert(value_type&& value)
-  {
-    return tree_.insert_multi(dwt_stl::move(value));
-  }
+        template <class... Args>
+        iterator emplace(Args&&... args)
+        {
+            return tree_.emplace_multi(dwt_stl::forward<Args>(args)...);
+        }
 
-  iterator insert(iterator hint, const value_type& value)
-  {
-    return tree_.insert_multi(hint, value);
-  }
-  iterator insert(iterator hint, value_type&& value)
-  {
-    return tree_.insert_multi(hint, dwt_stl::move(value));
-  }
+        template <class... Args>
+        iterator emplace_hint(iterator hint, Args&&... args)
+        {
+            return tree_.emplace_multi_use_hint(hint, dwt_stl::forward<Args>(args)...);
+        }
 
-  template <class InputIterator>
-  void insert(InputIterator first, InputIterator last)
-  {
-    tree_.insert_multi(first, last);
-  }
+        iterator insert(const value_type& value)
+        {
+            return tree_.insert_multi(value);
+        }
+        iterator insert(value_type&& value)
+        {
+            return tree_.insert_multi(dwt_stl::move(value));
+        }
 
-  void           erase(iterator position)             { tree_.erase(position); }
-  size_type      erase(const key_type& key)           { return tree_.erase_multi(key); }
-  void           erase(iterator first, iterator last) { tree_.erase(first, last); }
+        iterator insert(iterator hint, const value_type& value)
+        {
+            return tree_.insert_multi(hint, value);
+        }
+        iterator insert(iterator hint, value_type&& value)
+        {
+            return tree_.insert_multi(hint, dwt_stl::move(value));
+        }
 
-  void           clear() { tree_.clear(); }
+        template <class InputIterator>
+        void insert(InputIterator first, InputIterator last)
+        {
+            tree_.insert_multi(first, last);
+        }
 
-  // multimap 相关操作
+        void erase(iterator position) { tree_.erase(position); }
+        size_type erase(const key_type& key) { return tree_.erase_multi(key); }
+        void erase(iterator first, iterator last) { tree_.erase(first, last); }
 
-  iterator       find(const key_type& key)              { return tree_.find(key); }
-  const_iterator find(const key_type& key)        const { return tree_.find(key); }
+        void clear() { tree_.clear(); }
 
-  size_type      count(const key_type& key)       const { return tree_.count_multi(key); }
+        // multimap 相关操作
 
-  iterator       lower_bound(const key_type& key)       { return tree_.lower_bound(key); }
-  const_iterator lower_bound(const key_type& key) const { return tree_.lower_bound(key); }
+        iterator find(const key_type& key) { return tree_.find(key); }
+        const_iterator find(const key_type& key) const { return tree_.find(key); }
 
-  iterator       upper_bound(const key_type& key)       { return tree_.upper_bound(key); }
-  const_iterator upper_bound(const key_type& key) const { return tree_.upper_bound(key); }
+        size_type count(const key_type& key) const { return tree_.count_multi(key); }
 
-  pair<iterator, iterator> 
-    equal_range(const key_type& key)
-  { return tree_.equal_range_multi(key); }
+        iterator lower_bound(const key_type& key) { return tree_.lower_bound(key); }
+        const_iterator lower_bound(const key_type& key) const { return tree_.lower_bound(key); }
 
-  pair<const_iterator, const_iterator>
-    equal_range(const key_type& key) const 
-  { return tree_.equal_range_multi(key); }
+        iterator upper_bound(const key_type& key) { return tree_.upper_bound(key); }
+        const_iterator upper_bound(const key_type& key) const { return tree_.upper_bound(key); }
 
-  void swap(multimap& rhs) noexcept
-  { tree_.swap(rhs.tree_); }
+        pair<iterator, iterator>
+        equal_range(const key_type& key)
+        { return tree_.equal_range_multi(key); }
 
-public:
-  friend bool operator==(const multimap& lhs, const multimap& rhs) { return lhs.tree_ == rhs.tree_; }
-  friend bool operator< (const multimap& lhs, const multimap& rhs) { return lhs.tree_ <  rhs.tree_; }
+        pair<const_iterator, const_iterator>
+        equal_range(const key_type& key) const
+        { return tree_.equal_range_multi(key); }
+
+        void swap(multimap& rhs) noexcept
+        { tree_.swap(rhs.tree_); }
+
+    public:
+        friend bool operator==(const multimap& lhs, const multimap& rhs) { return lhs.tree_ == rhs.tree_; }
+        friend bool operator<(const multimap& lhs, const multimap& rhs) { return lhs.tree_ < rhs.tree_; }
 };
 
 // 重载比较操作符
 template <class Key, class T, class Compare>
 bool operator==(const multimap<Key, T, Compare>& lhs, const multimap<Key, T, Compare>& rhs)
 {
-  return lhs == rhs;
+    return lhs == rhs;
 }
 
 template <class Key, class T, class Compare>
 bool operator<(const multimap<Key, T, Compare>& lhs, const multimap<Key, T, Compare>& rhs)
 {
-  return lhs < rhs;
+    return lhs < rhs;
 }
 
 template <class Key, class T, class Compare>
 bool operator!=(const multimap<Key, T, Compare>& lhs, const multimap<Key, T, Compare>& rhs)
 {
-  return !(lhs == rhs);
+    return !(lhs == rhs);
 }
 
 template <class Key, class T, class Compare>
 bool operator>(const multimap<Key, T, Compare>& lhs, const multimap<Key, T, Compare>& rhs)
 {
-  return rhs < lhs;
+    return rhs < lhs;
 }
 
 template <class Key, class T, class Compare>
 bool operator<=(const multimap<Key, T, Compare>& lhs, const multimap<Key, T, Compare>& rhs)
 {
-  return !(rhs < lhs);
+    return !(rhs < lhs);
 }
 
 template <class Key, class T, class Compare>
 bool operator>=(const multimap<Key, T, Compare>& lhs, const multimap<Key, T, Compare>& rhs)
 {
-  return !(lhs < rhs);
+    return !(lhs < rhs);
 }
 
 // 重载 dwt_stl 的 swap
 template <class Key, class T, class Compare>
 void swap(multimap<Key, T, Compare>& lhs, multimap<Key, T, Compare>& rhs) noexcept
 {
-  lhs.swap(rhs);
+    lhs.swap(rhs);
 }
 
-} // namespace dwt_stl
-#endif // !MYTINYSTL_MAP_H_
-
+}  // namespace dwt_stl
+#endif  // !MYTINYSTL_MAP_H_

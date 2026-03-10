@@ -14,7 +14,6 @@ namespace dwt_stl
 
 // is_pair
 
-
 // 主模板：默认非 pair 类型
 // template <class T, class = void>
 // struct is_pair : dwt_stl::false_type {};
@@ -25,14 +24,17 @@ namespace dwt_stl
 //     : dwt_stl::true_type {};
 
 template <class T>
-struct is_pair : dwt_stl::false_type {};
+struct is_pair : dwt_stl::false_type
+{
+};
 
 template <class T1, class T2>
-struct is_pair<dwt_stl::pair<T1, T2>> : dwt_stl::true_type {};
+struct is_pair<dwt_stl::pair<T1, T2>> : dwt_stl::true_type
+{
+};
 
 DECL__V(is_pair);
 
-} // namespace dwt_stl
+}  // namespace dwt_stl
 
-#endif // !MYTINYSTL_TYPE_TRAITS_H_
-
+#endif  // !MYTINYSTL_TYPE_TRAITS_H_
