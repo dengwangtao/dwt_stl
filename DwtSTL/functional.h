@@ -4,6 +4,7 @@
 // 这个头文件包含了 dwt_stl 的函数对象与哈希函数
 
 #include <cstddef>
+#include "common.h"
 
 namespace dwt_stl
 {
